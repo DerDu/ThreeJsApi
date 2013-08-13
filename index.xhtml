@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+		PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title>ThreeJsApi</title>
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+
+	<script type="text/javascript" src="ThreeJs/build/three.min.js"></script>
+
+	<script type="text/javascript" src="Api/ThreeJsApi.js"></script>
+	<script type="text/javascript" src="Api/ThreeJsApi/Renderer.js"></script>
+	<script type="text/javascript" src="Api/ThreeJsApi/Scene.js"></script>
+
+	<script type="text/javascript" src="Api/ThreeJsApi/Camera.js"></script>
+	<script type="text/javascript" src="Api/ThreeJsApi/Camera/Perspective.js"></script>
+
+	<script type="text/javascript" src="Api/ThreeJsApi/Geometry.js"></script>
+	<script type="text/javascript" src="Api/ThreeJsApi/Geometry/Cube.js"></script>
+	<script type="text/javascript" src="Api/ThreeJsApi/Geometry/Torus.js"></script>
+
+	<script type="text/javascript" src="Api/ThreeJsApi/Material.js"></script>
+	<script type="text/javascript" src="Api/ThreeJsApi/Material/Mesh.js"></script>
+	<script type="text/javascript" src="Api/ThreeJsApi/Material/Mesh/Basic.js"></script>
+
+	<script type="text/javascript" src="Api/ThreeJsApi/Mesh.js"></script>
+	<script type="text/javascript" src="Api/ThreeJsApi/Mesh/Basic.js"></script>
+
+</head>
+<body>
+
+<div id="Display" style="border: 1px solid red;"></div>
+
+<div id="Catalog" style="border: 1px solid blue;">
+
+	<div id="Panel"></div>
+
+</div>
+
+
+<script type="text/javascript">
+
+var Display = ThreeJsApi.Renderer();
+
+Display.viewTarget( 'div#Display' );
+//Display.viewAnimationStep();
+
+
+	/*
+ThreeJsApi.Renderer.viewTarget( 'div#Renderer' );
+//ThreeJsApi.Renderer.setWidth( 480 );
+//ThreeJsApi.Renderer.setHeight( 320 );
+ThreeJsApi.Renderer.viewAnimation();
+
+
+
+ThreeJsApi.Renderer.viewTarget( 'div#Panel' );
+ThreeJsApi.Renderer.setWidth( 480 );
+ThreeJsApi.Renderer.setHeight( 320 );
+
+ThreeJsApi.Scene.addObject(
+	ThreeJsApi.Mesh.Basic().createMesh(
+		ThreeJsApi.Geometry.Cube().setWidth(100).setHeight(230).setDepth(10).createGeometry(),
+		ThreeJsApi.Material.Mesh().Basic().createMaterial()
+	)
+);
+
+ThreeJsApi.Renderer.methodAnimation(function(){
+	ThreeJsApi.Scene.getObject(0).getTJSObject().rotation.y += 0.01;
+});
+
+ThreeJsApi.Renderer.viewAnimation();
+/*
+ThreeJsApi.Scene.addObject(
+	ThreeJsApi.Mesh.Basic().createMesh(
+		ThreeJsApi.Geometry.Torus().createGeometry(),
+		ThreeJsApi.Material.Mesh().Basic().createMaterial()
+	)
+);
+ThreeJsApi.Scene.addObject(
+	ThreeJsApi.Mesh.Basic().createMesh(
+		ThreeJsApi.Geometry.Cube().setWidth(200).setHeight(200).setDepth(200).createGeometry(),
+		ThreeJsApi.Material.Mesh().Basic().createMaterial()
+	)
+);
+ThreeJsApi.Scene.addObject(
+	ThreeJsApi.Mesh.Basic().createMesh(
+		ThreeJsApi.Geometry.Cube().setWidth(500).setHeight(500).setDepth(500).createGeometry(),
+		ThreeJsApi.Material.Mesh().Basic().createMaterial()
+	)
+);
+*/
+//ThreeJsApi.Renderer.viewAnimation();
+
+//ThreeJsApi.Renderer.viewAnimationStep();
+
+
+
+</script>
+
+
+</body>
+</html>
