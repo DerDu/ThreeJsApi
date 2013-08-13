@@ -79,11 +79,15 @@
 var O = (function(){
 	var D = 0;
 	var sD = function( V ) {
-		this.D = V;
+		D = V;
+		return this;
+	};
+	var cD = function() {
+		return D;
 	};
 	return {
 		sD: sD,
-		D:D
+		cD: cD
 	};
 });
 
