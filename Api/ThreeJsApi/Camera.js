@@ -32,32 +32,23 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * Camera
- * 13.08.2013 13:19
+ * 13.08.2013 19:01
  */
 
 (function(){
 
 	ThreeJsApi.Camera = (function(){
 
-		var Current = null;
-		var setCurrent = function( Camera ) {
-			Current = Camera;
-			return this;
-		};
-		var getCurrent = function() {
-			return Current;
-		};
+		var Object = null;
 
 		var Perspective = (function(){
-			setCurrent( ThreeJsApi.CameraPerspective );
-			return getCurrent()
+			Object = 'Perspective';
+			return Object;
 		});
 
 		return {
-			Perspective: Perspective,
-
-			getCurrent: getCurrent,
-			setCurrent: setCurrent
+			Object: Object,
+			Perspective: Perspective
 		}
 
 	})();

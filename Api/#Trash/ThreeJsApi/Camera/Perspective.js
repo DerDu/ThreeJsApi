@@ -32,7 +32,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * Perspective
- * 13.08.2013 19:02
+ * 13.08.2013 13:24
  */
 
 (function(){
@@ -40,8 +40,7 @@
 	ThreeJsApi.CameraPerspective = (function(){
 
 		var Fov = 75;
-		var Aspect = 0;
-//		var Aspect = ThreeJsApi.Renderer.getCurrent().getWidth() / ThreeJsApi.Renderer.getHeight();
+		var Aspect = ThreeJsApi.Renderer.getWidth() / ThreeJsApi.Renderer.getHeight();
 		var Near = 1;
 		var Far = 10000;
 
@@ -108,18 +107,43 @@
 			return this;
 		};
 
+		var TJSObject = null;
+		var setTJSObject = function( Object ){
+			TJSObject = Object;
+			return this;
+		};
+		var getTJSObject = function(){
+			if( TJSObject == null ) {
+				setTJSObject( new THREE.PerspectiveCamera( getFov(), getAspect(), getNear(), getFar() ) );
+				setPositionZ()
+			}
+			return TJSObject;
+		};
+
 		return {
+			getTJSObject: getTJSObject,
+
 			setFov: setFov,
 			getFov: getFov,
+
 			setAspect: setAspect,
 			getAspect: getAspect,
+
 			setNear: setNear,
 			getNear: getNear,
-			setFar: setFar,
-			getFar: getFar
 
-		}
+			setFar: setFar,
+			getFar: getFar,
+
+			setPosition: setPosition,
+			setPositionX: setPositionX,
+			setPositionY: setPositionY,
+			setPositionZ: setPositionZ
+		};
 
 	})();
+
+	// Init
+	ThreeJsApi.Camera.Perspective().getTJSObject();
 
 })();

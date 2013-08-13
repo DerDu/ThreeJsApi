@@ -31,21 +31,35 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * ThreeJsApi
- * 13.08.2013 18:54
+ * Camera
+ * 13.08.2013 13:19
  */
 
-var ThreeJsApi = (function( Selector ){
+(function(){
 
-	var Renderer = null;
-	var Camera = null;
-	var Scene = null;
+	ThreeJsApi.Camera = (function(){
 
-	return {
-		Selector: Selector,
-		Renderer: Renderer,
-		Camera: Camera,
-		Scene: Scene
-	};
+		var Current = null;
+		var setCurrent = function( Camera ) {
+			Current = Camera;
+			return this;
+		};
+		var getCurrent = function() {
+			return Current;
+		};
 
-});
+		var Perspective = (function(){
+			setCurrent( ThreeJsApi.CameraPerspective );
+			return getCurrent()
+		});
+
+		return {
+			Perspective: Perspective,
+
+			getCurrent: getCurrent,
+			setCurrent: setCurrent
+		}
+
+	})();
+
+})();

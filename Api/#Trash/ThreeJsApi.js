@@ -31,21 +31,20 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * ThreeJsApi
- * 13.08.2013 18:54
+ * Api
+ * 13.08.2013 11:54
  */
 
-var ThreeJsApi = (function( Selector ){
+var ThreeJsApi = (function(){
 
 	var Renderer = null;
-	var Camera = null;
 	var Scene = null;
+	var Camera = null;
 
 	return {
-		Selector: Selector,
 		Renderer: Renderer,
-		Camera: Camera,
-		Scene: Scene
+		Scene: Scene,
+		Camera: Camera
 	};
 
-});
+})();

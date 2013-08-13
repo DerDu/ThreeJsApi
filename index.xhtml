@@ -5,31 +5,113 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 	<title>ThreeJsApi</title>
-	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-
+<!--
+	<script type="text/javascript" src="jQuery/jquery-1.10.2.min.js"></script>
 	<script type="text/javascript" src="ThreeJs/build/three.min.js"></script>
 
 	<script type="text/javascript" src="Api/ThreeJsApi.js"></script>
-	<script type="text/javascript" src="Api/ThreeJsApi/Renderer.js"></script>
-	<script type="text/javascript" src="Api/ThreeJsApi/Scene.js"></script>
 
 	<script type="text/javascript" src="Api/ThreeJsApi/Camera.js"></script>
 	<script type="text/javascript" src="Api/ThreeJsApi/Camera/Perspective.js"></script>
 
-	<script type="text/javascript" src="Api/ThreeJsApi/Geometry.js"></script>
-	<script type="text/javascript" src="Api/ThreeJsApi/Geometry/Cube.js"></script>
-	<script type="text/javascript" src="Api/ThreeJsApi/Geometry/Torus.js"></script>
+	<script type="text/javascript" src="Api/%23Trash/ThreeJsApi.js"></script>
+	<script type="text/javascript" src="Api/%23Trash/ThreeJsApi/Renderer.js"></script>
+	<script type="text/javascript" src="Api/%23Trash/ThreeJsApi/Scene.js"></script>
 
-	<script type="text/javascript" src="Api/ThreeJsApi/Material.js"></script>
-	<script type="text/javascript" src="Api/ThreeJsApi/Material/Mesh.js"></script>
-	<script type="text/javascript" src="Api/ThreeJsApi/Material/Mesh/Basic.js"></script>
+	<script type="text/javascript" src="Api/%23Trash/ThreeJsApi/Camera.js"></script>
+	<script type="text/javascript" src="Api/%23Trash/ThreeJsApi/Camera/Perspective.js"></script>
 
-	<script type="text/javascript" src="Api/ThreeJsApi/Mesh.js"></script>
-	<script type="text/javascript" src="Api/ThreeJsApi/Mesh/Basic.js"></script>
+	<script type="text/javascript" src="Api/%23Trash/ThreeJsApi/Geometry.js"></script>
+	<script type="text/javascript" src="Api/%23Trash/ThreeJsApi/Geometry/Cube.js"></script>
+	<script type="text/javascript" src="Api/%23Trash/ThreeJsApi/Geometry/Torus.js"></script>
 
+	<script type="text/javascript" src="Api/%23Trash/ThreeJsApi/Material.js"></script>
+	<script type="text/javascript" src="Api/%23Trash/ThreeJsApi/Material/Mesh.js"></script>
+	<script type="text/javascript" src="Api/%23Trash/ThreeJsApi/Material/Mesh/Basic.js"></script>
+
+	<script type="text/javascript" src="Api/%23Trash/ThreeJsApi/Mesh.js"></script>
+	<script type="text/javascript" src="Api/%23Trash/ThreeJsApi/Mesh/Basic.js"></script>
+//-->
 </head>
 <body>
+
+<script type="text/javascript">
+/*
+
+	var ThreeJsApi = (function(){
+
+		this.Handler = null;
+		var createHandler = function(){
+			return new this.Handler();
+		};
+
+		return {
+			createHandler: createHandler
+		}
+
+	})();
+
+	ThreeJsApi.Handler = function() {
+		this.Selector = 0;
+
+		this.setSelector = function( Value ) {
+			this.Selector = Value;
+			return this;
+		};
+
+		return {
+			setSelector: this.setSelector,
+			Selector: this.Selector
+		}
+	};
+
+
+
+	var I0 = ThreeJsApi.createHandler();
+	var I1 = ThreeJsApi.createHandler();
+	var I2 = ThreeJsApi.createHandler();
+
+	I1.setSelector( 1 );
+
+	console.log( I0, I1, I2 );
+*/
+
+var O = (function(){
+	var D = 0;
+	var sD = function( V ) {
+		this.D = V;
+	};
+	return {
+		sD: sD,
+		D:D
+	};
+});
+
+
+var I1 = O();
+I1.sD(1);
+var I2 = O();
+I2.sD(2);
+
+console.log( I1, I2 );
+
+</script>
+<!--
+
+<div id="Display"></div>
+
+<script type="text/javascript">
+
+var Display = ThreeJsApi('Display');
+var Item = ThreeJsApi('Item');
+
+console.log( Display, Item );
+
+
+
+</script>
+
+
 
 <div id="Display" style="border: 1px solid red;"></div>
 
@@ -100,6 +182,7 @@ ThreeJsApi.Scene.addObject(
 
 </script>
 
+//-->
 
 </body>
 </html>
