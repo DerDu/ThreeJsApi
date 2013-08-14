@@ -46,8 +46,7 @@
 					if( Material.hasOwnProperty( Index ) ) {
 						//noinspection JSUnresolvedVariable
 						if( window.WebGLRenderingContext ) {
-							Index = (Material.length -1) - Index;
-							TJSObject.add( new THREE.Mesh( Geometry.getTJSObject(), Material[Index].getTJSObject() ) );
+							TJSObject.add( new THREE.Mesh( Geometry.getTJSObject(), Material[(Material.length -1) - Index].getTJSObject() ) );
 						} else {
 							TJSObject.add( new THREE.Mesh( Geometry.getTJSObject(), Material[Index].getTJSObject() ) );
 						}
