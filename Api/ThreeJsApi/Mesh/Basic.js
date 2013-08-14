@@ -31,19 +31,43 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Camera
- * 13.08.2013 19:01
+ * Basic
+ * 14.08.2013 09:43
  */
 
 (function(){
-	ThreeJsApi.addFactory('Camera', function(){
+	ThreeJsApi.addFactory('MeshBasic', function(){
 
-		var Perspective = function(){
-			return ThreeJsApi.getFactory()['CameraPerspective']();
+		var TJSObject = null;
+		var getTJSObject = function(){
+			if( TJSObject == null ) {
+				TJSObject = new THREE.Mesh( Geometry.getTJSObject(), Material.getTJSObject() );
+			}
+			return TJSObject;
+		};
+
+		var Geometry = null;
+		var getGeometry = function(){ return Geometry; };
+		var setGeometry = function( Value ){
+			Geometry = Value;
+			return this;
+		};
+
+		var Material = null;
+		var getMaterial = function(){ return Material; };
+		var setMaterial = function( Value ){
+			Material = Value;
+			return this;
 		};
 
 		return {
-			Perspective: Perspective
+			getTJSObject: getTJSObject,
+
+			setGeometry: setGeometry,
+			getGeometry: getGeometry,
+
+			setMaterial: setMaterial,
+			getMaterial: getMaterial
 		}
 
 	});

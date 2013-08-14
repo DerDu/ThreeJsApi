@@ -31,22 +31,49 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Mesh
- * 13.08.2013 14:58
+ * Scene
+ * 14.08.2013 09:16
  */
 
 (function(){
+	ThreeJsApi.addFactory('Scene', function(){
 
-	ThreeJsApi.MaterialMesh = (function(){
+		var TJSObject = new THREE.Scene();
+		var getTJSObject = function(){ return TJSObject; };
 
-		var Basic = (function(){
-			return ThreeJsApi.MaterialMeshBasic;
-		});
+		var ObjectList = [];
+		var addObject = function( Object ) {
+			ObjectList[ObjectList.length] = Object;
+			getTJSObject().add( Object.getTJSObject() );
+			return this;
+		};
+		var getObject = function( Index ) {
+			return ObjectList[Index];
+		};
+
+		var SceneFog;
+		var getFog = function() { return SceneFog; };
+		var setFog = function( Value ) {
+			SceneFog = Value;
+			getTJSObject().fog = SceneFog.getTJSObject();
+			return this;
+		};
+
+		var Fog = function(){
+			return ThreeJsApi.getFactory()['SceneFog']();
+		};
 
 		return {
-			Basic: Basic
+			getTJSObject: getTJSObject,
+
+			addObject: addObject,
+			getObject: getObject,
+
+			setFog: setFog,
+			getFog: getFog,
+
+			Fog: Fog
 		}
 
-	})();
-
+	});
 })();

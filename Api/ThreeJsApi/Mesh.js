@@ -31,32 +31,24 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Basic
- * 13.08.2013 15:17
+ * Mesh
+ * 14.08.2013 09:42
  */
 
 (function(){
+	ThreeJsApi.addFactory('Mesh', function(){
 
-	ThreeJsApi.MaterialMeshBasic = (function(){
-
-		var TJSObject = null;
-		var setTJSObject = function( Object ){
-			TJSObject = Object;
-			return this;
+		var Basic = function(){
+			return ThreeJsApi.getFactory()['MeshBasic']();
 		};
-		var getTJSObject = function(){
-			return TJSObject;
-		};
-		var createMaterial = function() {
-			setTJSObject( new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } ) );
-			return this;
+		var MultiMaterial = function(){
+			return ThreeJsApi.getFactory()['MeshMultiMaterial']();
 		};
 
 		return {
-			getTJSObject: getTJSObject,
-			createMaterial: createMaterial
+			Basic: Basic,
+			MultiMaterial: MultiMaterial
 		}
 
-	})();
-
+	});
 })();

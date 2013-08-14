@@ -31,110 +31,57 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Renderer
- * 13.08.2013 12:54
+ * Svg
+ * 14.08.2013 16:54
  */
 
 (function(){
+	ThreeJsApi.addFactory('RendererSvg', function(){
 
-	ThreeJsApi.Renderer = (function(){
+		var TJSObject = new THREE.SVGRenderer();
+		var getTJSObject = function(){ return TJSObject; };
 
 		var Width = 640;
+		var getWidth = function(){ return Width; };
 		var setWidth = function( Pixel ){
 			Width = Pixel;
 			getTJSObject().setSize( Pixel, getHeight() );
 			return this;
 		};
-		var getWidth = function(){
-			return Width;
-		};
 
 		var Height = 480;
+		var getHeight = function(){ return Height; };
 		var setHeight = function( Pixel ){
 			Height = Pixel;
 			getTJSObject().setSize( getWidth(), Pixel );
 			return this;
 		};
-		var getHeight = function(){
-			return Height;
-		};
 
-		var viewTarget = function( Selector ) {
-			//noinspection JSCheckFunctionSignatures,JSUnresolvedFunction
-			jQuery( Selector ).append( getTJSObject().domElement );
-			return this;
-		};
-		var viewFrame = function() {
-			getTJSObject().render( ThreeJsApi.Scene.getTJSObject(), ThreeJsApi.Camera.getCurrent().getTJSObject() );
-			return this;
-		};
-		var viewAnimation = function() {
-			//noinspection JSCheckFunctionSignatures
-			requestAnimationFrame( viewAnimation );
-			viewAnimationStep();
-		};
-		var viewAnimationStep = function() {
-			Animation();
-			viewFrame();
-		};
-
-		var Animation = function(){};
-		var methodAnimation = function( AnimationCallback ) {
-			Animation = AnimationCallback;
+		var BackgroundColor = '#00000';
+		var getBackgroundColor = function(){ return BackgroundColor; };
+		var setBackgroundColor = function( Value ){
+			BackgroundColor = Value;
+			getTJSObject().setClearColor( Value );
 			return this;
 		};
 
-
-		var useWebGL = function(){
-			setTJSObject( new THREE.WebGLRenderer() );
-			getTJSObject().setSize( getWidth(), getHeight() );
-			return this;
-		};
-		var useCanvas = function(){
-			setTJSObject( new THREE.CanvasRenderer() );
-			getTJSObject().setSize( getWidth(), getHeight() );
-			return this;
-		};
-
-		var TJSObject = null;
-		var setTJSObject = function( tjsObject ){
-			TJSObject = tjsObject;
-			return this;
-		};
-		var getTJSObject = function(){
-			if( TJSObject == null ) {
-				//noinspection JSUnresolvedVariable
-				if( window.WebGLRenderingContext ) {
-					useWebGL();
-				} else {
-					useCanvas();
-				}
-			}
-			return TJSObject;
-		};
+		// Init
+		setWidth( Width );
+		setHeight( Height );
+		setBackgroundColor( BackgroundColor );
 
 		return {
 			getTJSObject: getTJSObject,
-
-			useWebGL: useWebGL,
-			useCanvas: useCanvas,
-
-			viewTarget: viewTarget,
-			methodAnimation: methodAnimation,
-			viewFrame: viewFrame,
-			viewAnimation: viewAnimation,
-			viewAnimationStep: viewAnimationStep,
 
 			setWidth: setWidth,
 			getWidth: getWidth,
 
 			setHeight: setHeight,
-			getHeight: getHeight
+			getHeight: getHeight,
+
+			setBackgroundColor: setBackgroundColor,
+			getBackgroundColor: getBackgroundColor
 		}
 
-	})();
-
-	// Init
-	ThreeJsApi.Renderer.getTJSObject();
-
+	});
 })();

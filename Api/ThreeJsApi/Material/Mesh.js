@@ -31,72 +31,28 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Cube
- * 13.08.2013 14:58
+ * Mesh
+ * 14.08.2013 09:35
  */
 
 (function(){
+	ThreeJsApi.addFactory('MaterialMesh', function(){
 
-	ThreeJsApi.GeometryCube = (function(){
-
-		var Width = 200;
-		var setWidth = function( Value ) {
-			Width = Value;
-			return this;
+		var Basic = function(){
+			return ThreeJsApi.getFactory()['MaterialMeshBasic']();
 		};
-		var getWidth = function() {
-			return Width;
+		var Lambert = function(){
+			return ThreeJsApi.getFactory()['MaterialMeshLambert']();
 		};
-
-		var Height = 200;
-		var setHeight = function( Value ) {
-			Height = Value;
-			return this;
-		};
-		var getHeight = function() {
-			return Height;
-		};
-
-		var Depth = 200;
-		var setDepth = function( Value ) {
-			Depth = Value;
-			return this;
-		};
-		var getDepth = function() {
-			return Depth;
-		};
-
-
-		var TJSObject = null;
-		var setTJSObject = function( Object ){
-			TJSObject = Object;
-			return this;
-		};
-		var getTJSObject = function(){
-			return TJSObject;
-		};
-		var createGeometry = function() {
-			setTJSObject( new THREE.CubeGeometry( getWidth(), getHeight(), getDepth() ) );
-			return this;
+		var Phong = function(){
+			return ThreeJsApi.getFactory()['MaterialMeshPhong']();
 		};
 
 		return {
-			getTJSObject: getTJSObject,
-			createGeometry: createGeometry,
-
-			setWidth: setWidth,
-			getWidth: getWidth,
-
-			setHeight: setHeight,
-			getHeight: getHeight,
-
-			setDepth: setDepth,
-			getDepth: getDepth
+			Basic: Basic,
+			Lambert: Lambert,
+			Phong: Phong
 		}
 
-	})();
-
-	// Init
-	ThreeJsApi.Geometry.Cube().getTJSObject();
-
+	});
 })();

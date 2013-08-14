@@ -31,19 +31,54 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Camera
- * 13.08.2013 19:01
+ * MultiMaterial
+ * 14.08.2013 16:27
  */
 
 (function(){
-	ThreeJsApi.addFactory('Camera', function(){
+	ThreeJsApi.addFactory('MeshMultiMaterial', function(){
 
-		var Perspective = function(){
-			return ThreeJsApi.getFactory()['CameraPerspective']();
+		var TJSObject = null;
+		var getTJSObject = function(){
+			if( TJSObject == null ) {
+				TJSObject = new THREE.Object3D();
+				for( var Index in Material ) {
+					if( Material.hasOwnProperty( Index ) ) {
+						//noinspection JSUnresolvedVariable
+						if( window.WebGLRenderingContext ) {
+							Index = (Material.length -1) - Index;
+							TJSObject.add( new THREE.Mesh( Geometry.getTJSObject(), Material[Index].getTJSObject() ) );
+						} else {
+							TJSObject.add( new THREE.Mesh( Geometry.getTJSObject(), Material[Index].getTJSObject() ) );
+						}
+					}
+				}
+			}
+			return TJSObject;
+		};
+
+		var Geometry = null;
+		var getGeometry = function(){ return Geometry; };
+		var setGeometry = function( Value ){
+			Geometry = Value;
+			return this;
+		};
+
+		var Material = [];
+		var getMaterial = function(){ return Material; };
+		var addMaterial = function( Value ) {
+			Material[Material.length] = Value;
+			return this;
 		};
 
 		return {
-			Perspective: Perspective
+			getTJSObject: getTJSObject,
+
+			setGeometry: setGeometry,
+			getGeometry: getGeometry,
+
+			addMaterial: addMaterial,
+			getMaterial: getMaterial
 		}
 
 	});

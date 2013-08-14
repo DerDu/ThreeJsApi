@@ -31,19 +31,63 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Camera
- * 13.08.2013 19:01
+ * Cube
+ * 14.08.2013 09:21
  */
 
 (function(){
-	ThreeJsApi.addFactory('Camera', function(){
+	ThreeJsApi.addFactory('GeometryCube', function(){
 
-		var Perspective = function(){
-			return ThreeJsApi.getFactory()['CameraPerspective']();
+		var TJSObject = null;
+		var getTJSObject = function(){
+			if( TJSObject == null ) {
+				TJSObject = new THREE.CubeGeometry( getWidth(), getHeight(), getDepth(), getPolygonCount(),getPolygonCount() ,getPolygonCount() );
+			}
+			return TJSObject;
+		};
+
+		var Width = 100;
+		var getWidth = function() { return Width; };
+		var setWidth = function( Value ) {
+			Width = Value;
+			return this;
+		};
+
+		var Height = 100;
+		var getHeight = function() { return Height; };
+		var setHeight = function( Value ) {
+			Height = Value;
+			return this;
+		};
+
+		var Depth = 100;
+		var getDepth = function() { return Depth; };
+		var setDepth = function( Value ) {
+			Depth = Value;
+			return this;
+		};
+
+		var PolygonCount = 3;
+		var getPolygonCount = function() { return PolygonCount; };
+		var setPolygonCount = function( Value ) {
+			PolygonCount = Value;
+			return this;
 		};
 
 		return {
-			Perspective: Perspective
+			getTJSObject: getTJSObject,
+
+			setWidth: setWidth,
+			getWidth: getWidth,
+
+			setHeight: setHeight,
+			getHeight: getHeight,
+
+			setDepth: setDepth,
+			getDepth: getDepth,
+
+			setPolygonCount: setPolygonCount,
+			getPolygonCount: getPolygonCount
 		}
 
 	});

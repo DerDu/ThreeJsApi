@@ -31,19 +31,23 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Camera
- * 13.08.2013 19:01
+ * Geometry
+ * 14.08.2013 09:20
  */
 
 (function(){
-	ThreeJsApi.addFactory('Camera', function(){
+	ThreeJsApi.addFactory('Geometry', function(){
 
-		var Perspective = function(){
-			return ThreeJsApi.getFactory()['CameraPerspective']();
+		var Cube = function(){
+			return ThreeJsApi.getFactory()['GeometryCube']();
+		};
+		var Torus = function(){
+			return ThreeJsApi.getFactory()['GeometryTorus']();
 		};
 
 		return {
-			Perspective: Perspective
+			Cube: Cube,
+			Torus: Torus
 		}
 
 	});

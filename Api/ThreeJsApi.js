@@ -35,17 +35,138 @@
  * 13.08.2013 18:54
  */
 
-var ThreeJsApi = (function( Selector ){
+var ThreeJsApi = (function(){
 
-	var Renderer = null;
-	var Camera = null;
-	var Scene = null;
+	var Load = function( Selector ){
 
-	return {
-		Selector: Selector,
-		Renderer: Renderer,
-		Camera: Camera,
-		Scene: Scene
+		var Handler = Selector;
+		var getHandler = function() { return Handler; };
+		var setHandler = function( Value ) {
+			Handler = Value;
+			return this;
+		};
+
+		var Renderer = null;
+		var getRenderer = function() { return Renderer; };
+		var setRenderer = function( Value ) {
+			Renderer = Value;
+			// Append Renderer to DOM
+			var Display = jQuery( getRenderer().getTJSObject().domElement );
+			var Target = jQuery( getHandler() );
+			Target.append( Display );
+			// Add PostFX-Connection
+			if( typeof THREE.EffectComposer != 'undefined' ) {
+				PostFx = new THREE.EffectComposer( getRenderer() );
+			}
+			return this;
+		};
+
+		var PostFx = null;
+		var getPostFx = function() {
+			return PostFx;
+		};
+
+		var Camera = null;
+		var getCamera = function() { return Camera; };
+		var setCamera = function( Value ) {
+			Camera = Value;
+			return this;
+		};
+
+		var Scene = null;
+		var getScene = function() { return Scene; };
+		var setScene = function( Value ) { Scene = Value; return this; };
+
+		var Animation = null;
+		var getAnimation = function() { return Animation; };
+		var setAnimation = function( Value ) { Animation = Value; return this; };
+		var AnimationFrameRenderer = function() {
+			getRenderer().getTJSObject().render( getScene().getTJSObject(), getCamera().getTJSObject() );
+		};
+		var AnimationFrameLoop = function() {
+			getAnimation().getLoop()();
+		};
+		var AnimationRun = function() {
+			//noinspection JSCheckFunctionSignatures
+			requestAnimationFrame( AnimationRun );
+			AnimationFrameLoop();
+			AnimationFrameRenderer();
+		};
+
+		// Init
+		setScene( ThreeJsApi.Create().Scene() );
+		setAnimation( ThreeJsApi.Create().Animation() );
+
+		// Additional
+		var setWidth = function( Value ) {
+			getRenderer().setWidth( Value );
+			getCamera().setAspect( getRenderer().getWidth() / getRenderer().getHeight() );
+			getCamera().getTJSObject().updateProjectionMatrix();
+		};
+		var setHeight = function( Value ) {
+			getRenderer().setHeight( Value );
+			getCamera().setAspect( getRenderer().getWidth() / getRenderer().getHeight() );
+			getCamera().getTJSObject().updateProjectionMatrix();
+		};
+
+		return {
+			setHandler: setHandler,
+			getHandler: getHandler,
+			setRenderer: setRenderer,
+			getRenderer: getRenderer,
+			setCamera: setCamera,
+			getCamera: getCamera,
+			setScene: setScene,
+			getScene: getScene,
+
+			getPostFx: getPostFx,
+
+			getAnimation: getAnimation,
+			setAnimation: setAnimation,
+			runAnimation: AnimationRun,
+
+			setWidth: setWidth,
+			setHeight: setHeight
+
+		};
 	};
 
-});
+	var Factory = {};
+	var getFactory = function( FactoryName ) {
+		if( typeof FactoryName == 'undefined' ) {
+			return Factory;
+		} else {
+			if( typeof Factory[FactoryName] == 'undefined' ) {
+				console.log( 'ThreeJsApi: ' + FactoryName + ' missing!' );
+				return null;
+			} else {
+				return Factory[FactoryName];
+			}
+		}
+	};
+	var addFactory = function( FactoryName, FactoryObject ) {
+		Factory[FactoryName] = FactoryObject;
+	};
+
+	var Create = function() {
+		return {
+			Renderer: function() { return Factory.Renderer() },
+			Camera: function() { return Factory.Camera() },
+			Scene: function() { return Factory.Scene() },
+			Geometry: function() { return Factory.Geometry() },
+			Material: function() { return Factory.Material() },
+			Mesh: function() { return Factory.Mesh() },
+			Animation: function() { return Factory.Animation() },
+			Texture: function() { return Factory.Texture() }
+		};
+	};
+
+	return {
+		Load: Load,
+		Create: Create,
+
+		addFactory: addFactory,
+		getFactory: getFactory
+	}
+
+})();

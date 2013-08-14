@@ -31,22 +31,57 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Mesh
- * 13.08.2013 14:58
+ * Canvas
+ * 14.08.2013 11:07
  */
 
 (function(){
+	ThreeJsApi.addFactory('RendererCanvas', function(){
 
-	ThreeJsApi.Mesh = (function(){
+		var TJSObject = new THREE.CanvasRenderer();
+		var getTJSObject = function(){ return TJSObject; };
 
-		var Basic = (function(){
-			return ThreeJsApi.MeshBasic();
-		});
+		var Width = 640;
+		var getWidth = function(){ return Width; };
+		var setWidth = function( Pixel ){
+			Width = Pixel;
+			getTJSObject().setSize( Pixel, getHeight() );
+			return this;
+		};
+
+		var Height = 480;
+		var getHeight = function(){ return Height; };
+		var setHeight = function( Pixel ){
+			Height = Pixel;
+			getTJSObject().setSize( getWidth(), Pixel );
+			return this;
+		};
+
+		var BackgroundColor = '#00000';
+		var getBackgroundColor = function(){ return BackgroundColor; };
+		var setBackgroundColor = function( Value ){
+			BackgroundColor = Value;
+			getTJSObject().setClearColor( Value );
+			return this;
+		};
+
+		// Init
+		setWidth( Width );
+		setHeight( Height );
+		setBackgroundColor( BackgroundColor );
 
 		return {
-			Basic: Basic
+			getTJSObject: getTJSObject,
+
+			setWidth: setWidth,
+			getWidth: getWidth,
+
+			setHeight: setHeight,
+			getHeight: getHeight,
+
+			setBackgroundColor: setBackgroundColor,
+			getBackgroundColor: getBackgroundColor
 		}
 
-	})();
-
+	});
 })();

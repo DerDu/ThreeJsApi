@@ -31,20 +31,41 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Api
- * 13.08.2013 11:54
+ * Renderer
+ * 14.08.2013 08:57
  */
 
-var ThreeJsApi = (function(){
+(function(){
+	ThreeJsApi.addFactory('Renderer', function(){
 
-	var Renderer = null;
-	var Scene = null;
-	var Camera = null;
+		var Default = function(){
+			//noinspection JSUnresolvedVariable
+			if( window.WebGLRenderingContext ) {
+				return WebGL();
+			} else {
+				return Canvas();
+			}
+		};
 
-	return {
-		Renderer: Renderer,
-		Scene: Scene,
-		Camera: Camera
-	};
+		var WebGL = function() {
+			return ThreeJsApi.getFactory('RendererWebGL')();
+		};
 
+		var Canvas = function() {
+			return ThreeJsApi.getFactory('RendererCanvas')();
+		};
+
+		var Svg = function() {
+			return ThreeJsApi.getFactory('RendererSvg')();
+		};
+
+		return {
+			Default: Default,
+
+			WebGL: WebGL,
+			Canvas: Canvas,
+			Svg: Svg
+		}
+
+	});
 })();

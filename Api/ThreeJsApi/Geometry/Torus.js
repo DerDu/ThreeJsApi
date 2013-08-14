@@ -31,22 +31,44 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Material
- * 13.08.2013 14:58
+ * Torus
+ * 14.08.2013 09:27
  */
 
 (function(){
+	ThreeJsApi.addFactory('GeometryTorus', function(){
 
-	ThreeJsApi.Material = (function(){
+		var TJSObject = null;
+		var getTJSObject = function(){
+			if( TJSObject == null ) {
+				TJSObject = new THREE.TorusGeometry( getRadius(), getTube() );
+			}
+			return TJSObject;
+		};
 
-		var Mesh = (function(){
-			return ThreeJsApi.MaterialMesh;
-		});
+		var Radius = 100;
+		var getRadius = function() { return Radius; };
+		var setRadius = function( Value ) {
+			Radius = Value;
+			return this;
+		};
+
+		var Tube = 40;
+		var getTube = function() { return Tube; };
+		var setTube = function( Value ) {
+			Tube = Value;
+			return this;
+		};
 
 		return {
-			Mesh: Mesh
+			getTJSObject: getTJSObject,
+
+			setRadius: setRadius,
+			getRadius: getRadius,
+
+			setTube: setTube,
+			getTube: getTube
 		}
 
-	})();
-
+	});
 })();

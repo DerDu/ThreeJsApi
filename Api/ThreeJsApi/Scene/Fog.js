@@ -31,119 +31,52 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Perspective
- * 13.08.2013 13:24
+ * Fog
+ * 14.08.2013 13:28
  */
 
 (function(){
-
-	ThreeJsApi.CameraPerspective = (function(){
-
-		var Fov = 75;
-		var Aspect = ThreeJsApi.Renderer.getWidth() / ThreeJsApi.Renderer.getHeight();
-		var Near = 1;
-		var Far = 10000;
-
-		var setFov = function( Value ) {
-			Fov = Value;
-			getTJSObject().fov = Value;
-			return this;
-		};
-		var getFov = function() {
-			return Fov;
-		};
-
-		var setAspect = function( Value ) {
-			Aspect = Value;
-			getTJSObject().aspect = Value;
-			return this;
-		};
-		var getAspect = function() {
-			return Aspect;
-		};
-
-		var setNear = function( Value ) {
-			Near = Value;
-			getTJSObject().near = Value;
-			return this;
-		};
-		var getNear = function() {
-			return Near;
-		};
-
-		var setFar = function( Value ) {
-			Far = Value;
-			getTJSObject().far = Value;
-			return this;
-		};
-		var getFar = function() {
-			return Far;
-		};
-
-		var Position = {
-			X: 0,
-			Y: 0,
-			Z: 0
-		};
-		var setPosition = function( X, Y, Z ) {
-			setPositionX( X );
-			setPositionX( Y );
-			setPositionX( Z );
-			return this;
-		};
-		var setPositionX = function( Value ) {
-			Position.X = Value;
-			getTJSObject().position.x = Value;
-			return this;
-		};
-		var setPositionY = function( Value ) {
-			Position.Y = Value;
-			getTJSObject().position.y = Value;
-			return this;
-		};
-		var setPositionZ = function( Value ) {
-			Position.Z = Value;
-			getTJSObject().position.z = Value;
-			return this;
-		};
+	ThreeJsApi.addFactory('SceneFog', function(){
 
 		var TJSObject = null;
-		var setTJSObject = function( Object ){
-			TJSObject = Object;
-			return this;
-		};
 		var getTJSObject = function(){
 			if( TJSObject == null ) {
-				setTJSObject( new THREE.PerspectiveCamera( getFov(), getAspect(), getNear(), getFar() ) );
-				setPositionZ()
+				TJSObject = new THREE.Fog( getColor(), getNear(), getFar() );
 			}
 			return TJSObject;
+		};
+
+		var Color = '#000000';
+		var getColor = function() { return Color; };
+		var setColor = function( Value ) {
+			Color = Value;
+			return this;
+		};
+
+		var Near = 1;
+		var getNear = function() { return Near; };
+		var setNear = function( Value ) {
+			Near = Value;
+			return this;
+		};
+
+		var Far = 1000;
+		var getFar = function() { return Far; };
+		var setFar = function( Value ) {
+			Far = Value;
+			return this;
 		};
 
 		return {
 			getTJSObject: getTJSObject,
 
-			setFov: setFov,
-			getFov: getFov,
-
-			setAspect: setAspect,
-			getAspect: getAspect,
-
+			setColor: setColor,
+			getColor: getColor,
 			setNear: setNear,
 			getNear: getNear,
-
 			setFar: setFar,
-			getFar: getFar,
+			getFar: getFar
+		}
 
-			setPosition: setPosition,
-			setPositionX: setPositionX,
-			setPositionY: setPositionY,
-			setPositionZ: setPositionZ
-		};
-
-	})();
-
-	// Init
-	ThreeJsApi.Camera.Perspective().getTJSObject();
-
+	});
 })();

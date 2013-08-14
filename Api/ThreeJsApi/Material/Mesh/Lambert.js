@@ -31,43 +31,71 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Torus
- * 13.08.2013 15:17
+ * Lambert
+ * 14.08.2013 13:22
  */
 
 (function(){
-
-	ThreeJsApi.GeometryTorus = (function(){
-
-		var Radius = 200;
-		var setRadius = function( Value ) {
-			Radius = Value;
-			return this;
-		};
-		var getRadius = function() {
-			return Radius;
-		};
+	ThreeJsApi.addFactory('MaterialMeshLambert', function(){
 
 		var TJSObject = null;
-		var setTJSObject = function( Object ){
-			TJSObject = Object;
-			return this;
-		};
 		var getTJSObject = function(){
+			if( TJSObject == null ) {
+				// Canvas-Renderer doesn't support MeshLambertMaterial in combination with Textures
+				if( window.WebGLRenderingContext ) {
+					TJSObject = new THREE.MeshLambertMaterial( {
+						color: getColor(), wireframe: getWireFrame(), map:getTexture().getTJSObject(), transparent: getTransparent()
+					} )
+				} else {
+					TJSObject = new THREE.MeshBasicMaterial( {
+						color: getColor(), wireframe: getWireFrame(), map:getTexture().getTJSObject(), transparent: getTransparent()
+					} )
+				}
+			}
 			return TJSObject;
 		};
-		var createGeometry = function() {
-			setTJSObject( new THREE.TorusGeometry( getRadius() ) );
+
+		var Color = '#FFFFFF';
+		var getColor = function() { return Color; };
+		var setColor = function( Value ) {
+			Color = Value;
 			return this;
 		};
+
+		var WireFrame = false;
+		var getWireFrame = function() { return WireFrame; };
+		var setWireFrame = function( Value ) {
+			WireFrame = Value;
+			return this;
+		};
+
+		var Texture;
+		var getTexture = function() { return Texture; };
+		var setTexture = function( Value ) {
+			Texture = Value;
+			return this;
+		};
+
+		var Transparent = false;
+		var getTransparent = function() { return Transparent; };
+		var setTransparent = function( Value ) {
+			Transparent = Value;
+			return this;
+		};
+
 
 		return {
 			getTJSObject: getTJSObject,
-			createGeometry: createGeometry,
-			setRadius: setRadius,
-			getRadius: getRadius
+
+			setColor: setColor,
+			getColor: getColor,
+			setWireFrame: setWireFrame,
+			getWireFrame: getWireFrame,
+			setTexture: setTexture,
+			getTexture: getTexture,
+			setTransparent: setTransparent,
+			getTransparent: getTransparent
 		}
 
-	})();
-
+	});
 })();

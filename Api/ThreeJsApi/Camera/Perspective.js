@@ -36,56 +36,44 @@
  */
 
 (function(){
+	ThreeJsApi.addFactory( 'CameraPerspective', function(){
 
-	ThreeJsApi.CameraPerspective = (function(){
+		var TJSObject = new THREE.PerspectiveCamera();
+		var getTJSObject = function(){ return TJSObject; };
 
-		var Fov = 75;
-		var Aspect = 0;
-//		var Aspect = ThreeJsApi.Renderer.getCurrent().getWidth() / ThreeJsApi.Renderer.getHeight();
-		var Near = 1;
-		var Far = 10000;
-
+		var Fov = 45;
+		var getFov = function() { return Fov; };
 		var setFov = function( Value ) {
 			Fov = Value;
 			getTJSObject().fov = Value;
 			return this;
 		};
-		var getFov = function() {
-			return Fov;
-		};
 
+		var Aspect = 0; //ThreeJsApi.Renderer.getWidth() / ThreeJsApi.Renderer.getHeight();
+		var getAspect = function() { return Aspect; };
 		var setAspect = function( Value ) {
 			Aspect = Value;
 			getTJSObject().aspect = Value;
 			return this;
 		};
-		var getAspect = function() {
-			return Aspect;
-		};
 
+		var Near = 1;
+		var getNear = function() { return Near; };
 		var setNear = function( Value ) {
 			Near = Value;
 			getTJSObject().near = Value;
 			return this;
 		};
-		var getNear = function() {
-			return Near;
-		};
 
+		var Far = 10000;
+		var getFar = function() { return Far; };
 		var setFar = function( Value ) {
 			Far = Value;
 			getTJSObject().far = Value;
 			return this;
 		};
-		var getFar = function() {
-			return Far;
-		};
 
-		var Position = {
-			X: 0,
-			Y: 0,
-			Z: 0
-		};
+		var Position = { X: 0, Y: 0, Z: 0 };
 		var setPosition = function( X, Y, Z ) {
 			setPositionX( X );
 			setPositionX( Y );
@@ -108,18 +96,35 @@
 			return this;
 		};
 
+		// Init
+		setFov( Fov );
+		setAspect( Aspect );
+		setNear( Near );
+		setFar( Far );
+		setPositionZ( 1000 );
+
 		return {
+			getTJSObject: getTJSObject,
+
 			setFov: setFov,
 			getFov: getFov,
+
 			setAspect: setAspect,
 			getAspect: getAspect,
+
 			setNear: setNear,
 			getNear: getNear,
+
 			setFar: setFar,
-			getFar: getFar
+			getFar: getFar,
 
-		}
+			setPosition: setPosition,
+			setPositionX: setPositionX,
+			setPositionY: setPositionY,
+			setPositionZ: setPositionZ
+		};
 
-	})();
+	});
 
 })();
+

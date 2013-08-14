@@ -31,26 +31,68 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Geometry
- * 13.08.2013 14:58
+ * Phong
+ * 14.08.2013 16:00
  */
 
 (function(){
+	ThreeJsApi.addFactory('MaterialMeshPhong', function(){
 
-	ThreeJsApi.Geometry = (function(){
+		var TJSObject = null;
+		var getTJSObject = function(){
+			if( TJSObject == null ) {
+				TJSObject = new THREE.MeshPhongMaterial( {
+					ambient: 0xFFFFFF, color: getColor(), specular: 0x3333333, shininess: 30,
+					shading: THREE.SmoothShading, map: getTexture().getTJSObject(),
+					transparent: getTransparent(), wireframe: getWireFrame()
+				});
+			}
+			return TJSObject;
+		};
 
-		var Cube = (function(){
-			return ThreeJsApi.GeometryCube;
-		});
-		var Torus = (function(){
-			return ThreeJsApi.GeometryTorus;
-		});
+		var Color = '#FFFFFF';
+		var getColor = function() { return Color; };
+		var setColor = function( Value ) {
+			Color = Value;
+			return this;
+		};
+
+		var WireFrame = false;
+		var getWireFrame = function() { return WireFrame; };
+		var setWireFrame = function( Value ) {
+			WireFrame = Value;
+			return this;
+		};
+
+		var Texture;
+		var getTexture = function() { return Texture; };
+		var setTexture = function( Value ) {
+			Texture = Value;
+			return this;
+		};
+
+		var Transparent = true;
+		var getTransparent = function() { return Transparent; };
+		var setTransparent = function( Value ) {
+			Transparent = Value;
+			return this;
+		};
+
 
 		return {
-			Cube: Cube,
-			Torus: Torus
+			getTJSObject: getTJSObject,
+
+			setColor: setColor,
+			getColor: getColor,
+			setWireFrame: setWireFrame,
+			getWireFrame: getWireFrame,
+			setTexture: setTexture,
+			getTexture: getTexture,
+			setTransparent: setTransparent,
+			getTransparent: getTransparent
 		}
 
-	})();
-
+	});
 })();
+
+

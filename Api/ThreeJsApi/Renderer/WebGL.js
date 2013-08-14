@@ -31,45 +31,57 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Scene
- * 13.08.2013 13:15
+ * WebGL
+ * 14.08.2013 09:03
  */
 
 (function(){
+	ThreeJsApi.addFactory('RendererWebGL', function(){
 
-	ThreeJsApi.Scene = (function(){
+		var TJSObject = new THREE.WebGLRenderer({ antialias: true });
+		var getTJSObject = function(){ return TJSObject; };
 
-		var TJSObject = null;
-		var setTJSObject = function( Object ){
-			TJSObject = Object;
+		var Width = 640;
+		var getWidth = function(){ return Width; };
+		var setWidth = function( Pixel ){
+			Width = Pixel;
+			getTJSObject().setSize( Pixel, getHeight() );
 			return this;
 		};
-		var getTJSObject = function(){
-			if( TJSObject == null ) {
-				setTJSObject( new THREE.Scene() );
-			}
-			return TJSObject;
-		};
 
-		var ObjectList = [];
-		var addObject = function( Object ) {
-			ObjectList[ObjectList.length] = Object;
-			getTJSObject().add( Object.getTJSObject() );
+		var Height = 480;
+		var getHeight = function(){ return Height; };
+		var setHeight = function( Pixel ){
+			Height = Pixel;
+			getTJSObject().setSize( getWidth(), Pixel );
 			return this;
 		};
-		var getObject = function( Index ) {
-			return ObjectList[Index];
+
+		var BackgroundColor = '#000000';
+		var getBackgroundColor = function(){ return BackgroundColor; };
+		var setBackgroundColor = function( Value ){
+			BackgroundColor = Value;
+			getTJSObject().setClearColor( Value );
+			return this;
 		};
+
+		// Init
+		setWidth( Width );
+		setHeight( Height );
+		setBackgroundColor( BackgroundColor );
 
 		return {
 			getTJSObject: getTJSObject,
-			addObject: addObject,
-			getObject: getObject
+
+			setWidth: setWidth,
+			getWidth: getWidth,
+
+			setHeight: setHeight,
+			getHeight: getHeight,
+
+			setBackgroundColor: setBackgroundColor,
+			getBackgroundColor: getBackgroundColor
 		}
 
-	})();
-
-	// Init
-	ThreeJsApi.Scene.getTJSObject();
-
+	});
 })();
