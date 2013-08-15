@@ -37,6 +37,6 @@
 
 (function(){
 	TJSApi.Create.Renderer.Use.WebGL = function() {
-		return TJSApi.Object.Renderer( new THREE.WebGLRenderer() );
+		return TJSApi.Object.Renderer( new THREE.WebGLRenderer( {antialias: true} ) );
 	};
 })();
