@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ThreeJsApi</title>
+	<script type="text/javascript" src="jQuery/jquery-1.10.2.min.js"></script>
+	<script type="text/javascript" src="ThreeJs/build/three.min.js"></script>
+
+	<script type="text/javascript" src="Api/TJSApi.js"></script>
+	<script type="text/javascript" src="Api/Factory/Create.js"></script>
+
+	<script type="text/javascript" src="Api/Object/Scene.js"></script>
+	<script type="text/javascript" src="Api/Factory/Scene/Scene.js"></script>
+
+	<script type="text/javascript" src="Api/Object/Renderer.js"></script>
+	<script type="text/javascript" src="Api/Factory/Renderer/WebGL.js"></script>
+	<script type="text/javascript" src="Api/Factory/Renderer/Canvas.js"></script>
+
+	<script type="text/javascript" src="Api/Object/Camera.js"></script>
+	<script type="text/javascript" src="Api/Factory/Camera/Perspective.js"></script>
+
+	<script type="text/javascript" src="Api/Object/Geometry/Cube.js"></script>
+	<script type="text/javascript" src="Api/Object/Geometry/Torus.js"></script>
+
+	<script type="text/javascript" src="Api/Object/Material/Mesh.js"></script>
+	<script type="text/javascript" src="Api/Factory/Material/Material.js"></script>
+
+	<script type="text/javascript" src="Api/Object/Object/Mesh.js"></script>
+	<script type="text/javascript" src="Api/Factory/Object/Mesh.js"></script>
+
+</head>
+<body>
+
+<div id="D1" style="border: 1px dotted red"></div>
+
+<script type="text/javascript">
+
+// Instance
+var Display = TJSApi.Engine();
+
+// Init
+Display.Renderer( Display.Factory().Renderer().WebGL() )
+	.Camera( Display.Factory().Camera().Perspective() )
+	.Scene( Display.Factory().Scene() );
+
+// Setup
+Display.Renderer()
+	.Display( 'div#D1' )
+	.Width( 800 )
+	.Height( 600 );
+Display.Camera()
+	.FieldOfView( 75 )
+	.AspectRatio( Display.Renderer().Width() / Display.Renderer().Height() )
+	.NearClippingDistance( 0.1 )
+	.FarClippingDistance( 1000 )
+	.PositionZ( 20 );
+
+// Objects
+var Torus = Display.Factory().Geometry().Torus( 10, 2 );
+var Cube = Display.Factory().Geometry().Cube( 10, 10, 10 );
+var Material = Display.Factory().Material().Mesh().Basic();
+var Material2 = Display.Factory().Material().Mesh().Basic();
+
+var Mesh1 = Display.Factory().Object().Mesh( Torus, Material );
+var Mesh2 = Display.Factory().Object().Mesh( Cube, Material2 );
+
+// Setup - Object
+Material.Color('#FF0000');
+Material.WireFrame(false);
+
+// Scene
+Display.Scene().Add( Mesh1 );
+Display.Scene().Add( Mesh2 );
+
+// Render
+Display.Animation.Loop = function() {
+	Mesh1.RotationX( Mesh1.RotationX() + 0.01 );
+	Mesh2.RotationY( Mesh2.RotationY() + 0.01 );
+};
+Display.Animation.Run();
+
+/* */
+</script>
+</body>
+</html>

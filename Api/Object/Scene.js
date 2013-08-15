@@ -31,57 +31,21 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Svg
- * 14.08.2013 16:54
+ * Scene
+ * 15.08.2013 14:01
  */
 
 (function(){
-	ThreeJsApi.addFactory('RendererSvg', function(){
+	TJSApi.Object.Scene = function( TJSObject ) {
 
-		var TJSObject = new THREE.SVGRenderer();
-		var getTJSObject = function(){ return TJSObject; };
-
-		var Width = 640;
-		var getWidth = function(){ return Width; };
-		var setWidth = function( Pixel ){
-			Width = Pixel;
-			getTJSObject().setSize( Pixel, getHeight() );
-			return this;
+		var AddObject = function( APIObject ) {
+			TJSObject.add( APIObject.TJSObject );
 		};
-
-		var Height = 480;
-		var getHeight = function(){ return Height; };
-		var setHeight = function( Pixel ){
-			Height = Pixel;
-			getTJSObject().setSize( getWidth(), Pixel );
-			return this;
-		};
-
-		var BackgroundColor = '#00000';
-		var getBackgroundColor = function(){ return BackgroundColor; };
-		var setBackgroundColor = function( Value ){
-			BackgroundColor = Value;
-			getTJSObject().setClearColor( Value );
-			return this;
-		};
-
-		// Init
-		setWidth( Width );
-		setHeight( Height );
-		setBackgroundColor( BackgroundColor );
 
 		return {
-			getTJSObject: getTJSObject,
+			TJSObject: TJSObject,
 
-			setWidth: setWidth,
-			getWidth: getWidth,
-
-			setHeight: setHeight,
-			getHeight: getHeight,
-
-			setBackgroundColor: setBackgroundColor,
-			getBackgroundColor: getBackgroundColor
+			Add: AddObject
 		}
-
-	});
+	}
 })();
