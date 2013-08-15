@@ -31,49 +31,36 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Scene
- * 14.08.2013 09:16
+ * Texture
+ * 14.08.2013 13:52
  */
 
 (function(){
-	ThreeJsApi.addFactory('Scene', function(){
+	ThreeJsApi.addFactory('Texture', function(){
 
-		var TJSObject = new THREE.Scene();
-		var getTJSObject = function(){ return TJSObject; };
+		var TJSObject = null;
+		var getTJSObject = function(){
+			if( TJSObject == null ) {
+				TJSObject = new THREE.ImageUtils.loadTexture( getFile() );
+//				TJSObject.needsUpdate = true;
+			}
+			return TJSObject;
+		};
 
-		var ObjectList = [];
-		var addObject = function( Object ) {
-			ObjectList[ObjectList.length] = Object;
-			getTJSObject().add( Object.getTJSObject() );
+		var File = 1000;
+		var getFile = function() { return File; };
+		var setFile = function( Value ) {
+			File = Value;
 			return this;
-		};
-		var getObject = function( Index ) {
-			return ObjectList[Index];
-		};
-
-		var SceneFog;
-		var getFog = function() { return SceneFog; };
-		var setFog = function( Value ) {
-			SceneFog = Value;
-			getTJSObject().fog = SceneFog.getTJSObject();
-			return this;
-		};
-
-		var Fog = function(){
-			return ThreeJsApi.getFactory()['SceneFog']();
 		};
 
 		return {
 			getTJSObject: getTJSObject,
 
-			addObject: addObject,
-			getObject: getObject,
-
-			setFog: setFog,
-			getFog: getFog,
-
-			Fog: Fog
+			setFile: setFile,
+			getFile: getFile
 		}
 
 	});
 })();
+

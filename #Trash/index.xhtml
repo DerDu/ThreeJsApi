@@ -6,23 +6,47 @@
 <head>
 	<title>ThreeJsApi</title>
 
-	<script type="text/javascript" src="jQuery/jquery-1.10.2.min.js"></script>
-	<script type="text/javascript" src="ThreeJs/build/three.js"></script>
+	<script type="text/javascript" src="../jQuery/jquery-1.10.2.min.js"></script>
+
+
+</head>
+<body>
+
+<div id="Display"></div>
+
+<script type="text/javascript">
+
+	console.log( tQuery );
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!--
-	<script type="text/javascript" src="ThreeJs/examples/js/shaders/CopyShader.js"></script>
-	<script type="text/javascript" src="ThreeJs/examples/js/shaders/DotScreenShader.js"></script>
-	<script type="text/javascript" src="ThreeJs/examples/js/shaders/RGBShiftShader.js"></script>
-	<script type="text/javascript" src="ThreeJs/examples/js/postprocessing/EffectComposer.js"></script>
-	<script type="text/javascript" src="ThreeJs/examples/js/postprocessing/RenderPass.js"></script>
-	<script type="text/javascript" src="ThreeJs/examples/js/postprocessing/MaskPass.js"></script>
-	<script type="text/javascript" src="ThreeJs/examples/js/postprocessing/ShaderPass.js"></script>
-//-->
+	<script type="text/javascript" src="ThreeJs/build/three.js"></script>
 	<script type="text/javascript" src="Api/ThreeJsApi.js"></script>
 
 	<script type="text/javascript" src="Api/ThreeJsApi/Renderer.js"></script>
 	<script type="text/javascript" src="Api/ThreeJsApi/Renderer/WebGL.js"></script>
 	<script type="text/javascript" src="Api/ThreeJsApi/Renderer/Canvas.js"></script>
-	<script type="text/javascript" src="Api/ThreeJsApi/Renderer/Svg.js"></script>
 
 	<script type="text/javascript" src="Api/ThreeJsApi/Camera.js"></script>
 	<script type="text/javascript" src="Api/ThreeJsApi/Camera/Perspective.js"></script>
@@ -47,6 +71,8 @@
 	<script type="text/javascript" src="Api/ThreeJsApi/Mesh/MultiMaterial.js"></script>
 
 	<script type="text/javascript" src="Api/ThreeJsApi/Animation.js"></script>
+
+	<script type="text/javascript" src="Api/ThreeJsApi/Controls/Orbit.js"></script>
 </head>
 <body>
 
@@ -60,44 +86,15 @@ var Test = (function() {
 
 	var Workbench = function( Display ) {
 
-		var Texture = ThreeJsApi.Create().Texture().setFile('MB-Logo-2013.gif');
-
+		var Texture = ThreeJsApi.Create().Texture().setFile('MB-Logo-2013p2.gif');
 
 		Display.getScene().addObject(
 			ThreeJsApi.Create().Mesh().MultiMaterial()
-				.setGeometry( ThreeJsApi.Create().Geometry().Cube().setWidth(200).setHeight(70).setDepth(200) )
+				.setGeometry( ThreeJsApi.Create().Geometry().Cube().setWidth(200).setHeight(200).setDepth(200).setPolygonCount( 10 ) )
 				.addMaterial( ThreeJsApi.Create().Material().Mesh().Basic().setColor( '#000000' ) )
-				.addMaterial( ThreeJsApi.Create().Material().Mesh().Lambert().setTexture( Texture).setTransparent( true ) )
+				.addMaterial( ThreeJsApi.Create().Material().Mesh().Phong().setTexture( Texture).setTransparent( true ) )
 		);
 
-/*
-		Display.getScene().addObject( ThreeJsApi.Create()
-			.Mesh().Basic()
-//			.setGeometry( ThreeJsApi.Create().Geometry().Torus().setRadius(100).setTube(40) )
-			.setGeometry( ThreeJsApi.Create().Geometry().Cube().setWidth(200).setHeight(200).setDepth(200) )
-//			.setMaterial( ThreeJsApi.Create().Material().Mesh().Lambert().setWireFrame(false).setTexture( Texture ) )
-			.setMaterial( ThreeJsApi.Create().Material().Mesh().Phong().setTexture( Texture ) )
-//			.setMaterial( ThreeJsApi.Create().Material().Mesh().Basic().setWireFrame(false) )
-		);
-*/
-		/*
-		Display.getScene().getTJSObject().add(
-			new THREE.SceneUtils.createMultiMaterialObject(
-					new THREE.CubeGeometry( ),
-				[
-					new THREE.MeshPhongMaterial( {
-										ambient: 0xFFFFFF, color: 0xFFFFFF, specular: 0x3333333, shininess: 30,
-										shading: THREE.SmoothShading, map: new THREE.ImageUtils.loadTexture( 'MB-Logo-2013.gif' ),
-										transparent: false, wireframe: false
-									}),new THREE.MeshPhongMaterial( {
-										ambient: 0xFFFFFF, color: 0xFFFFFF, specular: 0x3333333, shininess: 30,
-										shading: THREE.SmoothShading, map: new THREE.ImageUtils.loadTexture( 'MB-Logo-2013.gif' ),
-										transparent: true, wireframe: false
-									})
-				]
-			)
-		);
-*/
 		Display.getScene().setFog(
 			ThreeJsApi.Create().Scene().Fog().setNear(100).setFar(1000)
 		);
@@ -109,10 +106,26 @@ var Test = (function() {
 		$DL.position = Display.getCamera().getTJSObject().position;
 		Display.getScene().getTJSObject().add( $DL );
 
+		var Controls = new THREE.OrbitControls( Display.getCamera().getTJSObject() );
+
+		Controls.rotateSpeed = 1.0;
+		Controls.zoomSpeed = 1.2;
+		Controls.panSpeed = 0.8;
+		Controls.noZoom = false;
+		Controls.noPan = false;
+		Controls.staticMoving = true;
+		Controls.dynamicDampingFactor = 0.3;
+
+		Controls.rotateUp(1);
+
 		Display.getAnimation().setLoop( function() {
+			Controls.update();
+			//console.log( Controls. )
 			Display.getScene().getObject(0).getTJSObject().rotation.y += 0.01;
 		});
 		Display.runAnimation();
+
+
 	};
 
 	var Handler = [
@@ -146,6 +159,14 @@ var Test = (function() {
 				.setAspect( Display.getRenderer().getWidth() / Display.getRenderer().getHeight() )
 				.setPositionZ(500)
 			);
+			Display.getScene().getTJSObject().add(
+				new THREE.GridHelper( 200, 10 )
+			);
+			/*
+			Display.getScene().getTJSObject().add(
+				new THREE.ArrowHelper()
+			);
+			*/
 			Workbench( Display );
 		}
 	}
@@ -172,6 +193,6 @@ var Test = (function() {
 
 </script>
 
-
+/-->
 </body>
 </html>

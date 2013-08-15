@@ -31,35 +31,45 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Texture
- * 14.08.2013 13:52
+ * Basic
+ * 14.08.2013 09:43
  */
 
 (function(){
-	ThreeJsApi.addFactory('Texture', function(){
+	ThreeJsApi.addFactory('MeshBasic', function(){
 
 		var TJSObject = null;
 		var getTJSObject = function(){
 			if( TJSObject == null ) {
-				TJSObject = new THREE.ImageUtils.loadTexture( getFile() );
+				TJSObject = new THREE.Mesh( Geometry.getTJSObject(), Material.getTJSObject() );
+				TJSObject.dynamic = true;
 			}
 			return TJSObject;
 		};
 
-		var File = 1000;
-		var getFile = function() { return File; };
-		var setFile = function( Value ) {
-			File = Value;
+		var Geometry = null;
+		var getGeometry = function(){ return Geometry; };
+		var setGeometry = function( Value ){
+			Geometry = Value;
+			return this;
+		};
+
+		var Material = null;
+		var getMaterial = function(){ return Material; };
+		var setMaterial = function( Value ){
+			Material = Value;
 			return this;
 		};
 
 		return {
 			getTJSObject: getTJSObject,
 
-			setFile: setFile,
-			getFile: getFile
+			setGeometry: setGeometry,
+			getGeometry: getGeometry,
+
+			setMaterial: setMaterial,
+			getMaterial: getMaterial
 		}
 
 	});
 })();
-

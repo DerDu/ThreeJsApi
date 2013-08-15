@@ -31,21 +31,26 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Phong
- * 14.08.2013 16:00
+ * Lambert
+ * 14.08.2013 13:22
  */
 
 (function(){
-	ThreeJsApi.addFactory('MaterialMeshPhong', function(){
+	ThreeJsApi.addFactory('MaterialMeshLambert', function(){
 
 		var TJSObject = null;
 		var getTJSObject = function(){
 			if( TJSObject == null ) {
-				TJSObject = new THREE.MeshPhongMaterial( {
-					ambient: 0xFFFFFF, color: getColor(), specular: 0x3333333, shininess: 30,
-					shading: THREE.SmoothShading, map: getTexture().getTJSObject(),
-					transparent: getTransparent(), wireframe: getWireFrame()
-				});
+				// Canvas-Renderer doesn't support MeshLambertMaterial in combination with Textures
+				if( window.WebGLRenderingContext ) {
+					TJSObject = new THREE.MeshLambertMaterial( {
+						color: getColor(), wireframe: getWireFrame(), map:getTexture().getTJSObject(), transparent: getTransparent(), side:THREE.DoubleSide, combine: THREE.MixOperation
+					} )
+				} else {
+					TJSObject = new THREE.MeshBasicMaterial( {
+						color: getColor(), wireframe: getWireFrame(), map:getTexture().getTJSObject(), transparent: getTransparent(), side:THREE.DoubleSide, combine: THREE.MixOperation
+					} )
+				}
 			}
 			return TJSObject;
 		};
@@ -71,7 +76,7 @@
 			return this;
 		};
 
-		var Transparent = true;
+		var Transparent = false;
 		var getTransparent = function() { return Transparent; };
 		var setTransparent = function( Value ) {
 			Transparent = Value;
@@ -94,5 +99,3 @@
 
 	});
 })();
-
-

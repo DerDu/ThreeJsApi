@@ -31,22 +31,26 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Basic
- * 14.08.2013 09:36
+ * Phong
+ * 14.08.2013 16:00
  */
 
 (function(){
-	ThreeJsApi.addFactory('MaterialMeshBasic', function(){
+	ThreeJsApi.addFactory('MaterialMeshPhong', function(){
 
 		var TJSObject = null;
 		var getTJSObject = function(){
 			if( TJSObject == null ) {
-				TJSObject = new THREE.MeshBasicMaterial( { color: getColor(), wireframe: getWireFrame() } )
+				TJSObject = new THREE.MeshPhongMaterial( {
+					ambient: 0xFFFFFF, color: getColor(), specular: 0x3333333, shininess: 30,
+					shading: THREE.SmoothShading, map: getTexture().getTJSObject(),
+					transparent: getTransparent(), wireframe: getWireFrame(), side:THREE.DoubleSide, combine: THREE.MixOperation
+				});
 			}
 			return TJSObject;
 		};
 
-		var Color = '#FF0000';
+		var Color = '#FFFFFF';
 		var getColor = function() { return Color; };
 		var setColor = function( Value ) {
 			Color = Value;
@@ -60,14 +64,35 @@
 			return this;
 		};
 
+		var Texture;
+		var getTexture = function() { return Texture; };
+		var setTexture = function( Value ) {
+			Texture = Value;
+			return this;
+		};
+
+		var Transparent = true;
+		var getTransparent = function() { return Transparent; };
+		var setTransparent = function( Value ) {
+			Transparent = Value;
+			return this;
+		};
+
+
 		return {
 			getTJSObject: getTJSObject,
 
 			setColor: setColor,
 			getColor: getColor,
 			setWireFrame: setWireFrame,
-			getWireFrame: getWireFrame
+			getWireFrame: getWireFrame,
+			setTexture: setTexture,
+			getTexture: getTexture,
+			setTransparent: setTransparent,
+			getTransparent: getTransparent
 		}
 
 	});
 })();
+
+

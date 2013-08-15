@@ -31,70 +31,63 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Lambert
- * 14.08.2013 13:22
+ * Cube
+ * 14.08.2013 09:21
  */
 
 (function(){
-	ThreeJsApi.addFactory('MaterialMeshLambert', function(){
+	ThreeJsApi.addFactory('GeometryCube', function(){
 
 		var TJSObject = null;
 		var getTJSObject = function(){
 			if( TJSObject == null ) {
-				// Canvas-Renderer doesn't support MeshLambertMaterial in combination with Textures
-				if( window.WebGLRenderingContext ) {
-					TJSObject = new THREE.MeshLambertMaterial( {
-						color: getColor(), wireframe: getWireFrame(), map:getTexture().getTJSObject(), transparent: getTransparent()
-					} )
-				} else {
-					TJSObject = new THREE.MeshBasicMaterial( {
-						color: getColor(), wireframe: getWireFrame(), map:getTexture().getTJSObject(), transparent: getTransparent()
-					} )
-				}
+				TJSObject = new THREE.CubeGeometry( getWidth(), getHeight(), getDepth(), getPolygonCount(),getPolygonCount() ,getPolygonCount() );
 			}
 			return TJSObject;
 		};
 
-		var Color = '#FFFFFF';
-		var getColor = function() { return Color; };
-		var setColor = function( Value ) {
-			Color = Value;
+		var Width = 100;
+		var getWidth = function() { return Width; };
+		var setWidth = function( Value ) {
+			Width = Value;
 			return this;
 		};
 
-		var WireFrame = false;
-		var getWireFrame = function() { return WireFrame; };
-		var setWireFrame = function( Value ) {
-			WireFrame = Value;
+		var Height = 100;
+		var getHeight = function() { return Height; };
+		var setHeight = function( Value ) {
+			Height = Value;
 			return this;
 		};
 
-		var Texture;
-		var getTexture = function() { return Texture; };
-		var setTexture = function( Value ) {
-			Texture = Value;
+		var Depth = 100;
+		var getDepth = function() { return Depth; };
+		var setDepth = function( Value ) {
+			Depth = Value;
 			return this;
 		};
 
-		var Transparent = false;
-		var getTransparent = function() { return Transparent; };
-		var setTransparent = function( Value ) {
-			Transparent = Value;
+		var PolygonCount = 4;
+		var getPolygonCount = function() { return PolygonCount; };
+		var setPolygonCount = function( Value ) {
+			PolygonCount = Value;
 			return this;
 		};
-
 
 		return {
 			getTJSObject: getTJSObject,
 
-			setColor: setColor,
-			getColor: getColor,
-			setWireFrame: setWireFrame,
-			getWireFrame: getWireFrame,
-			setTexture: setTexture,
-			getTexture: getTexture,
-			setTransparent: setTransparent,
-			getTransparent: getTransparent
+			setWidth: setWidth,
+			getWidth: getWidth,
+
+			setHeight: setHeight,
+			getHeight: getHeight,
+
+			setDepth: setDepth,
+			getDepth: getDepth,
+
+			setPolygonCount: setPolygonCount,
+			getPolygonCount: getPolygonCount
 		}
 
 	});

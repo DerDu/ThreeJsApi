@@ -31,63 +31,42 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Cube
- * 14.08.2013 09:21
+ * Basic
+ * 14.08.2013 09:36
  */
 
 (function(){
-	ThreeJsApi.addFactory('GeometryCube', function(){
+	ThreeJsApi.addFactory('MaterialMeshBasic', function(){
 
 		var TJSObject = null;
 		var getTJSObject = function(){
 			if( TJSObject == null ) {
-				TJSObject = new THREE.CubeGeometry( getWidth(), getHeight(), getDepth(), getPolygonCount(),getPolygonCount() ,getPolygonCount() );
+				TJSObject = new THREE.MeshBasicMaterial( { color: getColor(), wireframe: getWireFrame(), side:THREE.DoubleSide } )
 			}
 			return TJSObject;
 		};
 
-		var Width = 100;
-		var getWidth = function() { return Width; };
-		var setWidth = function( Value ) {
-			Width = Value;
+		var Color = '#FF0000';
+		var getColor = function() { return Color; };
+		var setColor = function( Value ) {
+			Color = Value;
 			return this;
 		};
 
-		var Height = 100;
-		var getHeight = function() { return Height; };
-		var setHeight = function( Value ) {
-			Height = Value;
-			return this;
-		};
-
-		var Depth = 100;
-		var getDepth = function() { return Depth; };
-		var setDepth = function( Value ) {
-			Depth = Value;
-			return this;
-		};
-
-		var PolygonCount = 3;
-		var getPolygonCount = function() { return PolygonCount; };
-		var setPolygonCount = function( Value ) {
-			PolygonCount = Value;
+		var WireFrame = false;
+		var getWireFrame = function() { return WireFrame; };
+		var setWireFrame = function( Value ) {
+			WireFrame = Value;
 			return this;
 		};
 
 		return {
 			getTJSObject: getTJSObject,
 
-			setWidth: setWidth,
-			getWidth: getWidth,
-
-			setHeight: setHeight,
-			getHeight: getHeight,
-
-			setDepth: setDepth,
-			getDepth: getDepth,
-
-			setPolygonCount: setPolygonCount,
-			getPolygonCount: getPolygonCount
+			setColor: setColor,
+			getColor: getColor,
+			setWireFrame: setWireFrame,
+			getWireFrame: getWireFrame
 		}
 
 	});

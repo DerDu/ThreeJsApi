@@ -31,53 +31,61 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * MultiMaterial
- * 14.08.2013 16:27
+ * Scene
+ * 14.08.2013 09:16
  */
 
 (function(){
-	ThreeJsApi.addFactory('MeshMultiMaterial', function(){
+	ThreeJsApi.addFactory('Scene', function(){
 
-		var TJSObject = null;
-		var getTJSObject = function(){
-			if( TJSObject == null ) {
-				TJSObject = new THREE.Object3D();
-				for( var Index in Material ) {
-					if( Material.hasOwnProperty( Index ) ) {
-						//noinspection JSUnresolvedVariable
-						if( window.WebGLRenderingContext ) {
-							TJSObject.add( new THREE.Mesh( Geometry.getTJSObject(), Material[(Material.length -1) - Index].getTJSObject() ) );
-						} else {
-							TJSObject.add( new THREE.Mesh( Geometry.getTJSObject(), Material[Index].getTJSObject() ) );
-						}
-					}
-				}
+		var TJSObject = new THREE.Scene();
+		var getTJSObject = function(){ return TJSObject; };
+
+		var ObjectList = [];
+		var addObject = function( Object ) {
+			if( typeof Object.addMaterial != 'undefined' ) {
+				Object.setRendererType( getRendererType() );
 			}
-			return TJSObject;
+			ObjectList[ObjectList.length] = Object;
+			getTJSObject().add( Object.getTJSObject() );
+			return this;
+		};
+		var getObject = function( Index ) {
+			return ObjectList[Index];
 		};
 
-		var Geometry = null;
-		var getGeometry = function(){ return Geometry; };
-		var setGeometry = function( Value ){
-			Geometry = Value;
+		var SceneFog;
+		var getFog = function() { return SceneFog; };
+		var setFog = function( Value ) {
+			SceneFog = Value;
+			getTJSObject().fog = SceneFog.getTJSObject();
 			return this;
 		};
 
-		var Material = [];
-		var getMaterial = function(){ return Material; };
-		var addMaterial = function( Value ) {
-			Material[Material.length] = Value;
+		var Fog = function(){
+			return ThreeJsApi.getFactory()['SceneFog']();
+		};
+
+		var RendererType;
+		var getRendererType = function() { return RendererType; };
+		var setRendererType = function( Value ) {
+			RendererType = Value;
 			return this;
 		};
 
 		return {
 			getTJSObject: getTJSObject,
 
-			setGeometry: setGeometry,
-			getGeometry: getGeometry,
+			addObject: addObject,
+			getObject: getObject,
 
-			addMaterial: addMaterial,
-			getMaterial: getMaterial
+			setFog: setFog,
+			getFog: getFog,
+
+			setRendererType: setRendererType,
+			getRendererType: getRendererType,
+
+			Fog: Fog
 		}
 
 	});

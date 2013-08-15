@@ -31,17 +31,28 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Basic
- * 14.08.2013 09:43
+ * MultiMaterial
+ * 14.08.2013 16:27
  */
 
 (function(){
-	ThreeJsApi.addFactory('MeshBasic', function(){
+	ThreeJsApi.addFactory('MeshMultiMaterial', function(){
 
 		var TJSObject = null;
 		var getTJSObject = function(){
 			if( TJSObject == null ) {
-				TJSObject = new THREE.Mesh( Geometry.getTJSObject(), Material.getTJSObject() );
+				TJSObject = new THREE.Object3D();
+				for( var Index in Material ) {
+					if( Material.hasOwnProperty( Index ) ) {
+						//noinspection JSUnresolvedVariable
+						if( getRendererType() == 'WebGL' ) {
+							TJSObject.add( new THREE.Mesh( Geometry.getTJSObject(), Material[(Material.length -1) - Index].getTJSObject() ) );
+						} else {
+							TJSObject.add( new THREE.Mesh( Geometry.getTJSObject(), Material[Index].getTJSObject() ) );
+						}
+						TJSObject.dynamic = true;
+					}
+				}
 			}
 			return TJSObject;
 		};
@@ -53,10 +64,17 @@
 			return this;
 		};
 
-		var Material = null;
+		var Material = [];
 		var getMaterial = function(){ return Material; };
-		var setMaterial = function( Value ){
-			Material = Value;
+		var addMaterial = function( Value ) {
+			Material[Material.length] = Value;
+			return this;
+		};
+
+		var RendererType;
+		var getRendererType = function() { return RendererType; };
+		var setRendererType = function( Value ) {
+			RendererType = Value;
 			return this;
 		};
 
@@ -66,8 +84,11 @@
 			setGeometry: setGeometry,
 			getGeometry: getGeometry,
 
-			setMaterial: setMaterial,
-			getMaterial: getMaterial
+			addMaterial: addMaterial,
+			getMaterial: getMaterial,
+
+			setRendererType: setRendererType,
+			getRendererType: getRendererType
 		}
 
 	});
