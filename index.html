@@ -103,8 +103,13 @@ Mouse.Event().Click().Left( function() {
 
 
 var Radius = 1500;
-var Theta, mTheta = 45;
-var Phi, mPhi = 60;
+var Theta = 60, mTheta = 45;
+var Phi = 45, mPhi = 60;
+
+
+Engine.Camera().PositionX( Radius * Math.sin( Theta * Math.PI / 360 ) * Math.cos( Phi * Math.PI / 360 ) );
+Engine.Camera().PositionY( Radius * Math.sin( Phi   * Math.PI / 360 ) );
+Engine.Camera().PositionZ( Radius * Math.cos( Theta * Math.PI / 360 ) * Math.cos( Phi * Math.PI / 360 ) );
 
 Mouse.Event().Move().Right( function(){
 
@@ -117,7 +122,32 @@ Mouse.Event().Move().Right( function(){
 	Engine.Camera().PositionY( Radius * Math.sin( Phi   * Math.PI / 360 ) );
 	Engine.Camera().PositionZ( Radius * Math.cos( Theta * Math.PI / 360 ) * Math.cos( Phi * Math.PI / 360 ) );
 
-	Engine.Camera().LookAt( MeshCube );
+	Engine.Camera().LookAt( Engine.Scene() );
+});
+
+
+Mouse.Event().Wheel().Up( function() {
+
+	Radius += 100;
+
+	Engine.Camera().PositionX( Radius * Math.sin( Theta * Math.PI / 360 ) * Math.cos( Phi * Math.PI / 360 ) );
+	Engine.Camera().PositionY( Radius * Math.sin( Phi   * Math.PI / 360 ) );
+	Engine.Camera().PositionZ( Radius * Math.cos( Theta * Math.PI / 360 ) * Math.cos( Phi * Math.PI / 360 ) );
+
+	Engine.Camera().LookAt( Engine.Scene() );
+
+});
+
+Mouse.Event().Wheel().Down( function() {
+
+	Radius -= 100;
+
+	Engine.Camera().PositionX( Radius * Math.sin( Theta * Math.PI / 360 ) * Math.cos( Phi * Math.PI / 360 ) );
+	Engine.Camera().PositionY( Radius * Math.sin( Phi   * Math.PI / 360 ) );
+	Engine.Camera().PositionZ( Radius * Math.cos( Theta * Math.PI / 360 ) * Math.cos( Phi * Math.PI / 360 ) );
+
+	Engine.Camera().LookAt( Engine.Scene() );
+
 });
 
 // Render
