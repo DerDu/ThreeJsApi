@@ -31,12 +31,57 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Canvas
- * 15.08.2013 13:54
+ * Renderer
+ * 15.08.2013 14:00
  */
 
 (function(){
-	TJSApi.Create.Renderer.Use.Canvas = function() {
-		return TJSApi.Object.Renderer( new THREE.CanvasRenderer() );
+	TJSApi.FactoryAPI.Renderer = function( TJSObject ) {
+
+		var RendererWidth = 640;
+		var Width = function( Value ) {
+			if( typeof Value == 'undefined' ) {
+				return RendererWidth;
+			} else {
+				RendererWidth = Value;
+				TJSObject.setSize( RendererWidth, RendererHeight );
+				return this;
+			}
+		};
+
+		var RendererHeight = 480;
+		var Height = function( Value ) {
+			if( typeof Value == 'undefined' ) {
+				return RendererHeight;
+			} else {
+				RendererHeight = Value;
+				TJSObject.setSize( RendererWidth, RendererHeight );
+				return this;
+			}
+		};
+
+		var RenderDisplay = 'body';
+		var Display = function( Selector ) {
+			if( typeof Selector == 'undefined' ) {
+				return RenderDisplay;
+			} else {
+				RenderDisplay = Selector;
+				jQuery( RenderDisplay ).append( TJSObject.domElement );
+				return this;
+			}
+		};
+
+		// Init
+		Width( RendererWidth );
+		Height( RendererHeight );
+		Display( RenderDisplay );
+
+		return {
+			TJSObject: TJSObject,
+
+			Width: Width,
+			Height: Height,
+			Display: Display
+		}
 	};
 })();

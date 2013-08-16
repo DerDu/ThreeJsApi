@@ -31,12 +31,38 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Mesh
- * 15.08.2013 14:47
+ * Material
+ * 16.08.2013 15:07
  */
 
 (function(){
-	TJSApi.Create.Object.Use.Mesh = function( APIGeometry, APIMaterial ) {
-		return TJSApi.Object.Object.Mesh( new THREE.Mesh( APIGeometry.TJSObject, APIMaterial.TJSObject ) );
-	};
+	TJSApi.FactoryAPI.Material.Mesh = function( TJSObject ) {
+
+		// Common
+
+		var Color = function( Value ) {
+			TJSObject.color.set( Value );
+			return this;
+		};
+		var WireFrame = function( Boolean ) {
+			TJSObject.wireframe = Boolean;
+			return this;
+		};
+
+		if( TJSObject instanceof THREE.MeshBasicMaterial ) {
+			return {
+				TJSObject: TJSObject,
+
+				Color: Color,
+				WireFrame: WireFrame
+			}
+		} else {
+			return {
+				TJSObject: TJSObject,
+
+				Color: Color,
+				WireFrame: WireFrame
+			}
+		}
+	}
 })();

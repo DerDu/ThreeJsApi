@@ -36,8 +36,12 @@
  */
 
 var TJSApi = (function(){
-		var Factory = {};
-		var Object = {
+		// Combined Factory
+		var Factory = function(){};
+		// ThreeJs Factory
+		var FactoryTJS = {};
+		// TJSApi Factory
+		var FactoryAPI = {
 			Material: {},
 			Geometry: {},
 			Object: {}
@@ -94,52 +98,19 @@ var TJSApi = (function(){
 
 				Animation: EngineAnimation,
 
-				Factory: function() {
+				Helper: function() {
 					return {
-						Renderer: function() {
-							return {
-								WebGL: function() { return TJSApi.Create.Renderer.Use.WebGL(); },
-								Canvas: function() { return TJSApi.Create.Renderer.Use.Canvas(); }
-							}
-						},
-						Camera: function() {
-							return {
-								Perspective: function() { return TJSApi.Create.Camera.Use.Perspective(); }
-							}
-						},
-						Scene: function() {
-							return TJSApi.Create.Scene();
-						},
-						Geometry: function(){
-							return {
-								Cube: function( Width, Height, Depth ) { return TJSApi.Create.Geometry.Use.Cube( Width, Height, Depth ); },
-								Torus: function( Radius, TubeRadius ) { return TJSApi.Create.Geometry.Use.Torus( Radius, TubeRadius ); }
-							}
-						},
-						Material: function(){
-							return {
-								Mesh: function() {
-									return {
-										Basic: function() { return TJSApi.Create.Material.Use.Mesh.Type.Basic( '#0000FF' ); },
-										Lambert: function() { return TJSApi.Create.Material.Use.Mesh.Type.Lambert( '#0000FF' ); },
-										Phong: function() { return TJSApi.Create.Material.Use.Mesh.Type.Phong( '#0000FF' ); }
-									}
-								}
-							}
-						},
-						Object: function() {
-							return {
-								Mesh: function( Geometry, Material ) { return TJSApi.Create.Object.Use.Mesh( Geometry, Material ); }
-							}
-						}
+						Axis: function( Size ) { Scene().TJSObject.add( new THREE.AxisHelper( Size ) ); }
 					}
-				}
+				},
 
+				Factory: TJSApi.Factory
 			}
 		};
 		return {
-			Create: Factory,
-			Object: Object,
-			Engine: Engine
+			Engine: Engine,
+			Factory: Factory,
+			FactoryTJS: FactoryTJS,
+			FactoryAPI: FactoryAPI
 		}
 })();

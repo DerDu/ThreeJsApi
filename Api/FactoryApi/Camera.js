@@ -36,7 +36,7 @@
  */
 
 (function(){
-	TJSApi.Object.Camera = function( TJSObject ) {
+	TJSApi.FactoryAPI.Camera = function( TJSObject ) {
 
 		// Perspective
 
@@ -104,6 +104,17 @@
 			}
 		};
 
+		var LookAtTarget;
+		var LookAt = function( APIObject ) {
+			if( typeof APIObject == 'undefined' ) {
+				return LookAtTarget;
+			} else {
+				LookAtTarget = APIObject;
+				TJSObject.lookAt( APIObject.TJSObject.position );
+				return this;
+			}
+		};
+
 		if( TJSObject instanceof THREE.PerspectiveCamera ) {
 			return {
 				TJSObject: TJSObject,
@@ -115,7 +126,9 @@
 
 				PositionX: PositionX,
 				PositionY: PositionY,
-				PositionZ: PositionZ
+				PositionZ: PositionZ,
+
+				LookAt: LookAt
 			}
 		} else {
 			return {
@@ -123,7 +136,9 @@
 
 				PositionX: PositionX,
 				PositionY: PositionY,
-				PositionZ: PositionZ
+				PositionZ: PositionZ,
+
+				LookAt: LookAt
 			}
 		}
 	}

@@ -6,26 +6,15 @@
 	<script type="text/javascript" src="ThreeJs/build/three.min.js"></script>
 
 	<script type="text/javascript" src="Api/TJSApi.js"></script>
-	<script type="text/javascript" src="Api/Factory/Create.js"></script>
-
-	<script type="text/javascript" src="Api/Object/Scene.js"></script>
-	<script type="text/javascript" src="Api/Factory/Scene/Scene.js"></script>
-
-	<script type="text/javascript" src="Api/Object/Renderer.js"></script>
-	<script type="text/javascript" src="Api/Factory/Renderer/WebGL.js"></script>
-	<script type="text/javascript" src="Api/Factory/Renderer/Canvas.js"></script>
-
-	<script type="text/javascript" src="Api/Object/Camera.js"></script>
-	<script type="text/javascript" src="Api/Factory/Camera/Perspective.js"></script>
-
-	<script type="text/javascript" src="Api/Object/Geometry/Cube.js"></script>
-	<script type="text/javascript" src="Api/Object/Geometry/Torus.js"></script>
-
-	<script type="text/javascript" src="Api/Object/Material/Mesh.js"></script>
-	<script type="text/javascript" src="Api/Factory/Material/Material.js"></script>
-
-	<script type="text/javascript" src="Api/Object/Object/Mesh.js"></script>
-	<script type="text/javascript" src="Api/Factory/Object/Mesh.js"></script>
+	<script type="text/javascript" src="Api/FactoryTJS.js"></script>
+	<script type="text/javascript" src="Api/FactoryAPI.js"></script>
+	<script type="text/javascript" src="Api/FactoryAPI/Renderer.js"></script>
+	<script type="text/javascript" src="Api/FactoryAPI/Camera.js"></script>
+	<script type="text/javascript" src="Api/FactoryAPI/Scene.js"></script>
+	<script type="text/javascript" src="Api/FactoryAPI/Geometry.js"></script>
+	<script type="text/javascript" src="Api/FactoryAPI/Material.js"></script>
+	<script type="text/javascript" src="Api/FactoryAPI/Object.js"></script>
+	<script type="text/javascript" src="Api/FactoryAPI/Mouse.js"></script>
 
 </head>
 <body>
@@ -35,48 +24,109 @@
 <script type="text/javascript">
 
 // Instance
-var Display = TJSApi.Engine();
+var Engine = TJSApi.Engine();
+
+
+var Renderer = Engine.Factory().Renderer().WebGL();
+var Camera = Engine.Factory().Camera().Perspective();
+var Scene = Engine.Factory().Scene();
 
 // Init
-Display.Renderer( Display.Factory().Renderer().WebGL() )
-	.Camera( Display.Factory().Camera().Perspective() )
-	.Scene( Display.Factory().Scene() );
+Engine.Renderer( Renderer ).Camera( Camera ).Scene( Scene );
+
+Engine.Helper().Axis( 300 );
 
 // Setup
-Display.Renderer()
-	.Display( 'div#D1' )
-	.Width( 800 )
-	.Height( 600 );
-Display.Camera()
-	.FieldOfView( 75 )
-	.AspectRatio( Display.Renderer().Width() / Display.Renderer().Height() )
+Engine.Renderer().Display( 'div#D1' ).Width( 800 ).Height( 600 );
+
+Engine.Camera()
+	.FieldOfView( 40 )
+	.AspectRatio( Engine.Renderer().Width() / Engine.Renderer().Height() )
 	.NearClippingDistance( 0.1 )
-	.FarClippingDistance( 1000 )
-	.PositionZ( 20 );
+	.FarClippingDistance( 10000 );
+
+Engine.Scene().Add( Camera );
 
 // Objects
-var Torus = Display.Factory().Geometry().Torus( 10, 2 );
-var Cube = Display.Factory().Geometry().Cube( 10, 10, 10 );
-var Material = Display.Factory().Material().Mesh().Basic();
-var Material2 = Display.Factory().Material().Mesh().Basic();
 
-var Mesh1 = Display.Factory().Object().Mesh( Torus, Material );
-var Mesh2 = Display.Factory().Object().Mesh( Cube, Material2 );
+var GeometryTorus = Engine.Factory().Geometry().Torus( 400, 20 );
+var GeometryCube = Engine.Factory().Geometry().Cube( 300, 300, 300 );
+var GeometryPlane = Engine.Factory().Geometry().Plane( 1000, 1000 );
+var GeometryBird = Engine.Factory().Geometry().Bird();
+
+var MaterialTorus = Engine.Factory().Material().Mesh().Basic();
+var MaterialCube = Engine.Factory().Material().Mesh().Basic();
+var MaterialPlane = Engine.Factory().Material().Mesh().Basic();
+var MaterialBird = Engine.Factory().Material().Mesh().Basic();
+
+var MeshTorus = Engine.Factory().Object().Mesh( GeometryTorus, MaterialTorus );
+//MeshTorus.MouseClickable( true );
+var MeshCube = Engine.Factory().Object().Mesh( GeometryCube, MaterialCube );
+MeshCube.MouseClickable( true );
+var MeshPlane = Engine.Factory().Object().Mesh( GeometryPlane, MaterialPlane );
+//MeshPlane.MouseClickable( true );
+var MeshBird = Engine.Factory().Object().Mesh( GeometryBird, MaterialBird );
+MeshBird.MouseClickable( true );
 
 // Setup - Object
-Material.Color('#FF0000');
-Material.WireFrame(false);
+MeshPlane.RotationX( - 90 * Math.PI / 180 );
+
+MaterialTorus.Color('#FF0000');
+MaterialTorus.WireFrame(true);
+
+MaterialCube.Color('#00FF00');
+MaterialCube.WireFrame(true);
+
+MaterialPlane.Color('#0000FF');
+MaterialPlane.WireFrame(true);
 
 // Scene
-Display.Scene().Add( Mesh1 );
-Display.Scene().Add( Mesh2 );
+Engine.Scene().Add( MeshTorus );
+Engine.Scene().Add( MeshCube );
+Engine.Scene().Add( MeshPlane );
+Engine.Scene().Add( MeshBird );
+
+// Setup - Camera
+
+Engine.Camera().PositionZ(1000).PositionY(1000).PositionX(1000).LookAt( Engine.Scene() );
+
+var Mouse = Engine.Factory().Mouse( Engine.Renderer(), Engine.Camera(), Engine.Scene() );
+
+Mouse.Event().Click().Left( function() {
+	console.log( Mouse.Event().ClickedObjects() );
+	console.log( Mouse.Event().ClickedObject() );
+
+	Mouse.Event().ClickedObject().TJSObject.material.color.set('#FF0000');
+	Mouse.Event().ClickedObject().PositionY( (Mouse.Event().ClickedObject().PositionY() + 10) );
+});
+
+
+
+var Radius = 1500;
+var Theta, mTheta = 45;
+var Phi, mPhi = 60;
+
+Mouse.Event().Move().Right( function(){
+
+	Theta = - ( ( Mouse.MouseEvent().clientX - Mouse.MousePosition2D().X ) * 0.5 );
+	Phi =     ( ( Mouse.MouseEvent().clientY - Mouse.MousePosition2D().Y ) * 0.5 );
+
+	Phi = Math.min( 180, Math.max( 0, Phi ) );
+
+	Engine.Camera().PositionX( Radius * Math.sin( Theta * Math.PI / 360 ) * Math.cos( Phi * Math.PI / 360 ) );
+	Engine.Camera().PositionY( Radius * Math.sin( Phi   * Math.PI / 360 ) );
+	Engine.Camera().PositionZ( Radius * Math.cos( Theta * Math.PI / 360 ) * Math.cos( Phi * Math.PI / 360 ) );
+
+	Engine.Camera().LookAt( MeshCube );
+});
 
 // Render
-Display.Animation.Loop = function() {
-	Mesh1.RotationX( Mesh1.RotationX() + 0.01 );
-	Mesh2.RotationY( Mesh2.RotationY() + 0.01 );
+Engine.Animation.Loop = function() {
+	MeshTorus.RotationX( MeshTorus.RotationX() + 0.01 );
+	MeshCube.RotationY( MeshCube.RotationY() + 0.01 );
 };
-Display.Animation.Run();
+
+Engine.Animation.Run();
 
 /* */
 </script>

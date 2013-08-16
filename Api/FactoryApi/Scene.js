@@ -31,14 +31,35 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Torus
- * 15.08.2013 16:20
+ * Scene
+ * 15.08.2013 14:01
  */
 
 (function(){
-	TJSApi.Object.Geometry.Torus = function( TJSObject ) {
+	TJSApi.FactoryAPI.Scene = function( TJSObject ) {
+
+		var MouseClickableAPI = {};
+		var MouseClickableTJS = [];
+
+		var AddObject = function( APIObject ) {
+			// Respect Clickable Objects
+			if( APIObject.MouseClickable && APIObject.MouseClickable() ) {
+				MouseClickableAPI[APIObject.TJSObject.id] = APIObject;
+				MouseClickableTJS.push( APIObject.TJSObject );
+			}
+			// Add Object to Scene
+			TJSObject.add( APIObject.TJSObject );
+		};
+
 		return {
-			TJSObject: TJSObject
+			TJSObject: TJSObject,
+
+			Add: AddObject,
+
+			Clickable: {
+				APIObjects: function() { return MouseClickableAPI; },
+				TJSObjects: function() { return MouseClickableTJS; }
+			}
 		}
 	}
 })();

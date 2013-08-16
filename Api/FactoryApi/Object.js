@@ -31,21 +31,84 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Scene
- * 15.08.2013 14:01
+ * Object
+ * 16.08.2013 15:08
  */
 
 (function(){
-	TJSApi.Object.Scene = function( TJSObject ) {
+	TJSApi.FactoryAPI.Object.Mesh = function( TJSObject ) {
 
-		var AddObject = function( APIObject ) {
-			TJSObject.add( APIObject.TJSObject );
+		var PositionX = function( Value ) {
+			if( typeof Value == 'undefined' ) {
+				return TJSObject.position.x;
+			} else {
+				TJSObject.position.x = Value;
+				return this;
+			}
+		};
+		var PositionY = function( Value ) {
+			if( typeof Value == 'undefined' ) {
+				return TJSObject.position.y;
+			} else {
+				TJSObject.position.y = Value;
+				return this;
+			}
+		};
+		var PositionZ = function( Value ) {
+			if( typeof Value == 'undefined' ) {
+				return TJSObject.position.z;
+			} else {
+				TJSObject.position.z = Value;
+				return this;
+			}
+		};
+
+		var RotationX = function( Value ) {
+			if( typeof Value == 'undefined' ) {
+				return TJSObject.rotation.x;
+			} else {
+				TJSObject.rotation.x = Value;
+				return this;
+			}
+		};
+		var RotationY = function( Value ) {
+			if( typeof Value == 'undefined' ) {
+				return TJSObject.rotation.y;
+			} else {
+				TJSObject.rotation.y = Value;
+				return this;
+			}
+		};
+		var RotationZ = function( Value ) {
+			if( typeof Value == 'undefined' ) {
+				return TJSObject.rotation.z;
+			} else {
+				TJSObject.rotation.z = Value;
+				return this;
+			}
+		};
+
+		var Clickable = false;
+		var MouseClickable = function( Boolean ) {
+			if( typeof Boolean == 'undefined' ) {
+				return Clickable;
+			} else {
+				Clickable = Boolean;
+				return this;
+			}
 		};
 
 		return {
 			TJSObject: TJSObject,
 
-			Add: AddObject
+			PositionX: PositionX,
+			PositionY: PositionY,
+			PositionZ: PositionZ,
+			RotationX: RotationX,
+			RotationY: RotationY,
+			RotationZ: RotationZ,
+
+			MouseClickable: MouseClickable
 		}
 	}
 })();
