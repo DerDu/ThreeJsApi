@@ -182,7 +182,8 @@
 			DeltaRadius = ( typeof DeltaRadius == 'undefined' || DeltaPhi == null ? 0 : DeltaRadius );
 
 			var Object = LookAt();
-			var Offset = TJSApi.Math.Vector.Subtraction( Position(), Object.Position() );
+			var ObjectPosition = Object.Position();
+			var Offset = Position();
 
 			// angle from z-axis around y-axis
 			var Theta = Math.atan2( Offset.X, Offset.Z );
@@ -221,7 +222,12 @@
 			};
 
 			// Update Camera to new position/rotation
-			var NewPosition = TJSApi.Math.Vector.Addition( Object, Calculation );
+			Calculation = TJSApi.Math.Vector.Subtraction( Calculation, Position() );
+
+
+
+			var NewPosition = TJSApi.Math.Vector.Addition( ObjectPosition, Calculation );
+
 			PositionX( NewPosition.X );
 			PositionY( NewPosition.Y );
 			PositionZ( NewPosition.Z );
