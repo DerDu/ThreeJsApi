@@ -82,72 +82,6 @@ var TJSApi = (function(){
 				}
 			};
 
-			var DebugSetting = {
-				PerformanceMonitor: {
-					Enable: false,
-					TJSObject: {}
-				},
-				Logger: {
-					Enable: false,
-					TJSObject: {}
-				}
-			};
-
-			var Debug = {
-				PerformanceMonitor: {
-					Enable: function( Boolean ) {
-						if( typeof Stats != 'undefined' ) {
-							DebugSetting.PerformanceMonitor.Enable = Boolean;
-							if( DebugSetting.PerformanceMonitor.Enable ) {
-								DebugSetting.PerformanceMonitor.TJSObject = new Stats();
-								DebugSetting.PerformanceMonitor.TJSObject.domElement.style.position = 'absolute';
-								DebugSetting.PerformanceMonitor.TJSObject.domElement.style.right = '0px';
-								DebugSetting.PerformanceMonitor.TJSObject.domElement.style.top = '0px';
-								DebugSetting.PerformanceMonitor.TJSObject.setMode(0);
-								jQuery( Renderer().Display() ).append( DebugSetting.PerformanceMonitor.TJSObject.domElement );
-								jQuery( Renderer().Display() ).css('position','relative');
-							}
-						}
-					},
-					LogFps: function() {
-						if( DebugSetting.PerformanceMonitor.Enable ) {
-							DebugSetting.PerformanceMonitor.TJSObject.setMode(0);
-						}
-					},
-					LogMs: function() {
-						if( DebugSetting.PerformanceMonitor.Enable ) {
-							DebugSetting.PerformanceMonitor.TJSObject.setMode(1);
-						}
-					}
-				},
-				Logger: {
-					Enable: function( Boolean ) {
-						if( typeof Logger != 'undefined' ) {
-							DebugSetting.Logger.Enable = Boolean;
-							if( DebugSetting.Logger.Enable ) {
-								DebugSetting.Logger.TJSObject = new Logger();
-								DebugSetting.PerformanceMonitor.TJSObject.domElement.style.position = 'absolute';
-								DebugSetting.PerformanceMonitor.TJSObject.domElement.style.right = '0px';
-								DebugSetting.PerformanceMonitor.TJSObject.domElement.style.bottom = '0px';
-								jQuery( Renderer().Display() ).append( DebugSetting.Logger.TJSObject.domElement );
-								jQuery( Renderer().Display() ).css('position','relative');
-							}
-						}
-					},
-					LogText: function( Message ) {
-						if( DebugSetting.Logger.Enable ) {
-							DebugSetting.Logger.TJSObject.log( Message );
-						}
-					},
-					LogObject: function( Object ) {
-						if( DebugSetting.Logger.Enable ) {
-							DebugSetting.Logger.TJSObject.log( Object, true );
-						}
-					}
-				}
-			};
-
-
 			var EngineAnimation = {
 				Loop: function() {
 					// User specified
@@ -159,16 +93,12 @@ var TJSApi = (function(){
 					//noinspection JSCheckFunctionSignatures
 					requestAnimationFrame( EngineAnimation.Run );
 
-					if( DebugSetting.PerformanceMonitor.Enable ) {
-						DebugSetting.PerformanceMonitor.TJSObject.begin();
-					}
+					TJSApi.Debug.PerformanceMonitor.Begin();
 
 					EngineAnimation.Loop();
 					EngineAnimation.Render();
 
-					if( DebugSetting.PerformanceMonitor.Enable ) {
-						DebugSetting.PerformanceMonitor.TJSObject.end();
-					}
+					TJSApi.Debug.PerformanceMonitor.End();
 
 				}
 			};
@@ -186,15 +116,88 @@ var TJSApi = (function(){
 					}
 				},
 
-				Factory: TJSApi.Factory,
-
-				Debug: Debug
+				Factory: TJSApi.Factory
 			}
 		};
+
+
+		var DebugSetting = {
+			PerformanceMonitor: {
+				Enable: false,
+				TJSObject: {}
+			},
+			MessageMonitor: {
+				Enable: false,
+				TJSObject: {}
+			}
+		};
+
+		var Debug = {
+			PerformanceMonitor: {
+				Enable: function( Engine ) {
+					if( typeof Stats != 'undefined' ) {
+						DebugSetting.PerformanceMonitor.Enable = true;
+						DebugSetting.PerformanceMonitor.TJSObject = new Stats();
+						DebugSetting.PerformanceMonitor.TJSObject.domElement.style.position = 'absolute';
+						DebugSetting.PerformanceMonitor.TJSObject.domElement.style.right = '0px';
+						DebugSetting.PerformanceMonitor.TJSObject.domElement.style.top = '0px';
+						DebugSetting.PerformanceMonitor.TJSObject.setMode(0);
+						jQuery( Engine.Renderer().Display() ).append( DebugSetting.PerformanceMonitor.TJSObject.domElement );
+						jQuery( Engine.Renderer().Display() ).css('position','relative');
+					}
+				},
+				LogFps: function() {
+					if( Debug.PerformanceMonitor.Status() ) {
+						DebugSetting.PerformanceMonitor.TJSObject.setMode(0);
+					}
+				},
+				LogMs: function() {
+					if( Debug.PerformanceMonitor.Status() ) {
+						DebugSetting.PerformanceMonitor.TJSObject.setMode(1);
+					}
+				},
+				Begin: function() {
+					if( Debug.PerformanceMonitor.Status() ) {
+						DebugSetting.PerformanceMonitor.TJSObject.begin();
+					}
+				},
+				End: function() {
+					if( Debug.PerformanceMonitor.Status() ) {
+						DebugSetting.PerformanceMonitor.TJSObject.end();
+					}
+				},
+				Status: function() {
+					return DebugSetting.PerformanceMonitor.Enable;
+				}
+			},
+			MessageMonitor: {
+				Enable: function( Engine ) {
+					if( typeof console != 'undefined' && typeof console.log != 'undefined' ) {
+						DebugSetting.MessageMonitor.Enable = true;
+						DebugSetting.MessageMonitor.TJSObject = console;
+					}
+				},
+				Text: function( Message ) {
+					if( Debug.MessageMonitor.Status() ) {
+						DebugSetting.MessageMonitor.TJSObject.log( Message );
+					}
+				},
+				Object: function( Object ) {
+					if( Debug.MessageMonitor.Status() ) {
+						DebugSetting.MessageMonitor.TJSObject.log( Object, true );
+					}
+				},
+				Status: function() {
+					return DebugSetting.MessageMonitor.Enable;
+				}
+			}
+		};
+
 		return {
 			Engine: Engine,
 			Factory: Factory,
 			FactoryTJS: FactoryTJS,
-			FactoryAPI: FactoryAPI
+			FactoryAPI: FactoryAPI,
+			Debug: Debug
 		}
 })();

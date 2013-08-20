@@ -157,6 +157,8 @@
 		var Display = jQuery( jQuery( APIObjectRenderer.Display() ) );
 
 		Display.on( 'contextmenu', function( MouseEvent ) {
+			// Debug
+			TJSApi.Debug.MessageMonitor.Text( 'Mouse (Event): ContextMenu' );
 			// Pre
 			MouseEvent.preventDefault();
 			MousePressedToogle = true;
@@ -172,9 +174,9 @@
 		});
 
 		Display.on( 'mousedown', function( MouseEvent ) {
-
+			// Debug
+			TJSApi.Debug.MessageMonitor.Text( 'Mouse (Event): Down' );
 			// Pre
-
 			MouseEvent.preventDefault();
 			MousePressedToogle = true;
 			MouseMovedToogle = 0;
@@ -182,146 +184,149 @@
 			CalculateMouse( MouseEvent );
 			// Calculate Objects
 			CalculateObjects();
-
 			// Run
 			// Execute
 			switch ( MouseEvent.which ) {
 				case 1:
+					TJSApi.Debug.MessageMonitor.Text( 'Mouse (Button):Left > (Callback):Press-Left / Press-All' );
 					Event.Press.Left();
 					Event.Press.All();
 					break;
 				case 2:
+					TJSApi.Debug.MessageMonitor.Text( 'Mouse (Button):Middle > (Callback):Press-Middle / Press-All' );
 					Event.Press.Middle();
 					Event.Press.All();
 					break;
 				case 3:
+					TJSApi.Debug.MessageMonitor.Text( 'Mouse (Button):Right > (Callback):Press-Right / Press-All' );
 					Event.Press.Right();
 					Event.Press.All();
 					break;
 				default:
+					TJSApi.Debug.MessageMonitor.Text( 'Mouse (Button): Not supported' );
 					// Ignore unsupported Mouse-Button
 			}
-
 			// Post
-
 			return false;
 		});
 
 		Display.on( 'mouseup', function( MouseEvent ) {
+			// Debug
+			TJSApi.Debug.MessageMonitor.Text( 'Mouse (Event): Up' );
 			// Pre
-
 			MouseEvent.preventDefault();
 			// Calculate Mouse
 			CalculateMouse( MouseEvent );
 			// Calculate Objects
 			CalculateObjects();
-
 			// Run
-
-
 			// Handle Click
 			if( MouseMoved() < 5 ) {
 				// Execute
 				switch ( MouseEvent.which ) {
 					case 1:
+						TJSApi.Debug.MessageMonitor.Text( 'Mouse (Button):Left > (Callback):Click-Left / Click-All' );
 						Event.Click.Left();
 						Event.Click.All();
 						break;
 					case 2:
+						TJSApi.Debug.MessageMonitor.Text( 'Mouse (Button):Middle > (Callback):Click-Middle / Click-All' );
 						Event.Click.Middle();
 						Event.Click.All();
 						break;
 					case 3:
+						TJSApi.Debug.MessageMonitor.Text( 'Mouse (Button):Right > (Callback):Click-Right / Click-All' );
 						Event.Click.Right();
 						Event.Click.All();
 						break;
 					default:
+						TJSApi.Debug.MessageMonitor.Text( 'Mouse (Button): Not supported' );
 						// Ignore unsupported Mouse-Button
 				}
 			}
-
 			// Execute
 			switch ( MouseEvent.which ) {
 				case 1:
+					TJSApi.Debug.MessageMonitor.Text( 'Mouse (Button):Left > (Callback):Release-Left / Release-All' );
 					Event.Release.Left();
 					Event.Release.All();
 					break;
 				case 2:
+					TJSApi.Debug.MessageMonitor.Text( 'Mouse (Button):Middle > (Callback):Release-Middle / Release-All' );
 					Event.Release.Middle();
 					Event.Release.All();
 					break;
 				case 3:
+					TJSApi.Debug.MessageMonitor.Text( 'Mouse (Button):Right > (Callback):Release-Right / Release-All' );
 					Event.Release.Right();
 					Event.Release.All();
 					break;
 				default:
+					TJSApi.Debug.MessageMonitor.Text( 'Mouse (Button): Not supported' );
 					// Ignore unsupported Mouse-Button
 			}
-
 			// Post
-
 			MousePressedToogle = false;
 			MouseMovedToogle = false;
 			return false;
 		});
 
 		Display.on( 'mousemove', function( MouseEvent ) {
-
+			// Debug
+			TJSApi.Debug.MessageMonitor.Text( 'Mouse (Event): Move' );
 			// Pre
-
 			MouseEvent.preventDefault();
 			( !MouseMovedToogle ? MouseMovedToogle = 1 : MouseMovedToogle++ );
 			// Calculate Mouse
 			CalculateMouse( MouseEvent );
 			// Calculate Objects
 			CalculateObjects();
-
 			// Run
-
 			switch ( MouseEvent.which ) {
 				case 1:
+					TJSApi.Debug.MessageMonitor.Text( 'Mouse (Button):Left > (Callback):Move-Left / Move-All' );
 					Event.Move.Left();
 					Event.Move.All();
 					break;
 				case 2:
+					TJSApi.Debug.MessageMonitor.Text( 'Mouse (Button):Middle > (Callback):Move-Middle / Move-All' );
 					Event.Move.Middle();
 					Event.Move.All();
 					break;
 				case 3:
+					TJSApi.Debug.MessageMonitor.Text( 'Mouse (Button):Right > (Callback):Move-Right / Move-All' );
 					Event.Move.Right();
 					Event.Move.All();
 					break;
 				default:
+					// TJSApi.Debug.MessageMonitor.Text( 'Mouse (Button): Not supported' );
 					// Ignore unsupported Mouse-Button
 			}
-
 			// Post
 			return false;
 		});
 
 		Display.on( 'mousewheel', function( MouseEvent ) {
-
+			// Debug
+			TJSApi.Debug.MessageMonitor.Text( 'Mouse (Event): Wheel' );
 			// Pre
-
 			var Delta = MouseEvent.originalEvent;
 			Delta = Delta.wheelDelta > 0 || Delta.detail < 0 ? 1 : -1;
-
 			MouseEvent.preventDefault();
 			// Calculate Mouse
 			CalculateMouse( MouseEvent );
 			// Calculate Objects
 			CalculateObjects();
-
 			// Run
-
 			if ( Delta > 0 ) {
+				TJSApi.Debug.MessageMonitor.Text( 'Mouse (Wheel):Up > (Callback):Wheel-Up / Wheel-All' );
 				Event.Wheel.Up();
 				Event.Wheel.All();
 			} else {
+				TJSApi.Debug.MessageMonitor.Text( 'Mouse (Wheel):Down > (Callback):Wheel-Down / Wheel-All' );
 				Event.Wheel.Down();
 				Event.Wheel.All();
 			}
-
 			// Post
 			return false;
 		});

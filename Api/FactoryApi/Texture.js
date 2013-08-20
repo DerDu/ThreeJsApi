@@ -31,79 +31,14 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Material
- * 16.08.2013 15:07
+ * Texture
+ * 20.08.2013 09:49
  */
 
 (function(){
-	TJSApi.FactoryAPI.Material.Mesh = function( TJSObject ) {
-
-		// Common
-		var Color = function( Value ) {
-			if( typeof Value == 'undefined' ) {
-				return TJSObject.color.get();
-			} else {
-				TJSObject.color.set( Value );
-				return this;
-			}
-		};
-
-		var WireFrame = function( Value ) {
-			if( typeof Value == 'undefined' ) {
-				return TJSObject.wireframe;
-			} else {
-				TJSObject.wireframe = Boolean;
-				return this;
-			}
-		};
-
-		var Transparent = function( Value ) {
-			if( typeof Value == 'undefined' ) {
-				return TJSObject.transparent;
-			} else {
-				TJSObject.transparent = Boolean;
-				return this;
-			}
-		};
-
-		var Texture = function( Value ) {
-			if( typeof Value == 'undefined' ) {
-				return TJSObject.texture;
-			} else {
-				TJSObject.texture = Value;
-				return this;
-			}
-		};
-
-		if( TJSObject instanceof THREE.MeshBasicMaterial ) {
-			return {
-				TJSObject: TJSObject,
-
-				Color: Color,
-				WireFrame: WireFrame
-			}
-		} else if( TJSObject instanceof THREE.MeshLambertMaterial ) {
-
-			// Canvas-Renderer doesn't support MeshLambertMaterial in combination with Textures
-
-			return {
-				TJSObject: TJSObject,
-
-				Color: Color,
-				WireFrame: WireFrame,
-
-				Texture: {
-					UseTexture: Texture,
-					Transparent: Transparent
-				}
-			}
-		} else {
-			return {
-				TJSObject: TJSObject,
-
-				Color: Color,
-				WireFrame: WireFrame
-			}
+	TJSApi.FactoryAPI.Texture = function( TJSObject ) {
+		return {
+			TJSObject: TJSObject
 		}
-	}
+	};
 })();

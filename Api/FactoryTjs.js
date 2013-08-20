@@ -166,6 +166,12 @@
 			Use: Factory
 		}
 	}();
+	TJSApi.FactoryTJS.Texture = function( File ) {
+		return TJSApi.FactoryAPI.Texture( new THREE.ImageUtils.loadTexture( File ) );
+	};
+	TJSApi.FactoryTJS.Fog = function() {
+		return TJSApi.FactoryAPI.Fog( new THREE.Fog() );
+	};
 	TJSApi.FactoryTJS.Object = function() {
 		var Factory = {
 			Mesh: function( APIGeometry, APIMaterial ) {

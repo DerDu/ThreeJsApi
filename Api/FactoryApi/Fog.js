@@ -31,43 +31,46 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Basic
- * 14.08.2013 09:36
+ * Fog
+ * 20.08.2013 10:01
  */
 
 (function(){
-	ThreeJsApi.addFactory('MaterialMeshBasic', function(){
+	TJSApi.FactoryAPI.Fog = function( TJSObject ) {
 
-		var TJSObject = null;
-		var getTJSObject = function(){
-			if( TJSObject == null ) {
-				TJSObject = new THREE.MeshBasicMaterial( { color: getColor(), wireframe: getWireFrame(), side:THREE.DoubleSide } )
+		var Color = function( Value ) {
+			if( typeof Value == 'undefined' ) {
+				return TJSObject.color;
+			} else {
+				TJSObject.color = Value;
+				return this;
 			}
-			return TJSObject;
 		};
 
-		var Color = '#FF0000';
-		var getColor = function() { return Color; };
-		var setColor = function( Value ) {
-			Color = Value;
-			return this;
+		var NearClippingDistance = function( Value ) {
+			if( typeof Value == 'undefined' ) {
+				return TJSObject.near;
+			} else {
+				TJSObject.near = Value;
+				return this;
+			}
 		};
 
-		var WireFrame = false;
-		var getWireFrame = function() { return WireFrame; };
-		var setWireFrame = function( Value ) {
-			WireFrame = Value;
-			return this;
+		var FarClippingDistance = function( Value ) {
+			if( typeof Value == 'undefined' ) {
+				return TJSObject.far;
+			} else {
+				TJSObject.far = Value;
+				return this;
+			}
 		};
 
 		return {
-			getTJSObject: getTJSObject,
+			TJSObject: TJSObject,
 
-			setColor: setColor,
-			getColor: getColor,
-			setWireFrame: setWireFrame,
-			getWireFrame: getWireFrame
+			Color: Color,
+			NearClippingDistance: NearClippingDistance,
+			FarClippingDistance: FarClippingDistance
 		}
-
-	});
+	};
 })();

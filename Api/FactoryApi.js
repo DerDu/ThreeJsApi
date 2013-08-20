@@ -75,6 +75,12 @@
 					}
 				}
 			},
+			Texture: function( File ) {
+				return TJSApi.FactoryTJS.Texture( File );
+			},
+			Fog: function() {
+				return TJSApi.FactoryTJS.Fog();
+			},
 			Object: function() {
 				return {
 					Mesh: function( Geometry, Material ) { return TJSApi.FactoryTJS.Object.Use.Mesh( Geometry, Material ); }

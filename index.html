@@ -11,13 +11,15 @@
 	<script type="text/javascript" src="Api/TJSApi.js"></script>
 	<script type="text/javascript" src="Api/FactoryTJS.js"></script>
 	<script type="text/javascript" src="Api/FactoryAPI.js"></script>
-	<script type="text/javascript" src="Api/FactoryAPI/Renderer.js"></script>
 	<script type="text/javascript" src="Api/FactoryAPI/Camera.js"></script>
-	<script type="text/javascript" src="Api/FactoryAPI/Scene.js"></script>
+	<script type="text/javascript" src="Api/FactoryAPI/Fog.js"></script>
 	<script type="text/javascript" src="Api/FactoryAPI/Geometry.js"></script>
 	<script type="text/javascript" src="Api/FactoryAPI/Material.js"></script>
-	<script type="text/javascript" src="Api/FactoryAPI/Object.js"></script>
 	<script type="text/javascript" src="Api/FactoryAPI/Mouse.js"></script>
+	<script type="text/javascript" src="Api/FactoryAPI/Object.js"></script>
+	<script type="text/javascript" src="Api/FactoryAPI/Renderer.js"></script>
+	<script type="text/javascript" src="Api/FactoryAPI/Scene.js"></script>
+	<script type="text/javascript" src="Api/FactoryAPI/Texture.js"></script>
 
 </head>
 <body>
@@ -170,7 +172,8 @@ Engine.Animation.Loop = function() {
 	MeshCube.RotationY( MeshCube.RotationY() + 0.01 );
 };
 
-Engine.Debug.PerformanceMonitor(true);
+TJSApi.Debug.PerformanceMonitor.Enable( Engine );
+TJSApi.Debug.MessageMonitor.Enable( Engine );
 
 Engine.Animation.Run();
 
