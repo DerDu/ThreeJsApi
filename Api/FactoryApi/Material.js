@@ -66,11 +66,11 @@
 			}
 		};
 
-		var Texture = function( Value ) {
-			if( typeof Value == 'undefined' ) {
+		var Texture = function( APIObject ) {
+			if( typeof APIObject == 'undefined' ) {
 				return TJSObject.texture;
 			} else {
-				TJSObject.texture = Value;
+				TJSObject.texture = APIObject.TJSObject;
 				return this;
 			}
 		};

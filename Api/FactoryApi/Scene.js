@@ -50,11 +50,16 @@
 			// Add Object to Scene
 			TJSObject.add( APIObject.TJSObject );
 		};
+		var AddFog = function( APIObject ) {
+			// Add Fog to Scene
+			TJSObject.fog = APIObject.TJSObject;
+		};
 
 		return {
 			TJSObject: TJSObject,
 
 			Add: AddObject,
+			Fog: AddFog,
 
 			Clickable: {
 				APIObjects: function() { return MouseClickableAPI; },

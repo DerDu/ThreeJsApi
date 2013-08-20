@@ -94,8 +94,13 @@ Engine.Scene().Add( MeshBird );
 
 Engine.Camera().PositionZ(1000).PositionY(1000).PositionX(1000).LookAt( Engine.Scene() );
 
+
+
+
 var Mouse = Engine.Factory().Mouse( Engine.Renderer(), Engine.Camera(), Engine.Scene() );
 
+
+/*
 Mouse.Event().Move().Right(function(){
 
 

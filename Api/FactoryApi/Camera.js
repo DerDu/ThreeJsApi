@@ -38,6 +38,45 @@
 (function(){
 	TJSApi.FactoryAPI.Camera = function( TJSObject ) {
 
+		// Orthographic
+
+		var Left = function( Value ) {
+			if( typeof Value == 'undefined' ) {
+				return TJSObject.left;
+			} else {
+				TJSObject.left = Value;
+				TJSObject.updateProjectionMatrix();
+				return this;
+			}
+		};
+		var Right = function( Value ) {
+			if( typeof Value == 'undefined' ) {
+				return TJSObject.right;
+			} else {
+				TJSObject.right = Value;
+				TJSObject.updateProjectionMatrix();
+				return this;
+			}
+		};
+		var Top = function( Value ) {
+			if( typeof Value == 'undefined' ) {
+				return TJSObject.top;
+			} else {
+				TJSObject.top = Value;
+				TJSObject.updateProjectionMatrix();
+				return this;
+			}
+		};
+		var Bottom = function( Value ) {
+			if( typeof Value == 'undefined' ) {
+				return TJSObject.bottom;
+			} else {
+				TJSObject.bottom = Value;
+				TJSObject.updateProjectionMatrix();
+				return this;
+			}
+		};
+
 		// Perspective
 
 		var FieldOfView = function( Value ) {
@@ -121,6 +160,24 @@
 
 				FieldOfView: FieldOfView,
 				AspectRatio: AspectRatio,
+				NearClippingDistance: NearClippingDistance,
+				FarClippingDistance: FarClippingDistance,
+
+				PositionX: PositionX,
+				PositionY: PositionY,
+				PositionZ: PositionZ,
+
+				LookAt: LookAt
+			}
+		} else if( TJSObject instanceof THREE.OrthographicCamera ) {
+			return {
+				TJSObject: TJSObject,
+
+				Left: Left,
+				Right: Right,
+				Top: Top,
+				Bottom: Bottom,
+
 				NearClippingDistance: NearClippingDistance,
 				FarClippingDistance: FarClippingDistance,
 
