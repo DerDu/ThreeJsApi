@@ -42,9 +42,15 @@ var TJSApi = (function(){
 		var FactoryTJS = {};
 		// TJSApi Factory
 		var FactoryAPI = {
-			Material: {},
+			Camera: {},
+			Fog: {},
 			Geometry: {},
-			Object: {}
+			Material: {},
+			Mouse: {},
+			Object: {},
+			Renderer: {},
+			Scene: {},
+			Texture: {}
 		};
 		var Engine = function() {
 
