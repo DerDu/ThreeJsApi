@@ -1,24 +1,30 @@
-# Trying to write an object-oriented API for ThreeJs ...
-========
+#### Trying to write an object-oriented API for ThreeJs ...
 
-## Files:
+---
 
-Basic:
+### Files (Required):
+
+##### Basic:
+
 	- jQuery
 	- ThreeJs
 
-Api:
+##### Debug:
+
+	- Stats (ThreeJs)
+
+##### Api:
+
 	- TJSApi
 	- FactoryTJS
 	- FactoryAPI
-	- FactoryAPI/Renderer
 	- FactoryAPI/Camera
-	- FactoryAPI/Scene
+	- FactoryAPI/Fog
 	- FactoryAPI/Geometry
 	- FactoryAPI/Material
-	- FactoryAPI/Object
 	- FactoryAPI/Mouse
+	- FactoryAPI/Object
+	- FactoryAPI/Renderer
+	- FactoryAPI/Scene
+	- FactoryAPI/Texture
 
-Debug:
-	- Stats
-	- Logger
