@@ -66,140 +66,89 @@ THREE.OrbitControls = function (object, domElement) {
 
 
 	this.rotateLeft = function (angle) {
-
 		if (angle === undefined) {
-
 			angle = getAutoRotationAngle();
-
 		}
-
 		thetaDelta -= angle;
-
 	};
 
 	this.rotateRight = function (angle) {
-
 		if (angle === undefined) {
-
 			angle = getAutoRotationAngle();
-
 		}
-
 		thetaDelta += angle;
-
 	};
 
 	this.rotateUp = function (angle) {
-
 		if (angle === undefined) {
-
 			angle = getAutoRotationAngle();
-
 		}
-
 		phiDelta -= angle;
-
 	};
 
 	this.rotateDown = function (angle) {
-
 		if (angle === undefined) {
-
 			angle = getAutoRotationAngle();
-
 		}
-
 		phiDelta += angle;
-
 	};
 
 	this.zoomIn = function (zoomScale) {
-
 		if (zoomScale === undefined) {
-
 			zoomScale = getZoomScale();
-
 		}
-
 		scale /= zoomScale;
-
 	};
 
 	this.zoomOut = function (zoomScale) {
-
 		if (zoomScale === undefined) {
-
 			zoomScale = getZoomScale();
-
 		}
-
 		scale *= zoomScale;
-
 	};
 
 	this.pan = function (distance) {
-
 		distance.transformDirection(this.object.matrix);
 		distance.multiplyScalar(scope.userPanSpeed);
 
 		this.object.position.add(distance);
 		this.center.add(distance);
-
 	};
 
 	this.update = function () {
-
 		var position = this.object.position;
 		var offset = position.clone().sub(this.center);
 
 		// angle from z-axis around y-axis
-
 		var theta = Math.atan2(offset.x, offset.z);
-
 		// angle from y-axis
-
 		var phi = Math.atan2(Math.sqrt(offset.x * offset.x + offset.z * offset.z), offset.y);
-
 		if (this.autoRotate) {
-
 			this.rotateLeft(getAutoRotationAngle());
-
 		}
-
 		theta += thetaDelta;
 		phi += phiDelta;
-
 		// restrict phi to be between desired limits
 		phi = Math.max(this.minPolarAngle, Math.min(this.maxPolarAngle, phi));
-
 		// restrict phi to be betwee EPS and PI-EPS
 		phi = Math.max(EPS, Math.min(Math.PI - EPS, phi));
-
 		var radius = offset.length() * scale;
-
 		// restrict radius to be between desired limits
-		radius = Math.max(this.minDistance, Math.min(this.maxDistance, radius));
 
+		radius = Math.max(this.minDistance, Math.min(this.maxDistance, radius));
 		offset.x = radius * Math.sin(phi) * Math.sin(theta);
 		offset.y = radius * Math.cos(phi);
 		offset.z = radius * Math.sin(phi) * Math.cos(theta);
 
 		position.copy(this.center).add(offset);
-
 		this.object.lookAt(this.center);
-
 		thetaDelta = 0;
 		phiDelta = 0;
 		scale = 1;
-
 		if (lastPosition.distanceTo(this.object.position) > 0) {
-
 			this.dispatchEvent(changeEvent);
-
 			lastPosition.copy(this.object.position);
-
 		}
-
 	};
 
 

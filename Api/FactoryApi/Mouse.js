@@ -95,12 +95,16 @@
 			MouseBrowserEvent = Event;
 			// Calculate Position 2D
 			MousePosition2D = new THREE.Vector3(
-				( Event.offsetX / APIObjectRenderer.Width() ) *2 -1,
-				- ( Event.offsetY / APIObjectRenderer.Height() ) *2 +1,
+				Event.offsetX,
+				Event.offsetY,
 				0.5
 			);
 			// Calculate Position 3D
-			MousePosition3D = MousePosition2D.clone();
+			MousePosition3D = new THREE.Vector3(
+				( MousePosition2D.x / APIObjectRenderer.Width() ) *2 -1,
+				- ( MousePosition2D.y / APIObjectRenderer.Height() ) *2 +1,
+				0.5
+			);
 			Projector.unprojectVector( MousePosition3D, APIObjectCamera.TJSObject );
 			// Calculate Direction Ray 3D
 			var RayPosition3D = MousePosition3D.clone();

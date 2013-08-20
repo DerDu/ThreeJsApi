@@ -117,6 +117,13 @@
 		};
 
 		// Common
+		var Position = function() {
+			return {
+				X: TJSObject.position.x,
+				Y: TJSObject.position.y,
+				Z: TJSObject.position.z
+			}
+		};
 
 		var PositionX = function( Value ) {
 			if( typeof Value == 'undefined' ) {
@@ -143,15 +150,88 @@
 			}
 		};
 
-		var LookAtTarget;
+		var LookAtTarget = {
+			Position: function() {
+				return { X: 0, Y: 0, Z: 0 };
+			}
+		};
 		var LookAt = function( APIObject ) {
 			if( typeof APIObject == 'undefined' ) {
-				return LookAtTarget;
+				if( APIObject instanceof THREE.Vector3 ) {
+					return { TJSObject: { position: LookAtTarget } };
+				} else {
+					return LookAtTarget;
+				}
 			} else {
 				LookAtTarget = APIObject;
-				TJSObject.lookAt( APIObject.TJSObject.position );
+				// Allow Vector3 as APIObject to calculate camera movement
+				if( APIObject instanceof THREE.Vector3 ) {
+					TJSObject.lookAt( APIObject );
+				} else {
+					TJSObject.lookAt( APIObject.TJSObject.position );
+				}
+				TJSObject.updateProjectionMatrix();
 				return this;
 			}
+		};
+
+		var CameraController = function( DeltaPhi, DeltaTheta, DeltaRadius ){
+
+			DeltaPhi = ( typeof DeltaPhi == 'undefined' || DeltaPhi == null ? 0 : DeltaPhi );
+			DeltaTheta = ( typeof DeltaTheta == 'undefined' || DeltaPhi == null ? 0 : DeltaTheta );
+			DeltaRadius = ( typeof DeltaRadius == 'undefined' || DeltaPhi == null ? 0 : DeltaRadius );
+
+			var Object = LookAt();
+			var Offset = TJSApi.Math.Vector.Subtraction( Position(), Object.Position() );
+
+			// angle from z-axis around y-axis
+			var Theta = Math.atan2( Offset.X, Offset.Z );
+			// angle from y-axis
+			var Phi = Math.atan2( Math.sqrt( Math.pow( Offset.X, 2 ) + Math.pow( Offset.Z, 2 ) ), Offset.Y );
+
+			// Change ANGLE
+			Theta += DeltaTheta;
+			Phi += DeltaPhi;
+
+			var PhiMin = 0; // radians
+			var PhiMax = Math.PI / 2; // radians
+
+			var RadiusMin = 1;
+			var RadiusMax = Infinity;
+
+			var EPS = 0.000001;
+
+			// restrict phi to be between desired limits
+			Phi = Math.max( PhiMin, Math.min( PhiMax, Phi ) );
+			// restrict phi to be between EPS and PI-EPS
+			Phi = Math.max( EPS, Math.min( Math.PI - EPS, Phi ) );
+
+			// Length
+			var Radius = Math.sqrt( Math.pow( Offset.X, 2 ) + Math.pow( Offset.Y, 2 ) + Math.pow( Offset.Z, 2 ) );
+
+			// Change RADIUS
+			Radius += DeltaRadius;
+			Radius = Math.max( RadiusMin, Math.min( RadiusMax, Radius ) );
+
+			// Calculate new position
+			var Calculation = {
+				X: Radius * Math.sin( Phi ) * Math.sin( Theta ),
+				Y: Radius * Math.cos( Phi ),
+				Z: Radius * Math.sin( Phi ) * Math.cos( Theta )
+			};
+
+			// Update Camera to new position/rotation
+			var NewPosition = TJSApi.Math.Vector.Addition( Object, Calculation );
+			PositionX( NewPosition.X );
+			PositionY( NewPosition.Y );
+			PositionZ( NewPosition.Z );
+
+			LookAt( Object );
+
+		};
+
+		var Controller = function( DeltaPhi, DeltaTheta, DeltaRadius ) {
+			CameraController( DeltaPhi, DeltaTheta, DeltaRadius )
 		};
 
 		if( TJSObject instanceof THREE.PerspectiveCamera ) {
@@ -163,11 +243,14 @@
 				NearClippingDistance: NearClippingDistance,
 				FarClippingDistance: FarClippingDistance,
 
+				Position: Position,
 				PositionX: PositionX,
 				PositionY: PositionY,
 				PositionZ: PositionZ,
 
-				LookAt: LookAt
+				LookAt: LookAt,
+
+				Controller: Controller
 			}
 		} else if( TJSObject instanceof THREE.OrthographicCamera ) {
 			return {
@@ -181,21 +264,27 @@
 				NearClippingDistance: NearClippingDistance,
 				FarClippingDistance: FarClippingDistance,
 
+				Position: Position,
 				PositionX: PositionX,
 				PositionY: PositionY,
 				PositionZ: PositionZ,
 
-				LookAt: LookAt
+				LookAt: LookAt,
+
+				Controller: Controller
 			}
 		} else {
 			return {
 				TJSObject: TJSObject,
 
+				Position: Position,
 				PositionX: PositionX,
 				PositionY: PositionY,
 				PositionZ: PositionZ,
 
-				LookAt: LookAt
+				LookAt: LookAt,
+
+				Controller: Controller
 			}
 		}
 	}

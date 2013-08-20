@@ -193,11 +193,39 @@ var TJSApi = (function(){
 			}
 		};
 
+		var ConvertAPIVectorToTJSVector3 = function( ObjectXYZ ) {
+			return new THREE.Vector3( ObjectXYZ.X, ObjectXYZ.Y, ObjectXYZ.Z );
+		};
+		var ConvertTJSVector3ToAPIVector = function( Vector3 ) {
+			return { X: Vector3.x, Y: Vector3.y, Z: Vector3.z };
+		};
+
+		var Math = {
+			Vector: {
+				Subtraction: function( A, B ) {
+					return this.Convert.ToAPI(
+						this.Convert.ToTJS( A ).sub( this.Convert.ToTJS( B ) )
+					);
+				},
+				Addition: function( A, B ) {
+					return this.Convert.ToAPI(
+						this.Convert.ToTJS( A ).add( this.Convert.ToTJS( B ) )
+					);
+				},
+				Convert: {
+					ToTJS: ConvertAPIVectorToTJSVector3,
+					ToAPI: ConvertTJSVector3ToAPIVector
+				}
+			}
+		};
+
+
 		return {
 			Engine: Engine,
 			Factory: Factory,
 			FactoryTJS: FactoryTJS,
 			FactoryAPI: FactoryAPI,
-			Debug: Debug
+			Debug: Debug,
+			Math: Math
 		}
 })();

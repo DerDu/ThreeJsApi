@@ -64,13 +64,13 @@ var MaterialPlane = Engine.Factory().Material().Mesh().Basic();
 var MaterialBird = Engine.Factory().Material().Mesh().Basic();
 
 var MeshTorus = Engine.Factory().Object().Mesh( GeometryTorus, MaterialTorus );
-//MeshTorus.MouseClickable( true );
+MeshTorus.MouseClickable( true );
 var MeshCube = Engine.Factory().Object().Mesh( GeometryCube, MaterialCube );
 MeshCube.MouseClickable( true );
 var MeshPlane = Engine.Factory().Object().Mesh( GeometryPlane, MaterialPlane );
-//MeshPlane.MouseClickable( true );
+MeshPlane.MouseClickable( true );
 var MeshBird = Engine.Factory().Object().Mesh( GeometryBird, MaterialBird );
-MeshBird.MouseClickable( true );
+//MeshBird.MouseClickable( true );
 
 // Setup - Object
 MeshPlane.RotationX( - 90 * Math.PI / 180 );
@@ -95,89 +95,53 @@ Engine.Scene().Add( MeshBird );
 Engine.Camera().PositionZ(1000).PositionY(1000).PositionX(1000).LookAt( Engine.Scene() );
 
 
-
-
 var Mouse = Engine.Factory().Mouse( Engine.Renderer(), Engine.Camera(), Engine.Scene() );
 
 
-/*
+var MousePressPosition = { X: 0, Y: 0, Z: 0 };
+
+Mouse.Event().Click().Left(function(){
+	Camera.LookAt( Mouse.Event().Object() );
+});
+
+Mouse.Event().Press().Right(function(){
+	MousePressPosition = Mouse.MousePosition2D();
+});
+
 Mouse.Event().Move().Right(function(){
-
-
-
-
+	var MouseMovePosition = Mouse.MousePosition2D();
+	if( MouseMovePosition.X < MousePressPosition.X ) {
+		Camera.Controller( 0, 0.03, 0 );
+	} else if( MouseMovePosition.X > MousePressPosition.X ) {
+		Camera.Controller( 0, -0.03, 0 );
+	}
+	if( MouseMovePosition.Y < MousePressPosition.Y ) {
+		Camera.Controller( -0.02, 0, 0 );
+	} else if( MouseMovePosition.Y > MousePressPosition.Y ) {
+		Camera.Controller( 0.02, 0, 0 );
+	}
+	MousePressPosition = Mouse.MousePosition2D();
 });
 
-
-
-
-/*
-Mouse.Event().Click().Left( function() {
-	console.log( Mouse.Event().ObjectList() );
-	console.log( Mouse.Event().Object() );
-
-	Mouse.Event().Object().TJSObject.material.color.set('#FF0000');
-	Mouse.Event().Object().PositionY( (Mouse.Event().Object().PositionY() + 10) );
+Mouse.Event().Wheel().Up(function(){
+	Camera.Controller( 0, 0, -100 );
 });
 
-
-/*
-var Radius = 1500;
-var Theta = 60, mTheta = 45;
-var Phi = 45, mPhi = 60;
-
-Engine.Camera().PositionX( Radius * Math.sin( Theta * Math.PI / 360 ) * Math.cos( Phi * Math.PI / 360 ) );
-Engine.Camera().PositionY( Radius * Math.sin( Phi   * Math.PI / 360 ) );
-Engine.Camera().PositionZ( Radius * Math.cos( Theta * Math.PI / 360 ) * Math.cos( Phi * Math.PI / 360 ) );
-
-Mouse.Event().Move().Right( function(){
-
-	Theta = - ( ( Mouse.MouseEvent().clientX - Mouse.MousePosition2D().X ) * 0.5 );
-	Phi =     ( ( Mouse.MouseEvent().clientY - Mouse.MousePosition2D().Y ) * 0.5 );
-
-	Phi = Math.min( 180, Math.max( 0, Phi ) );
-
-	Engine.Camera().PositionX( Radius * Math.sin( Theta * Math.PI / 360 ) * Math.cos( Phi * Math.PI / 360 ) );
-	Engine.Camera().PositionY( Radius * Math.sin( Phi   * Math.PI / 360 ) );
-	Engine.Camera().PositionZ( Radius * Math.cos( Theta * Math.PI / 360 ) * Math.cos( Phi * Math.PI / 360 ) );
-
-	Engine.Camera().LookAt( Engine.Scene() );
+Mouse.Event().Wheel().Down(function(){
+	Camera.Controller( 0, 0, 100 );
 });
-
-
-Mouse.Event().Wheel().Up( function() {
-
-	Radius += 100;
-
-	Engine.Camera().PositionX( Radius * Math.sin( Theta * Math.PI / 360 ) * Math.cos( Phi * Math.PI / 360 ) );
-	Engine.Camera().PositionY( Radius * Math.sin( Phi   * Math.PI / 360 ) );
-	Engine.Camera().PositionZ( Radius * Math.cos( Theta * Math.PI / 360 ) * Math.cos( Phi * Math.PI / 360 ) );
-
-	Engine.Camera().LookAt( Engine.Scene() );
-
-});
-
-Mouse.Event().Wheel().Down( function() {
-
-	Radius -= 100;
-
-	Engine.Camera().PositionX( Radius * Math.sin( Theta * Math.PI / 360 ) * Math.cos( Phi * Math.PI / 360 ) );
-	Engine.Camera().PositionY( Radius * Math.sin( Phi   * Math.PI / 360 ) );
-	Engine.Camera().PositionZ( Radius * Math.cos( Theta * Math.PI / 360 ) * Math.cos( Phi * Math.PI / 360 ) );
-
-	Engine.Camera().LookAt( Engine.Scene() );
-
-});
-*/
 
 // Render
 Engine.Animation.Loop = function() {
-	MeshTorus.RotationX( MeshTorus.RotationX() + 0.01 );
-	MeshCube.RotationY( MeshCube.RotationY() + 0.01 );
+//	MeshTorus.RotationX( MeshTorus.RotationX() + 0.01 );
+//	MeshCube.RotationY( MeshCube.RotationY() + 0.01 );
+	Camera.Controller( 0, 0.02, 0 );
 };
 
 TJSApi.Debug.PerformanceMonitor.Enable( Engine );
-TJSApi.Debug.MessageMonitor.Enable( Engine );
+//TJSApi.Debug.MessageMonitor.Enable( Engine );
+
+//Camera.LookAt( MeshCube );
 
 Engine.Animation.Run();
 

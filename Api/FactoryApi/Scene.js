@@ -55,11 +55,19 @@
 			TJSObject.fog = APIObject.TJSObject;
 		};
 
+		// compatible interface dummy
+		var Position = function() {
+			return { X: 0, Y: 0, Z: 0 }
+		};
+
 		return {
 			TJSObject: TJSObject,
 
 			Add: AddObject,
 			Fog: AddFog,
+
+			// compatible interface dummy
+			Position: Position,
 
 			Clickable: {
 				APIObjects: function() { return MouseClickableAPI; },

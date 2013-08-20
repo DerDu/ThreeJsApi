@@ -38,6 +38,14 @@
 (function(){
 	TJSApi.FactoryAPI.Object.Mesh = function( TJSObject ) {
 
+		var Position = function() {
+			return {
+				X: PositionX(),
+				Y: PositionY(),
+				Z: PositionZ()
+			}
+		};
+
 		var PositionX = function( Value ) {
 			if( typeof Value == 'undefined' ) {
 				return TJSObject.position.x;
@@ -101,9 +109,11 @@
 		return {
 			TJSObject: TJSObject,
 
+			Position: Position,
 			PositionX: PositionX,
 			PositionY: PositionY,
 			PositionZ: PositionZ,
+
 			RotationX: RotationX,
 			RotationY: RotationY,
 			RotationZ: RotationZ,
