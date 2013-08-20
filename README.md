@@ -2,8 +2,9 @@
 
 ---
 
-### Usage: ```php
+### Usage:
 
+```php
 // Create engine instance
 
 var Engine = TJSApi.Engine();
@@ -64,8 +65,8 @@ TJSApi.Debug.MessageMonitor.Enable( Engine );
 
 // Go!
 Engine.Animation.Run();
-
 ```
+
 ---
 
 ### Files:
