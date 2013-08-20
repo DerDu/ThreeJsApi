@@ -5,6 +5,9 @@
 	<script type="text/javascript" src="jQuery/jquery-1.10.2.min.js"></script>
 	<script type="text/javascript" src="ThreeJs/build/three.min.js"></script>
 
+	<script type="text/javascript" src="ThreeJs/examples/js/libs/stats.min.js"></script>
+	<script type="text/javascript" src="LoggerJs/src/Logger.js"></script>
+
 	<script type="text/javascript" src="Api/TJSApi.js"></script>
 	<script type="text/javascript" src="Api/FactoryTJS.js"></script>
 	<script type="text/javascript" src="Api/FactoryAPI.js"></script>
@@ -92,20 +95,30 @@ Engine.Camera().PositionZ(1000).PositionY(1000).PositionX(1000).LookAt( Engine.S
 
 var Mouse = Engine.Factory().Mouse( Engine.Renderer(), Engine.Camera(), Engine.Scene() );
 
-Mouse.Event().Click().Left( function() {
-	console.log( Mouse.Event().ClickedObjects() );
-	console.log( Mouse.Event().ClickedObject() );
+Mouse.Event().Move().Right(function(){
 
-	Mouse.Event().ClickedObject().TJSObject.material.color.set('#FF0000');
-	Mouse.Event().ClickedObject().PositionY( (Mouse.Event().ClickedObject().PositionY() + 10) );
+
+
+
 });
 
 
 
+
+/*
+Mouse.Event().Click().Left( function() {
+	console.log( Mouse.Event().ObjectList() );
+	console.log( Mouse.Event().Object() );
+
+	Mouse.Event().Object().TJSObject.material.color.set('#FF0000');
+	Mouse.Event().Object().PositionY( (Mouse.Event().Object().PositionY() + 10) );
+});
+
+
+/*
 var Radius = 1500;
 var Theta = 60, mTheta = 45;
 var Phi = 45, mPhi = 60;
-
 
 Engine.Camera().PositionX( Radius * Math.sin( Theta * Math.PI / 360 ) * Math.cos( Phi * Math.PI / 360 ) );
 Engine.Camera().PositionY( Radius * Math.sin( Phi   * Math.PI / 360 ) );
@@ -149,12 +162,15 @@ Mouse.Event().Wheel().Down( function() {
 	Engine.Camera().LookAt( Engine.Scene() );
 
 });
+*/
 
 // Render
 Engine.Animation.Loop = function() {
 	MeshTorus.RotationX( MeshTorus.RotationX() + 0.01 );
 	MeshCube.RotationY( MeshCube.RotationY() + 0.01 );
 };
+
+Engine.Debug.PerformanceMonitor(true);
 
 Engine.Animation.Run();
 

@@ -49,11 +49,23 @@
 		var MousePosition3D;
 		var Position3D = function() { return { X: MousePosition3D.x, Y: MousePosition3D.y, Z: MousePosition3D.z } };
 
-		var ClickedObjectList = [];
-		var ClickedObjects = function() { return ClickedObjectList; };
-		var ClickedObject = function() { return ClickedObjectList[0]; };
+		var ObjectList = [];
+		var PointerObjectList = function() { return ObjectList; };
+		var PointerObject = function() { return ObjectList[0]; };
 
 		var Event = {
+			Press: {
+				All: function(){},
+				Left: function(){},
+				Middle: function(){},
+				Right: function(){}
+			},
+			Release: {
+				All: function(){},
+				Left: function(){},
+				Middle: function(){},
+				Right: function(){}
+			},
 			Click: {
 				All: function(){},
 				Left: function(){},
@@ -99,14 +111,24 @@
 			// Find Clicked Objects (API)
 			var TJSObjectList = MousePointer.intersectObjects( APIObjectScene.Clickable.TJSObjects() );
 			var APIObjectList = APIObjectScene.Clickable.APIObjects();
-			ClickedObjectList = [];
+			ObjectList = [];
 			jQuery( TJSObjectList ).each( function( IndexTJS, ObjectTJS ) {
 				var ObjectAPI = APIObjectList[ObjectTJS.object.id];
-				if( typeof ObjectAPI != 'undefined' && jQuery.inArray( ObjectAPI, ClickedObjectList ) == -1 ) {
-					ClickedObjectList.push( ObjectAPI );
+				if( typeof ObjectAPI != 'undefined' && jQuery.inArray( ObjectAPI, ObjectList ) == -1 ) {
+					ObjectList.push( ObjectAPI );
 				}
 			});
 		};
+
+		var RegisterEventPressAll = function( Callback ) { Event.Press.All = Callback; };
+		var RegisterEventPressLeft = function( Callback ) { Event.Press.Left = Callback; };
+		var RegisterEventPressMiddle = function( Callback ) { Event.Press.Middle = Callback; };
+		var RegisterEventPressRight = function( Callback ) { Event.Press.Right = Callback; };
+
+		var RegisterEventReleaseAll = function( Callback ) { Event.Release.All = Callback; };
+		var RegisterEventReleaseLeft = function( Callback ) { Event.Release.Left = Callback; };
+		var RegisterEventReleaseMiddle = function( Callback ) { Event.Release.Middle = Callback; };
+		var RegisterEventReleaseRight = function( Callback ) { Event.Release.Right = Callback; };
 
 		var RegisterEventClickAll = function( Callback ) { Event.Click.All = Callback; };
 		var RegisterEventClickLeft = function( Callback ) { Event.Click.Left = Callback; };
@@ -126,7 +148,7 @@
 		var MousePressed = function() {
 			return MousePressedToogle;
 		};
-		var MouseMovedToogle = false;
+		var MouseMovedToogle = 0;
 		var MouseMoved = function() {
 			return MouseMovedToogle;
 		};
@@ -155,24 +177,26 @@
 
 			MouseEvent.preventDefault();
 			MousePressedToogle = true;
-			MouseMovedToogle = false;
+			MouseMovedToogle = 0;
 			// Calculate Mouse
 			CalculateMouse( MouseEvent );
 			// Calculate Objects
 			CalculateObjects();
 
 			// Run
-
 			// Execute
 			switch ( MouseEvent.which ) {
 				case 1:
-					Event.Click.Left(); Event.Click.All();
+					Event.Press.Left();
+					Event.Press.All();
 					break;
 				case 2:
-					Event.Click.Middle(); Event.Click.All();
+					Event.Press.Middle();
+					Event.Press.All();
 					break;
 				case 3:
-					Event.Click.Right(); Event.Click.All();
+					Event.Press.Right();
+					Event.Press.All();
 					break;
 				default:
 					// Ignore unsupported Mouse-Button
@@ -194,6 +218,46 @@
 
 			// Run
 
+
+			// Handle Click
+			if( MouseMoved() < 5 ) {
+				// Execute
+				switch ( MouseEvent.which ) {
+					case 1:
+						Event.Click.Left();
+						Event.Click.All();
+						break;
+					case 2:
+						Event.Click.Middle();
+						Event.Click.All();
+						break;
+					case 3:
+						Event.Click.Right();
+						Event.Click.All();
+						break;
+					default:
+						// Ignore unsupported Mouse-Button
+				}
+			}
+
+			// Execute
+			switch ( MouseEvent.which ) {
+				case 1:
+					Event.Release.Left();
+					Event.Release.All();
+					break;
+				case 2:
+					Event.Release.Middle();
+					Event.Release.All();
+					break;
+				case 3:
+					Event.Release.Right();
+					Event.Release.All();
+					break;
+				default:
+					// Ignore unsupported Mouse-Button
+			}
+
 			// Post
 
 			MousePressedToogle = false;
@@ -206,7 +270,7 @@
 			// Pre
 
 			MouseEvent.preventDefault();
-			MouseMovedToogle = true;
+			( !MouseMovedToogle ? MouseMovedToogle = 1 : MouseMovedToogle++ );
 			// Calculate Mouse
 			CalculateMouse( MouseEvent );
 			// Calculate Objects
@@ -216,13 +280,16 @@
 
 			switch ( MouseEvent.which ) {
 				case 1:
-					Event.Move.Left(); Event.Move.All();
+					Event.Move.Left();
+					Event.Move.All();
 					break;
 				case 2:
-					Event.Move.Middle(); Event.Move.All();
+					Event.Move.Middle();
+					Event.Move.All();
 					break;
 				case 3:
-					Event.Move.Right(); Event.Move.All();
+					Event.Move.Right();
+					Event.Move.All();
 					break;
 				default:
 					// Ignore unsupported Mouse-Button
@@ -234,12 +301,10 @@
 
 		Display.on( 'mousewheel', function( MouseEvent ) {
 
-			var Delta = MouseEvent.originalEvent;
-		    Delta = Delta.wheelDelta>0||Delta.detail<0?1:-1;
-
-
-			console.log( 'Mouse: Wheel', Delta );
 			// Pre
+
+			var Delta = MouseEvent.originalEvent;
+			Delta = Delta.wheelDelta > 0 || Delta.detail < 0 ? 1 : -1;
 
 			MouseEvent.preventDefault();
 			// Calculate Mouse
@@ -250,9 +315,11 @@
 			// Run
 
 			if ( Delta > 0 ) {
-				Event.Wheel.Up(); Event.Wheel.All();
+				Event.Wheel.Up();
+				Event.Wheel.All();
 			} else {
-				Event.Wheel.Down(); Event.Wheel.All();
+				Event.Wheel.Down();
+				Event.Wheel.All();
 			}
 
 			// Post
@@ -267,6 +334,22 @@
 
 			Event: function() {
 				return {
+					Press: function() {
+						return {
+							All: RegisterEventPressAll,
+							Left: RegisterEventPressLeft,
+							Middle: RegisterEventPressMiddle,
+							Right: RegisterEventPressRight
+						}
+					},
+					Release: function() {
+						return {
+							All: RegisterEventReleaseAll,
+							Left: RegisterEventReleaseLeft,
+							Middle: RegisterEventReleaseMiddle,
+							Right: RegisterEventReleaseRight
+						}
+					},
 					Click: function() {
 						return {
 							All: RegisterEventClickAll,
@@ -290,8 +373,8 @@
 							Down: RegisterEventWheelDown
 						}
 					},
-					ClickedObject: ClickedObject,
-					ClickedObjects: ClickedObjects
+					Object: PointerObject,
+					ObjectList: PointerObjectList
 				}
 			}
 
