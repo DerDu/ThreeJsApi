@@ -6,6 +6,8 @@ This comes with a downside - It will be *less powerful*
 
 (solved in: Advanced objects [Wiki])
 
+Feel free to suggest code or ideas in [Issues](https://github.com/DerDu/ThreeJsApi/issues)
+
 ----
 
 ### Files:
