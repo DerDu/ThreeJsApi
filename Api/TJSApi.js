@@ -171,11 +171,12 @@ var TJSApi = (function(){
 					}
 				},
 				Status: function() {
+					//noinspection JSConstructorReturnsPrimitive
 					return DebugSetting.PerformanceMonitor.Enable;
 				}
 			},
 			MessageMonitor: {
-				Enable: function( Engine ) {
+				Enable: function() {
 					if( typeof console != 'undefined' && typeof console.log != 'undefined' ) {
 						DebugSetting.MessageMonitor.Enable = true;
 						DebugSetting.MessageMonitor.TJSObject = console;
@@ -192,6 +193,7 @@ var TJSApi = (function(){
 					}
 				},
 				Status: function() {
+					//noinspection JSConstructorReturnsPrimitive
 					return DebugSetting.MessageMonitor.Enable;
 				}
 			}
@@ -217,6 +219,7 @@ var TJSApi = (function(){
 					);
 				},
 				Length: function( V ) {
+					//noinspection JSConstructorReturnsPrimitive
 					return window.Math.sqrt( V.X * V.X + V.Y * V.Y + V.Z * V.Z );
 				},
 				Convert: {

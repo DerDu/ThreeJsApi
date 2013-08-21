@@ -99,6 +99,7 @@
 		var Clickable = false;
 		var MouseClickable = function( Boolean ) {
 			if( typeof Boolean == 'undefined' ) {
+				//noinspection JSConstructorReturnsPrimitive
 				return Clickable;
 			} else {
 				Clickable = Boolean;

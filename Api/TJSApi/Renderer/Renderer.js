@@ -41,6 +41,7 @@
 		var RendererWidth = 640;
 		var Width = function( Value ) {
 			if( typeof Value == 'undefined' ) {
+				//noinspection JSConstructorReturnsPrimitive
 				return RendererWidth;
 			} else {
 				RendererWidth = Value;
@@ -52,6 +53,7 @@
 		var RendererHeight = 480;
 		var Height = function( Value ) {
 			if( typeof Value == 'undefined' ) {
+				//noinspection JSConstructorReturnsPrimitive
 				return RendererHeight;
 			} else {
 				RendererHeight = Value;
@@ -63,6 +65,7 @@
 		var RenderDisplay = 'body';
 		var Display = function( Selector ) {
 			if( typeof Selector == 'undefined' ) {
+				//noinspection JSConstructorReturnsPrimitive
 				return RenderDisplay;
 			} else {
 				RenderDisplay = Selector;

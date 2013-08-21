@@ -87,6 +87,7 @@
 
 		var MouseBrowserEvent = null;
 		var MouseEvent = function() {
+			//noinspection JSConstructorReturnsPrimitive
 			return MouseBrowserEvent;
 		};
 
@@ -148,13 +149,15 @@
 		var RegisterEventWheelUp = function( Callback ) { Event.Wheel.Up = Callback; };
 		var RegisterEventWheelDown = function( Callback ) { Event.Wheel.Down = Callback; };
 
-		var MousePressedToogle = false;
+		var MousePressedToggle = false;
 		var MousePressed = function() {
-			return MousePressedToogle;
+			//noinspection JSConstructorReturnsPrimitive
+			return MousePressedToggle;
 		};
-		var MouseMovedToogle = 0;
+		var MouseMovedToggle = 0;
 		var MouseMoved = function() {
-			return MouseMovedToogle;
+			//noinspection JSConstructorReturnsPrimitive
+			return MouseMovedToggle;
 		};
 
 		// Init
@@ -165,7 +168,7 @@
 			TJSApi.Debug.MessageMonitor.Text( 'Mouse (Event): ContextMenu' );
 			// Pre
 			MouseEvent.preventDefault();
-			MousePressedToogle = true;
+			MousePressedToggle = true;
 			// Calculate Mouse
 			CalculateMouse( MouseEvent );
 			// Calculate Objects
@@ -173,7 +176,7 @@
 			// Run
 
 			// Post
-			MousePressedToogle = false;
+			MousePressedToggle = false;
 			return false;
 		});
 
@@ -182,8 +185,8 @@
 			TJSApi.Debug.MessageMonitor.Text( 'Mouse (Event): Down' );
 			// Pre
 			MouseEvent.preventDefault();
-			MousePressedToogle = true;
-			MouseMovedToogle = 0;
+			MousePressedToggle = true;
+			MouseMovedToggle = 0;
 			// Calculate Mouse
 			CalculateMouse( MouseEvent );
 			// Calculate Objects
@@ -270,8 +273,8 @@
 					// Ignore unsupported Mouse-Button
 			}
 			// Post
-			MousePressedToogle = false;
-			MouseMovedToogle = false;
+			MousePressedToggle = false;
+			MouseMovedToggle = false;
 			return false;
 		});
 
@@ -280,7 +283,7 @@
 			TJSApi.Debug.MessageMonitor.Text( 'Mouse (Event): Move' );
 			// Pre
 			MouseEvent.preventDefault();
-			( !MouseMovedToogle ? MouseMovedToogle = 1 : MouseMovedToogle++ );
+			( !MouseMovedToggle ? MouseMovedToggle = 1 : MouseMovedToggle++ );
 			// Calculate Mouse
 			CalculateMouse( MouseEvent );
 			// Calculate Objects

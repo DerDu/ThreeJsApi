@@ -58,9 +58,11 @@
 		};
 
 		var RotateScale = function() {
+			//noinspection JSConstructorReturnsPrimitive
 			return 2 * Math.PI / 60 / 60 * Speed.Rotate;
 		};
 		var ZoomScale = function() {
+			//noinspection JSConstructorReturnsPrimitive
 			return Math.pow( 0.95, Speed.Zoom );
 		};
 
