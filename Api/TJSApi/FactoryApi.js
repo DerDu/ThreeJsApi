@@ -152,6 +152,9 @@
 					},
 					Mouse: function( APIRenderer, APICamera, APIScene ) {
 						return new TJSApi.FactoryAPI.Controller.Mouse( APIRenderer, APICamera, APIScene );
+					},
+					Keyboard: function( APIRenderer, APIMouse ) {
+						return new TJSApi.FactoryAPI.Controller.Keyboard( APIRenderer, APIMouse );
 					}
 				}
 			}

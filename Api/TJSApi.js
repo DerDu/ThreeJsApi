@@ -44,8 +44,7 @@ var TJSApi = (function(){
 		var FactoryAPI = {
 			Camera: {},
 			Controller: {
-				Camera: {},
-				Device: {}
+				Camera: {}
 			},
 			Fog: {},
 			Geometry: {},

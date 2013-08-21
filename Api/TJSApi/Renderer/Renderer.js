@@ -69,15 +69,18 @@
 				return RenderDisplay;
 			} else {
 				RenderDisplay = Selector;
-				jQuery( RenderDisplay ).append( TJSObject.domElement );
+				var Screen = jQuery( RenderDisplay );
+				Screen.append( TJSObject.domElement );
+				Width( Screen.width() );
+				Height( Screen.height() );
 				return this;
 			}
 		};
 
 		// Init
-		Width( RendererWidth );
-		Height( RendererHeight );
-		Display( RenderDisplay );
+//		Width( RendererWidth );
+//		Height( RendererHeight );
+//		Display( RenderDisplay );
 
 		return {
 			TJSObject: TJSObject,

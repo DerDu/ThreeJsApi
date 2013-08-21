@@ -24,12 +24,13 @@
 	<script type="text/javascript" src="Api/TJSApi/Library/Light/Ambient.js"></script>
 
 	<script type="text/javascript" src="Api/TJSApi/Controller/Mouse.js"></script>
+	<script type="text/javascript" src="Api/TJSApi/Controller/Keyboard.js"></script>
 	<script type="text/javascript" src="Api/TJSApi/Controller/Camera/Orbit.js"></script>
 
 </head>
 <body>
 
-<div id="D1" style="border: 1px dotted red"></div>
+<div id="D1" style="border: 1px dotted red; background-color: #CCCCCC; width: 800px; height: 600px;"></div>
 
 <script type="text/javascript">
 
@@ -43,7 +44,7 @@ Engine.Renderer( Renderer ).Camera( Camera ).Scene( Scene );
 Engine.Helper().Axis( 300 );
 
 // Setup
-Engine.Renderer().Display( 'div#D1' ).Width( 800 ).Height( 600 );
+Engine.Renderer().Display( 'div#D1' ); //.Width( 1000 ).Height( 800 );
 Engine.Camera()
 	.FieldOfView( 40 )
 	.AspectRatio( Engine.Renderer().Width() / Engine.Renderer().Height() )
@@ -97,7 +98,7 @@ Engine.Scene().Add( AmbientLight );
 
 MeshCube.PositionZ( 800 );
 
-Engine.Camera().PositionZ(1000).PositionY(1000).PositionX(1000).LookAt(
+Engine.Camera().PositionZ(1300).PositionY(1300).PositionX(1300).LookAt(
 	// Engine.Scene()
 	MeshCube
 );
@@ -105,6 +106,16 @@ Engine.Camera().PositionZ(1000).PositionY(1000).PositionX(1000).LookAt(
 
 var CameraController = Engine.Factory().Controller().Camera().Orbit( Engine.Camera() );
 var MouseController = Engine.Factory().Controller().Mouse( Engine.Renderer(), Engine.Camera(), Engine.Scene() );
+var KeyboardController = Engine.Factory().Controller().Keyboard( Engine.Renderer(), MouseController );
+
+KeyboardController.Event().Down().Key(function(){
+	CameraController.Zoom().In();
+}, '+' );
+
+KeyboardController.Event().Down().Key(function(){
+	CameraController.Zoom().Out();
+}, '-' );
+
 
 
 MouseController.Event().Click().Left(function(){
@@ -147,7 +158,7 @@ Engine.Animation.Loop = function() {
 };
 
 TJSApi.Debug.PerformanceMonitor.Enable( Engine );
-//TJSApi.Debug.MessageMonitor.Enable( Engine );
+TJSApi.Debug.MessageMonitor.Enable( Engine );
 
 Engine.Animation.Run();
 

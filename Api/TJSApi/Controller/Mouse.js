@@ -40,13 +40,19 @@
 
 		var Projector = new THREE.Projector();
 
+		var MousePositionOn = false;
+		var PositionOn = function() {
+			//noinspection JSConstructorReturnsPrimitive
+			return MousePositionOn
+		};
+
 		var MousePointer;
 		var Pointer = function() { return MousePointer; };
 
-		var MousePosition2D;
+		var MousePosition2D = { x: 0, y: 0 };
 		var Position2D = function() { return { X: MousePosition2D.x, Y: MousePosition2D.y } };
 
-		var MousePosition3D;
+		var MousePosition3D = { x: 0, y: 0, z: 0 };
 		var Position3D = function() { return { X: MousePosition3D.x, Y: MousePosition3D.y, Z: MousePosition3D.z } };
 
 		var ObjectList = [];
@@ -161,7 +167,11 @@
 		};
 
 		// Init
-		var Display = jQuery( jQuery( APIRenderer.Display() ) );
+		var Display = jQuery( APIRenderer.Display() );
+
+		// Pointer on Display ?
+		Display.on( 'mouseenter', function() { MousePositionOn = true } );
+		Display.on( 'mouseleave', function() { MousePositionOn = false } );
 
 		Display.on( 'contextmenu', function( MouseEvent ) {
 			// Debug
@@ -341,6 +351,7 @@
 		return {
 			MousePosition2D: Position2D,
 			MousePosition3D: Position3D,
+			MousePositionOn: PositionOn,
 			MousePointer: Pointer,
 			MouseEvent: MouseEvent,
 
