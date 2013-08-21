@@ -40,4 +40,4 @@ This comes with a downside - It will be *less powerful*
 
 ### Usage Example:
 
-See Wiki: [Basic usage example](/wiki/Basic-usage-example)
+See Wiki: [Basic usage example](https://github.com/DerDu/ThreeJsApi/wiki/Basic-usage-example)
