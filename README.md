@@ -8,6 +8,8 @@ This comes with a downside - It will be *less powerful*
 
 Feel free to suggest code or ideas under [Issues](https://github.com/DerDu/ThreeJsApi/issues) which i will mainly use as a kind of code coverage tracker
 
+Ps: If you like this project, [Star](https://github.com/DerDu/ThreeJsApi/star) it ^^
+
 ----
 
 ### Files:
