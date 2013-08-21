@@ -40,54 +40,105 @@
 		return {
 			Renderer: function() {
 				return {
-					WebGL: function() { return TJSApi.FactoryTJS.Renderer.Use.WebGL(); },
-					Canvas: function() { return TJSApi.FactoryTJS.Renderer.Use.Canvas(); }
+					WebGL: function() {
+						return TJSApi.FactoryAPI.Renderer(
+							TJSApi.FactoryTJS.Renderer.Use.WebGL()
+						);
+					},
+					Canvas: function() {
+						return TJSApi.FactoryAPI.Renderer(
+							TJSApi.FactoryTJS.Renderer.Use.Canvas()
+						);
+					}
 				}
 			},
 			Camera: function() {
 				return {
-					Basic: function() { return TJSApi.FactoryTJS.Camera.Use.Basic(); },
-					Perspective: function() { return TJSApi.FactoryTJS.Camera.Use.Perspective(); }
+					Basic: function() {
+						return TJSApi.FactoryAPI.Camera(
+							TJSApi.FactoryTJS.Camera.Use.Basic()
+						);
+					},
+					Perspective: function() {
+						return TJSApi.FactoryAPI.Camera(
+							TJSApi.FactoryTJS.Camera.Use.Perspective()
+						);
+					}
 				}
 			},
 			Scene: function() {
-				return TJSApi.FactoryTJS.Scene();
+				return TJSApi.FactoryAPI.Scene(
+					TJSApi.FactoryTJS.Scene()
+				);
 			},
 			Geometry: function(){
 				return {
-					Cube: function( Width, Height, Depth, WidthSegments, HeightSegments, DepthSegments ) { return TJSApi.FactoryTJS.Geometry.Use.Cube( Width, Height, Depth, WidthSegments, HeightSegments, DepthSegments ); },
-					Torus: function( Radius, TubeRadius ) { return TJSApi.FactoryTJS.Geometry.Use.Torus( Radius, TubeRadius ); },
-					Plane: function( Width, Height, WidthSegments, HeightSegments ) { return TJSApi.FactoryTJS.Geometry.Use.Plane( Width, Height, WidthSegments, HeightSegments ); },
-					Bird: function() { return TJSApi.FactoryTJS.Geometry.Use.Bird(); }
+					Cube: function( Width, Height, Depth, WidthSegments, HeightSegments, DepthSegments ) {
+						return TJSApi.FactoryAPI.Geometry.Cube(
+							TJSApi.FactoryTJS.Geometry.Use.Cube( Width, Height, Depth, WidthSegments, HeightSegments, DepthSegments )
+						);
+					},
+					Torus: function( Radius, TubeRadius ) {
+						return TJSApi.FactoryAPI.Geometry.Torus(
+							TJSApi.FactoryTJS.Geometry.Use.Torus( Radius, TubeRadius )
+						);
+					},
+					Plane: function( Width, Height, WidthSegments, HeightSegments ) {
+						return TJSApi.FactoryAPI.Geometry.Plane(
+							TJSApi.FactoryTJS.Geometry.Use.Plane( Width, Height, WidthSegments, HeightSegments )
+						);
+					}
 				}
 			},
 			Material: function(){
 				return {
 					Mesh: function() {
 						return {
-							Basic: function() { return TJSApi.FactoryTJS.Material.Use.Mesh.Type.Basic( '#6666FF' ); },
-							Lambert: function() { return TJSApi.FactoryTJS.Material.Use.Mesh.Type.Lambert( '#6666FF' ); },
-							Phong: function() { return TJSApi.FactoryTJS.Material.Use.Mesh.Type.Phong( '#6666FF' ); }
+							Basic: function() {
+								return TJSApi.FactoryAPI.Material.Mesh(
+									TJSApi.FactoryTJS.Material.Use.Mesh.Type.Basic( '#6666FF' )
+								);
+							},
+							Lambert: function() {
+								return TJSApi.FactoryAPI.Material.Mesh(
+									TJSApi.FactoryTJS.Material.Use.Mesh.Type.Lambert( '#6666FF' )
+								);
+							},
+							Phong: function() {
+								return TJSApi.FactoryAPI.Material.Mesh(
+									TJSApi.FactoryTJS.Material.Use.Mesh.Type.Phong( '#6666FF' )
+								);
+							}
 						}
 					}
 				}
 			},
 			Texture: function( File ) {
-				return TJSApi.FactoryTJS.Texture( File );
+				return TJSApi.FactoryAPI.Texture(
+					TJSApi.FactoryTJS.Texture( File )
+				);
 			},
 			Fog: function( Color, Near, Far ) {
-				return TJSApi.FactoryTJS.Fog( Color, Near, Far );
+				return TJSApi.FactoryAPI.Fog(
+					TJSApi.FactoryTJS.Fog( Color, Near, Far )
+				);
 			},
 			Object: function() {
 				return {
-					Mesh: function( Geometry, Material ) { return TJSApi.FactoryTJS.Object.Use.Mesh( Geometry, Material ); }
+					Mesh: function( Geometry, Material ) {
+						return TJSApi.FactoryAPI.Object.Mesh(
+							TJSApi.FactoryTJS.Object.Use.Mesh( Geometry, Material )
+						);
+					}
 				}
 			},
 			Controller: function() {
 				return {
 					Camera: function() {
 						return {
-							Orbit: function( APICamera ){ return new TJSApi.FactoryAPI.Controller.Camera.Orbit( APICamera ) }
+							Orbit: function( APICamera ){
+								return new TJSApi.FactoryAPI.Controller.Camera.Orbit( APICamera )
+							}
 						}
 					},
 					Mouse: function( APIRenderer, APICamera, APIScene ) {
@@ -98,7 +149,9 @@
 			Light: function() {
 				return {
 					Ambient: function() {
-						return TJSApi.FactoryTJS.Light.Use.Ambient();
+						return TJSApi.FactoryAPI.Light.Ambient(
+							TJSApi.FactoryTJS.Light.Use.Ambient()
+						);
 					}
 				}
 			}

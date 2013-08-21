@@ -36,127 +36,73 @@
  */
 
 (function(){
+
 	TJSApi.FactoryTJS.Renderer = function() {
 		var Factory = {
 			WebGL: function() {
-				return TJSApi.FactoryAPI.Renderer( new THREE.WebGLRenderer( {antialias: true} ) );
+				return new THREE.WebGLRenderer( {antialias: true} );
 			},
 			Canvas: function() {
-				return TJSApi.FactoryAPI.Renderer( new THREE.CanvasRenderer() );
+				return new THREE.CanvasRenderer();
 			}
 		};
 		return {
 			Use: Factory
 		}
 	}();
+
 	TJSApi.FactoryTJS.Camera = function() {
 		var Factory = {
 			Basic: function() {
-				return TJSApi.FactoryAPI.Camera( new THREE.Camera() );
+				return new THREE.Camera();
 			},
 			Perspective: function() {
-				return TJSApi.FactoryAPI.Camera( new THREE.PerspectiveCamera() );
+				return new THREE.PerspectiveCamera();
 			}
 		};
 		return {
 			Use: Factory
 		}
 	}();
+
 	TJSApi.FactoryTJS.Scene = function() {
-		return TJSApi.FactoryAPI.Scene( new THREE.Scene() );
+		return new THREE.Scene();
 	};
+
 	TJSApi.FactoryTJS.Geometry = function() {
 		var Factory = {
 			Cube: function( Width, Height, Depth, WidthSegments, HeightSegments, DepthSegments ) {
-				return TJSApi.FactoryAPI.Geometry.Cube( new THREE.CubeGeometry( Width, Height, Depth, WidthSegments, HeightSegments, DepthSegments ) );
+				return new THREE.CubeGeometry( Width, Height, Depth, WidthSegments, HeightSegments, DepthSegments );
+			},
+			Sphere: function(  Radius, WidthSegments, HeightSegments, PhiStart, PhiLength, ThetaStart, ThetaLength ) {
+				return new THREE.SphereGeometry( Radius, WidthSegments, HeightSegments, PhiStart, PhiLength, ThetaStart, ThetaLength );
 			},
 			Torus: function( Radius, TubeLength, RadialSegments, TubularSegments ) {
-				return TJSApi.FactoryAPI.Geometry.Torus( new THREE.TorusGeometry( Radius, TubeLength, RadialSegments, TubularSegments ) );
+				return new THREE.TorusGeometry( Radius, TubeLength, RadialSegments, TubularSegments );
 			},
 			Plane: function( Width, Height, WidthSegments, HeightSegments ) {
-				return TJSApi.FactoryAPI.Geometry.Plane( new THREE.PlaneGeometry( Width, Height, WidthSegments, HeightSegments ) );
-			},
-			Grid: function( Width, Height, Size, LineMaterial ) {
-// TODO: Grid Geometry
-				var Buffer = ( Width > Height ? Width : Height );
-
-				var Geometry = new THREE.Geometry();
-				Geometry.vertices.push( new THREE.Vector3( - Buffer, 0, 0 ) );
-				Geometry.vertices.push( new THREE.Vector3( Buffer, 0, 0 ) );
-
-				var LineCount = ( Buffer / Size * 2 );
-
-				return TJSApi.FactoryAPI.Geometry.Grid(
-
-				);
-			},
-			Bird: function() {
-				var Bird = function () {
-					var scope = this;
-
-					THREE.Geometry.call( this );
-
-					v(   5,   0,   0 );
-					v( - 5, - 2,   1 );
-					v( - 5,   0,   0 );
-					v( - 5, - 2, - 1 );
-
-					v(   0,   2, - 6 );
-					v(   0,   2,   6 );
-					v(   2,   0,   0 );
-					v( - 3,   0,   0 );
-
-					f3( 0, 2, 1 );
-					// f3( 0, 3, 2 );
-
-					f3( 4, 7, 6 );
-					f3( 5, 6, 7 );
-
-					this.computeCentroids();
-					this.computeFaceNormals();
-
-					function v( x, y, z ) {
-						scope.vertices.push( new THREE.Vector3( x, y, z ) );
-					}
-					function f3( a, b, c ) {
-						scope.faces.push( new THREE.Face3( a, b, c ) );
-					}
-				};
-				Bird.prototype = Object.create( THREE.Geometry.prototype );
-
-				return TJSApi.FactoryAPI.Geometry.Bird( new Bird() );
+				return new THREE.PlaneGeometry( Width, Height, WidthSegments, HeightSegments );
 			}
 		};
 		return {
 			Use: Factory
 		}
 	}();
+
 	TJSApi.FactoryTJS.Material = function() {
 		var Factory = {
 			Mesh: function() {
 				var Factory = {
 					Basic: function( Color ) {
-						return TJSApi.FactoryAPI.Material.Mesh( new THREE.MeshBasicMaterial( {color: Color} ) );
+						return new THREE.MeshBasicMaterial( {color: Color} );
 					},
 					Lambert: function( Color ) {
-						return TJSApi.FactoryAPI.Material.Mesh( new THREE.MeshLambertMaterial( {color: Color} ) );
+						return new THREE.MeshLambertMaterial( {color: Color} );
 					},
 					Phong: function( Color ) {
-						return TJSApi.FactoryAPI.Material.Mesh( new THREE.MeshPhongMaterial( {color: Color} ) );
+						return new THREE.MeshPhongMaterial( {color: Color} );
 					}
 				};
-				return {
-					Type: Factory
-				}
-			}(),
-			Line: function() {
-				var Factory = {};
-				return {
-					Type: Factory
-				}
-			}(),
-			Particle: function() {
-				var Factory = {};
 				return {
 					Type: Factory
 				}
@@ -166,30 +112,36 @@
 			Use: Factory
 		}
 	}();
+
 	TJSApi.FactoryTJS.Texture = function( File ) {
-		return TJSApi.FactoryAPI.Texture( new THREE.ImageUtils.loadTexture( File ) );
+		//noinspection JSPotentiallyInvalidConstructorUsage
+		return new THREE.ImageUtils.loadTexture( File );
 	};
+
 	TJSApi.FactoryTJS.Fog = function( Color, Near, Far ) {
-		return TJSApi.FactoryAPI.Fog( new THREE.Fog( Color, Near, Far ) );
+		return new THREE.Fog( Color, Near, Far );
 	};
+
 	TJSApi.FactoryTJS.Light = function() {
 		var Factory = {
 			Ambient: function() {
-				return TJSApi.FactoryAPI.Light.Ambient( new THREE.AmbientLight() );
+				return new THREE.AmbientLight();
 			}
 		};
 		return {
 			Use: Factory
 		}
 	}();
+
 	TJSApi.FactoryTJS.Object = function() {
 		var Factory = {
 			Mesh: function( APIGeometry, APIMaterial ) {
-				return TJSApi.FactoryAPI.Object.Mesh( new THREE.Mesh( APIGeometry.TJSObject, APIMaterial.TJSObject ) );
+				return new THREE.Mesh( APIGeometry.TJSObject, APIMaterial.TJSObject );
 			}
 		};
 		return {
 			Use: Factory
 		}
 	}();
+
 })();

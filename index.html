@@ -51,12 +51,10 @@ Engine.Scene().Add( Camera );
 var GeometryTorus = Engine.Factory().Geometry().Torus( 400, 20 );
 var GeometryCube = Engine.Factory().Geometry().Cube( 300, 300, 300 );
 var GeometryPlane = Engine.Factory().Geometry().Plane( 1000, 1000 );
-var GeometryBird = Engine.Factory().Geometry().Bird();
 
 var MaterialTorus = Engine.Factory().Material().Mesh().Basic();
 var MaterialCube = Engine.Factory().Material().Mesh().Phong();
 var MaterialPlane = Engine.Factory().Material().Mesh().Basic();
-var MaterialBird = Engine.Factory().Material().Mesh().Basic();
 
 var MeshTorus = Engine.Factory().Object().Mesh( GeometryTorus, MaterialTorus );
 MeshTorus.MouseClickable( true );
@@ -64,8 +62,6 @@ var MeshCube = Engine.Factory().Object().Mesh( GeometryCube, MaterialCube );
 MeshCube.MouseClickable( true );
 var MeshPlane = Engine.Factory().Object().Mesh( GeometryPlane, MaterialPlane );
 MeshPlane.MouseClickable( true );
-var MeshBird = Engine.Factory().Object().Mesh( GeometryBird, MaterialBird );
-//MeshBird.MouseClickable( true );
 
 // Setup - Object
 MeshPlane.RotationX( - 90 * Math.PI / 180 );
@@ -83,7 +79,6 @@ MaterialPlane.Color('#0000FF');
 Engine.Scene().Add( MeshTorus );
 Engine.Scene().Add( MeshCube );
 Engine.Scene().Add( MeshPlane );
-Engine.Scene().Add( MeshBird );
 
 Engine.Scene().Fog(
 	Engine.Factory().Fog( '#0F0F0F', 500, 5000 )
@@ -104,7 +99,7 @@ Engine.Camera().PositionZ(1000).PositionY(1000).PositionX(1000).LookAt(
 );
 
 
-var CameraController = Engine.Factory().Controller().Camera().Orbit( Camera );
+var CameraController = Engine.Factory().Controller().Camera().Orbit( Engine.Camera() );
 var MouseController = Engine.Factory().Controller().Mouse( Engine.Renderer(), Engine.Camera(), Engine.Scene() );
 
 

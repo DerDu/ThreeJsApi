@@ -40,6 +40,11 @@
 			TJSObject: TJSObject
 		}
 	};
+	TJSApi.FactoryAPI.Geometry.Sphere = function( TJSObject ) {
+		return {
+			TJSObject: TJSObject
+		}
+	};
 	TJSApi.FactoryAPI.Geometry.Grid = function( TJSObject ) {
 		return {
 			TJSObject: TJSObject
