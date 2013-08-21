@@ -43,36 +43,47 @@ Engine.Renderer(
 		Engine.Factory().Scene()
 	);
 
-// Setup renderer
+// Setup Renderer
 
 Engine.Renderer()
 	.Display( 'jQuery-Selector of element to add the canvas' )
 	.Width( 800 )
 	.Height( 600 );
 
-// Setup camera
+// Setup Camera
 
 Engine.Camera()
 	.FieldOfView( 40 )
 	.AspectRatio(
-		Engine.Renderer()Width() / Engine.Renderer().Height()
+		Engine.Renderer().Width() / Engine.Renderer().Height()
 	)
 	.NearClippingDistance( 0.1 )
 	.FarClippingDistance( 10000 );
 
-// Setup scene
+// Setup Scene
 
 Engine.Scene().Add( Engine.Camera() );
 
-// Add a cube
-
-var Geometry = Engine.Factory().Geometry().Cube( 300, 300, 300 );
+// Add a Cube
 var Material = Engine.Factory().Material().Mesh().Basic();
-var Mesh = Engine.Factory().Object().Mesh( Geometry, Material );
 
-Engine.Scene().Add( Mesh );
+var Cube = Engine.Factory().Mesh().Basic(
+	Engine.Factory().Geometry().Cube( 300, 300, 300 ),
+	Material
+);
 
-// Modify cub material a little bit (after creation) maybe?
+Engine.Scene().Add( Cube );
+
+// Add a Torus (with identical Material)
+
+var Torus = Engine.Factory().Mesh().Basic(
+	Engine.Factory().Geometry().Torus( 500, 30 ),
+	Material
+);
+
+Engine.Scene().Add( Torus );
+
+// Modify Cube ( AND Torus ) Material a little bit (after creation) maybe?
 
 Material.Color('#00FF00');
 Material.WireFrame(true);
