@@ -8,17 +8,19 @@
 	<script type="text/javascript" src="ThreeJs/examples/js/libs/stats.min.js"></script>
 
 	<script type="text/javascript" src="Api/TJSApi.js"></script>
-	<script type="text/javascript" src="Api/FactoryTJS.js"></script>
-	<script type="text/javascript" src="Api/FactoryAPI.js"></script>
-	<script type="text/javascript" src="Api/FactoryAPI/Camera.js"></script>
-	<script type="text/javascript" src="Api/FactoryAPI/Fog.js"></script>
-	<script type="text/javascript" src="Api/FactoryAPI/Geometry.js"></script>
-	<script type="text/javascript" src="Api/FactoryAPI/Material.js"></script>
-	<script type="text/javascript" src="Api/FactoryAPI/Mouse.js"></script>
-	<script type="text/javascript" src="Api/FactoryAPI/Object.js"></script>
-	<script type="text/javascript" src="Api/FactoryAPI/Renderer.js"></script>
-	<script type="text/javascript" src="Api/FactoryAPI/Scene.js"></script>
-	<script type="text/javascript" src="Api/FactoryAPI/Texture.js"></script>
+	<script type="text/javascript" src="Api/TJSApi/FactoryTjs.js"></script>
+	<script type="text/javascript" src="Api/TJSApi/FactoryApi.js"></script>
+	<script type="text/javascript" src="Api/TJSApi/Renderer/Camera.js"></script>
+	<script type="text/javascript" src="Api/TJSApi/Renderer/Renderer.js"></script>
+	<script type="text/javascript" src="Api/TJSApi/Renderer/Scene.js"></script>
+	<script type="text/javascript" src="Api/TJSApi/Renderer/Fog.js"></script>
+	<script type="text/javascript" src="Api/TJSApi/Object/Texture.js"></script>
+	<script type="text/javascript" src="Api/TJSApi/Object/Geometry.js"></script>
+	<script type="text/javascript" src="Api/TJSApi/Object/Material.js"></script>
+	<script type="text/javascript" src="Api/TJSApi/Object/Object.js"></script>
+	<script type="text/javascript" src="Api/TJSApi/Object/Light/Ambient.js"></script>
+	<script type="text/javascript" src="Api/TJSApi/Controller/Mouse.js"></script>
+	<script type="text/javascript" src="Api/TJSApi/Controller/Camera/Orbit.js"></script>
 
 </head>
 <body>
@@ -27,39 +29,32 @@
 
 <script type="text/javascript">
 
-// Instance
 var Engine = TJSApi.Engine();
-
-
 var Renderer = Engine.Factory().Renderer().WebGL();
 var Camera = Engine.Factory().Camera().Perspective();
 var Scene = Engine.Factory().Scene();
 
 // Init
 Engine.Renderer( Renderer ).Camera( Camera ).Scene( Scene );
-
 Engine.Helper().Axis( 300 );
 
 // Setup
 Engine.Renderer().Display( 'div#D1' ).Width( 800 ).Height( 600 );
-
 Engine.Camera()
 	.FieldOfView( 40 )
 	.AspectRatio( Engine.Renderer().Width() / Engine.Renderer().Height() )
 	.NearClippingDistance( 0.1 )
 	.FarClippingDistance( 10000 );
-
 Engine.Scene().Add( Camera );
 
 // Objects
-
 var GeometryTorus = Engine.Factory().Geometry().Torus( 400, 20 );
 var GeometryCube = Engine.Factory().Geometry().Cube( 300, 300, 300 );
 var GeometryPlane = Engine.Factory().Geometry().Plane( 1000, 1000 );
 var GeometryBird = Engine.Factory().Geometry().Bird();
 
 var MaterialTorus = Engine.Factory().Material().Mesh().Basic();
-var MaterialCube = Engine.Factory().Material().Mesh().Basic();
+var MaterialCube = Engine.Factory().Material().Mesh().Phong();
 var MaterialPlane = Engine.Factory().Material().Mesh().Basic();
 var MaterialBird = Engine.Factory().Material().Mesh().Basic();
 
@@ -76,13 +71,13 @@ var MeshBird = Engine.Factory().Object().Mesh( GeometryBird, MaterialBird );
 MeshPlane.RotationX( - 90 * Math.PI / 180 );
 
 MaterialTorus.Color('#FF0000');
-MaterialTorus.WireFrame(true);
+//MaterialTorus.WireFrame(true);
 
 MaterialCube.Color('#00FF00');
-MaterialCube.WireFrame(true);
+//MaterialCube.WireFrame(true);
 
 MaterialPlane.Color('#0000FF');
-MaterialPlane.WireFrame(true);
+//MaterialPlane.WireFrame(true);
 
 // Scene
 Engine.Scene().Add( MeshTorus );
@@ -90,58 +85,70 @@ Engine.Scene().Add( MeshCube );
 Engine.Scene().Add( MeshPlane );
 Engine.Scene().Add( MeshBird );
 
+Engine.Scene().Fog(
+	Engine.Factory().Fog( '#0F0F0F', 500, 5000 )
+);
+
+// Let there be..
+var AmbientLight = Engine.Factory().Light().Ambient();
+AmbientLight.Color('#FFF0F0');
+Engine.Scene().Add( AmbientLight );
+
 // Setup - Camera
 
-Engine.Camera().PositionZ(1000).PositionY(1000).PositionX(1000).LookAt( Engine.Scene() );
+MeshCube.PositionZ( 800 );
+
+Engine.Camera().PositionZ(1000).PositionY(1000).PositionX(1000).LookAt(
+	// Engine.Scene()
+	MeshCube
+);
 
 
-var Mouse = Engine.Factory().Mouse( Engine.Renderer(), Engine.Camera(), Engine.Scene() );
+var CameraController = Engine.Factory().Controller().Camera().Orbit( Camera );
+var MouseController = Engine.Factory().Controller().Mouse( Engine.Renderer(), Engine.Camera(), Engine.Scene() );
 
+
+MouseController.Event().Click().Left(function(){
+	Camera.LookAt( MouseController.Target().Object() );
+});
 
 var MousePressPosition = { X: 0, Y: 0, Z: 0 };
-
-Mouse.Event().Click().Left(function(){
-	Camera.LookAt( Mouse.Event().Object() );
+MouseController.Event().Press().Right(function(){
+	MousePressPosition = MouseController.MousePosition2D();
 });
-
-Mouse.Event().Press().Right(function(){
-	MousePressPosition = Mouse.MousePosition2D();
-});
-
-Mouse.Event().Move().Right(function(){
-	var MouseMovePosition = Mouse.MousePosition2D();
+MouseController.Event().Move().Right(function(){
+	var MouseMovePosition = MouseController.MousePosition2D();
 	if( MouseMovePosition.X < MousePressPosition.X ) {
-		Camera.Controller( 0, 0.03, 0 );
+		CameraController.Rotate().Left();
 	} else if( MouseMovePosition.X > MousePressPosition.X ) {
-		Camera.Controller( 0, -0.03, 0 );
+		CameraController.Rotate().Right();
 	}
 	if( MouseMovePosition.Y < MousePressPosition.Y ) {
-		Camera.Controller( -0.02, 0, 0 );
+		CameraController.Rotate().Up();
 	} else if( MouseMovePosition.Y > MousePressPosition.Y ) {
-		Camera.Controller( 0.02, 0, 0 );
+		CameraController.Rotate().Down();
 	}
-	MousePressPosition = Mouse.MousePosition2D();
+	MousePressPosition = MouseController.MousePosition2D();
 });
 
-Mouse.Event().Wheel().Up(function(){
-	Camera.Controller( 0, 0, -100 );
+MouseController.Event().Wheel().Up(function(){
+	CameraController.Zoom().In();
 });
-
-Mouse.Event().Wheel().Down(function(){
-	Camera.Controller( 0, 0, 100 );
+MouseController.Event().Wheel().Down(function(){
+	CameraController.Zoom().Out();
 });
 
 // Render
 Engine.Animation.Loop = function() {
-//	MeshTorus.RotationX( MeshTorus.RotationX() + 0.01 );
-//	MeshCube.RotationY( MeshCube.RotationY() + 0.01 );
-//	Camera.Controller( 0, 0.02, 0 );
+	MeshTorus.RotationX( MeshTorus.RotationX() + 0.01 );
+	MeshCube.RotationY( MeshCube.RotationY() + 0.01 );
+
+	CameraController.Rotate().Right( 0.005 );
+	//CameraController.Zoom().Out( 0.1 );
 };
 
 TJSApi.Debug.PerformanceMonitor.Enable( Engine );
 //TJSApi.Debug.MessageMonitor.Enable( Engine );
-
-//Camera.LookAt( MeshCube );
 
 Engine.Animation.Run();
 

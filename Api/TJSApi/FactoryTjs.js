@@ -169,9 +169,19 @@
 	TJSApi.FactoryTJS.Texture = function( File ) {
 		return TJSApi.FactoryAPI.Texture( new THREE.ImageUtils.loadTexture( File ) );
 	};
-	TJSApi.FactoryTJS.Fog = function() {
-		return TJSApi.FactoryAPI.Fog( new THREE.Fog() );
+	TJSApi.FactoryTJS.Fog = function( Color, Near, Far ) {
+		return TJSApi.FactoryAPI.Fog( new THREE.Fog( Color, Near, Far ) );
 	};
+	TJSApi.FactoryTJS.Light = function() {
+		var Factory = {
+			Ambient: function() {
+				return TJSApi.FactoryAPI.Light.Ambient( new THREE.AmbientLight() );
+			}
+		};
+		return {
+			Use: Factory
+		}
+	}();
 	TJSApi.FactoryTJS.Object = function() {
 		var Factory = {
 			Mesh: function( APIGeometry, APIMaterial ) {

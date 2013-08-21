@@ -43,10 +43,14 @@ var TJSApi = (function(){
 		// TJSApi Factory
 		var FactoryAPI = {
 			Camera: {},
+			Controller: {
+				Camera: {},
+				Device: {}
+			},
 			Fog: {},
 			Geometry: {},
+			Light: {},
 			Material: {},
-			Mouse: {},
 			Object: {},
 			Renderer: {},
 			Scene: {},
@@ -211,6 +215,9 @@ var TJSApi = (function(){
 					return this.Convert.ToAPI(
 						this.Convert.ToTJS( A ).add( this.Convert.ToTJS( B ) )
 					);
+				},
+				Length: function( V ) {
+					return window.Math.sqrt( V.X * V.X + V.Y * V.Y + V.Z * V.Z );
 				},
 				Convert: {
 					ToTJS: ConvertAPIVectorToTJSVector3,

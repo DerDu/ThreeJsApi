@@ -53,9 +53,6 @@
 			Scene: function() {
 				return TJSApi.FactoryTJS.Scene();
 			},
-			Mouse: function( Renderer, Camera, Scene ) {
-				return TJSApi.FactoryAPI.Mouse( Renderer, Camera, Scene );
-			},
 			Geometry: function(){
 				return {
 					Cube: function( Width, Height, Depth, WidthSegments, HeightSegments, DepthSegments ) { return TJSApi.FactoryTJS.Geometry.Use.Cube( Width, Height, Depth, WidthSegments, HeightSegments, DepthSegments ); },
@@ -78,12 +75,31 @@
 			Texture: function( File ) {
 				return TJSApi.FactoryTJS.Texture( File );
 			},
-			Fog: function() {
-				return TJSApi.FactoryTJS.Fog();
+			Fog: function( Color, Near, Far ) {
+				return TJSApi.FactoryTJS.Fog( Color, Near, Far );
 			},
 			Object: function() {
 				return {
 					Mesh: function( Geometry, Material ) { return TJSApi.FactoryTJS.Object.Use.Mesh( Geometry, Material ); }
+				}
+			},
+			Controller: function() {
+				return {
+					Camera: function() {
+						return {
+							Orbit: function( APICamera ){ return new TJSApi.FactoryAPI.Controller.Camera.Orbit( APICamera ) }
+						}
+					},
+					Mouse: function( APIRenderer, APICamera, APIScene ) {
+						return new TJSApi.FactoryAPI.Controller.Mouse( APIRenderer, APICamera, APIScene );
+					}
+				}
+			},
+			Light: function() {
+				return {
+					Ambient: function() {
+						return TJSApi.FactoryTJS.Light.Use.Ambient();
+					}
 				}
 			}
 		}

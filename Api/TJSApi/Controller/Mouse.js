@@ -36,7 +36,7 @@
  */
 
 (function(){
-	TJSApi.FactoryAPI.Mouse = function( APIObjectRenderer, APIObjectCamera, APIObjectScene ) {
+	TJSApi.FactoryAPI.Controller.Mouse = function( APIRenderer, APICamera, APIScene ) {
 
 		var Projector = new THREE.Projector();
 
@@ -101,20 +101,20 @@
 			);
 			// Calculate Position 3D
 			MousePosition3D = new THREE.Vector3(
-				( MousePosition2D.x / APIObjectRenderer.Width() ) *2 -1,
-				- ( MousePosition2D.y / APIObjectRenderer.Height() ) *2 +1,
+				( MousePosition2D.x / APIRenderer.Width() ) *2 -1,
+				- ( MousePosition2D.y / APIRenderer.Height() ) *2 +1,
 				0.5
 			);
-			Projector.unprojectVector( MousePosition3D, APIObjectCamera.TJSObject );
+			Projector.unprojectVector( MousePosition3D, APICamera.TJSObject );
 			// Calculate Direction Ray 3D
 			var RayPosition3D = MousePosition3D.clone();
-			MousePointer = new THREE.Raycaster( APIObjectCamera.TJSObject.position, RayPosition3D.sub( APIObjectCamera.TJSObject.position ).normalize() );
+			MousePointer = new THREE.Raycaster( APICamera.TJSObject.position, RayPosition3D.sub( APICamera.TJSObject.position ).normalize() );
 		};
 
 		var CalculateObjects = function() {
 			// Find Clicked Objects (API)
-			var TJSObjectList = MousePointer.intersectObjects( APIObjectScene.Clickable.TJSObjects() );
-			var APIObjectList = APIObjectScene.Clickable.APIObjects();
+			var TJSObjectList = MousePointer.intersectObjects( APIScene.Clickable.TJSObjects() );
+			var APIObjectList = APIScene.Clickable.APIObjects();
 			ObjectList = [];
 			jQuery( TJSObjectList ).each( function( IndexTJS, ObjectTJS ) {
 				var ObjectAPI = APIObjectList[ObjectTJS.object.id];
@@ -158,7 +158,7 @@
 		};
 
 		// Init
-		var Display = jQuery( jQuery( APIObjectRenderer.Display() ) );
+		var Display = jQuery( jQuery( APIRenderer.Display() ) );
 
 		Display.on( 'contextmenu', function( MouseEvent ) {
 			// Debug
@@ -381,9 +381,12 @@
 							Up: RegisterEventWheelUp,
 							Down: RegisterEventWheelDown
 						}
-					},
-					Object: PointerObject,
-					ObjectList: PointerObjectList
+					}
+				}
+			},
+			Target: function() {
+				return {
+					Object: function() { return PointerObject(); }
 				}
 			}
 
