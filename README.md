@@ -1,3 +1,11 @@
+### Goal:
+
+##### Make __three.js__ *easier to use!*
+
+This comes with a downside - It will be *less powerful*
+
+(solved in: Advanced objects [Wiki])
+
 ### Files:
 
 ##### Basic (Required):
