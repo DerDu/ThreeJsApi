@@ -1,96 +1,100 @@
-#### Trying to write a little more object-oriented / combined API for ThreeJs ...
+### Files:
 
----
+##### Basic (Required):
+
+	- jQuery library
+	- ThreeJs library
+
+##### Api (Required):
+
+	- TJSApi.js
+	- TJSApi/FactoryTjs.js
+	- TJSApi/FactoryApi.js
+	- TJSApi/FactoryAPI/Renderer/Renderer.js
+	- TJSApi/FactoryAPI/Renderer/Camera.js
+	- TJSApi/FactoryAPI/Renderer/Scene.js
+	- TJSApi/FactoryAPI/Renderer/Fog.js
+	- TJSApi/FactoryAPI/Library/Geometry.js
+	- TJSApi/FactoryAPI/Library/Material.js
+	- TJSApi/FactoryAPI/Library/Texture.js
+	- TJSApi/FactoryAPI/Library/Mesh.js
+	- TJSApi/FactoryAPI/Library/Light/Ambient.js
+	- TJSApi/FactoryAPI/Controller/Mouse.js
+	- TJSApi/FactoryAPI/Controller/Camera/Orbit.js
+
+##### Debug:
+
+	- Stats (ThreeJs)
 
 ### Usage:
 
 ```php
-// Create engine instance
+// Create Engine instance
 
 var Engine = TJSApi.Engine();
 
-// Create essential objects
+// Init Engine
 
-var Renderer = Engine.Factory().Renderer().WebGL();
-var Camera = Engine.Factory().Camera().Perspective();
-var Scene = Engine.Factory().Scene();
-
-// Init engine
-
-Engine.Renderer( Renderer ).Camera( Camera ).Scene( Scene );
+Engine.Renderer(
+		Engine.Factory().Renderer().WebGL()
+	).Camera(
+		Engine.Factory().Camera().Perspective()
+	).Scene(
+		Engine.Factory().Scene()
+	);
 
 // Setup renderer
 
-Engine.Renderer().Display( 'jQuery-Selector of element to add the canvas' ).Width( 800 ).Height( 600 );
+Engine.Renderer()
+	.Display( 'jQuery-Selector of element to add the canvas' )
+	.Width( 800 )
+	.Height( 600 );
 
 // Setup camera
 
 Engine.Camera()
 	.FieldOfView( 40 )
-	.AspectRatio( Engine.Renderer().Width() / Engine.Renderer().Height() )
+	.AspectRatio(
+		Engine.Renderer()Width() / Engine.Renderer().Height()
+	)
 	.NearClippingDistance( 0.1 )
 	.FarClippingDistance( 10000 );
 
 // Setup scene
 
-Engine.Scene().Add( Camera );
+Engine.Scene().Add( Engine.Camera() );
 
 // Add a cube
 
-var GeometryCube = Engine.Factory().Geometry().Cube( 300, 300, 300 );
-var MaterialCube = Engine.Factory().Material().Mesh().Basic();
-var MeshCube = Engine.Factory().Object().Mesh( GeometryCube, MaterialCube );
+var Geometry = Engine.Factory().Geometry().Cube( 300, 300, 300 );
+var Material = Engine.Factory().Material().Mesh().Basic();
+var Mesh = Engine.Factory().Object().Mesh( Geometry, Material );
 
-Engine.Scene().Add( MeshCube );
+Engine.Scene().Add( Mesh );
 
 // Modify cub material a little bit (after creation) maybe?
 
-MaterialCube.Color('#00FF00');
-MaterialCube.WireFrame(true);
+Material.Color('#00FF00');
+Material.WireFrame(true);
 
 // Lets get a better view..
 
-Engine.Camera().PositionZ(1000).PositionY(1000).PositionX(1000).LookAt( Scene );
-
+Engine.Camera()
+	.PositionZ(1000)
+	.PositionY(1000)
+	.PositionX(1000)
+	.LookAt( Scene );
 
 // Show me!
 
 Engine.Animation.Loop = function() {
-	MeshCube.RotationY( MeshCube.RotationY() + 0.01 );
+	Mesh.RotationY( Mesh.RotationY() + 0.01 );
 };
 
 // Extra information
-TJSApi.Debug.PerformanceMonitor.Enable( Engine );
-TJSApi.Debug.MessageMonitor.Enable( Engine );
+// TJSApi.Debug.PerformanceMonitor.Enable( Engine );
+// TJSApi.Debug.MessageMonitor.Enable( Engine );
 
 // Go!
 Engine.Animation.Run();
 ```
-
----
-
-### Files:
-
-##### Basic (Required):
-
-	- jQuery
-	- ThreeJs
-
-##### Api (Required):
-
-	- TJSApi
-	- FactoryTJS
-	- FactoryAPI
-	- FactoryAPI/Camera
-	- FactoryAPI/Fog
-	- FactoryAPI/Geometry
-	- FactoryAPI/Material
-	- FactoryAPI/Mouse
-	- FactoryAPI/Object
-	- FactoryAPI/Renderer
-	- FactoryAPI/Scene
-	- FactoryAPI/Texture
-
-##### Debug:
-
-	- Stats (ThreeJs)

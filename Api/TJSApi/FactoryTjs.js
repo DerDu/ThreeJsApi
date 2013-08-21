@@ -133,9 +133,9 @@
 		}
 	}();
 
-	TJSApi.FactoryTJS.Object = function() {
+	TJSApi.FactoryTJS.Mesh = function() {
 		var Factory = {
-			Mesh: function( APIGeometry, APIMaterial ) {
+			Basic: function( APIGeometry, APIMaterial ) {
 				return new THREE.Mesh( APIGeometry.TJSObject, APIMaterial.TJSObject );
 			}
 		};

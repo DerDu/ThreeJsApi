@@ -123,11 +123,20 @@
 					TJSApi.FactoryTJS.Fog( Color, Near, Far )
 				);
 			},
-			Object: function() {
+			Light: function() {
 				return {
-					Mesh: function( Geometry, Material ) {
-						return TJSApi.FactoryAPI.Object.Mesh(
-							TJSApi.FactoryTJS.Object.Use.Mesh( Geometry, Material )
+					Ambient: function() {
+						return TJSApi.FactoryAPI.Light.Ambient(
+							TJSApi.FactoryTJS.Light.Use.Ambient()
+						);
+					}
+				}
+			},
+			Mesh: function() {
+				return {
+					Basic: function( Geometry, Material ) {
+						return TJSApi.FactoryAPI.Mesh.Basic(
+							TJSApi.FactoryTJS.Mesh.Use.Basic( Geometry, Material )
 						);
 					}
 				}
@@ -143,15 +152,6 @@
 					},
 					Mouse: function( APIRenderer, APICamera, APIScene ) {
 						return new TJSApi.FactoryAPI.Controller.Mouse( APIRenderer, APICamera, APIScene );
-					}
-				}
-			},
-			Light: function() {
-				return {
-					Ambient: function() {
-						return TJSApi.FactoryAPI.Light.Ambient(
-							TJSApi.FactoryTJS.Light.Use.Ambient()
-						);
 					}
 				}
 			}

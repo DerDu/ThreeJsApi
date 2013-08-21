@@ -36,7 +36,7 @@
  */
 
 (function(){
-	TJSApi.FactoryAPI.Object.Mesh = function( TJSObject ) {
+	TJSApi.FactoryAPI.Mesh.Basic = function( TJSObject ) {
 
 		var Position = function() {
 			return {

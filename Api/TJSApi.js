@@ -51,7 +51,7 @@ var TJSApi = (function(){
 			Geometry: {},
 			Light: {},
 			Material: {},
-			Object: {},
+			Mesh: {},
 			Renderer: {},
 			Scene: {},
 			Texture: {}
