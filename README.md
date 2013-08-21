@@ -23,16 +23,20 @@ This comes with a downside - It will be *less powerful*
 	- TJSApi/FactoryAPI/Renderer/Renderer.js
 	- TJSApi/FactoryAPI/Renderer/Camera.js
 	- TJSApi/FactoryAPI/Renderer/Scene.js
+
+##### Api (Optional):
+
 	- TJSApi/FactoryAPI/Renderer/Fog.js
 	- TJSApi/FactoryAPI/Library/Geometry.js
 	- TJSApi/FactoryAPI/Library/Material.js
 	- TJSApi/FactoryAPI/Library/Texture.js
 	- TJSApi/FactoryAPI/Library/Mesh.js
 	- TJSApi/FactoryAPI/Library/Light/Ambient.js
-	- TJSApi/FactoryAPI/Controller/Mouse.js
 	- TJSApi/FactoryAPI/Controller/Camera/Orbit.js
+	- TJSApi/FactoryAPI/Controller/Mouse.js
+	- TJSApi/FactoryAPI/Controller/Keyboard.js
 
-##### Debug:
+##### Debug (Optional):
 
 	- Stats (ThreeJs)
 
