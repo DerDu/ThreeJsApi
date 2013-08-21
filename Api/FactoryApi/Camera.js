@@ -181,6 +181,9 @@
 			DeltaTheta = ( typeof DeltaTheta == 'undefined' || DeltaPhi == null ? 0 : DeltaTheta );
 			DeltaRadius = ( typeof DeltaRadius == 'undefined' || DeltaPhi == null ? 0 : DeltaRadius );
 
+
+
+			/*
 			var Object = LookAt();
 			var ObjectPosition = Object.Position();
 			var Offset = Position();
@@ -233,7 +236,7 @@
 			PositionZ( NewPosition.Z );
 
 			LookAt( Object );
-
+*/
 		};
 
 		var Controller = function( DeltaPhi, DeltaTheta, DeltaRadius ) {
