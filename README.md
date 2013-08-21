@@ -99,7 +99,7 @@ Engine.Camera()
 // Show me!
 
 Engine.Animation.Loop = function() {
-	Mesh.RotationY( Mesh.RotationY() + 0.01 );
+	Cube.RotationY( Cube.RotationY() + 0.01 );
 };
 
 // Extra information
