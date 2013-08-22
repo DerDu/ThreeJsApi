@@ -56,6 +56,62 @@ var TJSApi = (function(){
 			Scene: {},
 			Texture: {}
 		};
+
+		var RequireBase = 'Api';
+		var RequireList= [
+			['/TJSApi/3rdParty/jQuery/jquery-1.10.2.min.js'],
+			['/TJSApi/3rdParty/ThreeJs/three.min.js'],
+			['/TJSApi/3rdParty/ThreeJs/stats.min.js'],
+			// Physics
+			['/TJSApi/3rdParty/PhysiJs/physi.js'],
+			['/TJSApi/3rdParty/AmmoJs/ammo.small.js'],
+
+			['/TJSApi/FactoryTjs.js'],
+			['/TJSApi/FactoryApi.js'],
+
+			['/TJSApi/Renderer/Camera.js'],
+			['/TJSApi/Renderer/Renderer.js'],
+			['/TJSApi/Renderer/Scene.js'],
+			['/TJSApi/Renderer/Fog.js'],
+
+			['/TJSApi/Library/Texture.js'],
+			['/TJSApi/Library/Geometry.js'],
+			['/TJSApi/Library/Material.js'],
+			['/TJSApi/Library/Mesh.js'],
+			['/TJSApi/Library/Light/Ambient.js'],
+
+			['/TJSApi/Controller/Mouse.js'],
+			['/TJSApi/Controller/Keyboard.js'],
+			['/TJSApi/Controller/Camera/Orbit.js'],
+			['/TJSApi/Controller/Object/Draggable.js'],
+		];
+
+		var RequireFile = function( Source, Callback ){
+			console.log( 'Loading: ' + Source );
+			var Head = document.getElementsByTagName( "head" )[0];
+			var Script = document.createElement( 'script' );
+			Script.src = Source;
+			Script.type = 'text/javascript';
+			//real browsers
+			Script.onload = Callback;
+			//Internet explorer
+			Script.onreadystatechange = function() {
+				if( this.readyState == 'complete' ) {
+					Callback();
+				}
+			};
+			Head.appendChild( Script );
+			RequireDone.push( Source );
+		};
+		var RequireDone = [];
+		var Require = function() {
+			var ListLength = RequireList.length;
+			var DoneLength = RequireDone.length;
+			if( DoneLength < ListLength ) {
+				RequireFile( RequireBase + RequireList[DoneLength], Require );
+			}
+		};
+
 		var Engine = function() {
 
 			var EngineRenderer;
@@ -244,6 +300,18 @@ var TJSApi = (function(){
 			}
 		};
 
+		var ReadyLoadFiles = true;
+		var Ready = function( Callback ) {
+			if( ReadyLoadFiles ) {
+				Require();
+				ReadyLoadFiles = false;
+			}
+			if( RequireList.length != RequireDone.length ) {
+				window.setTimeout( 'TJSApi.Ready('+ Callback +');', 100 );
+			} else {
+				Callback();
+			}
+		};
 
 		return {
 			Engine: Engine,
@@ -253,6 +321,9 @@ var TJSApi = (function(){
 			FactoryTJS: FactoryTJS,
 			FactoryAPI: FactoryAPI,
 
-			Math: Math
+			Math: Math,
+
+			Ready: Ready
 		}
 })();
+
