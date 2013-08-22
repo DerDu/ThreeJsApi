@@ -67,7 +67,9 @@ var MaterialPlane = Engine.Factory().Material().Mesh().Basic();
 var MeshTorus = Engine.Factory().Mesh().Basic( GeometryTorus, MaterialTorus );
 //MeshTorus.MouseClickable( true );
 var MeshCube = Engine.Factory().Mesh().Basic( GeometryCube, MaterialCube );
+var MeshCube2 = Engine.Factory().Mesh().Basic( GeometryCube, MaterialCube );
 MeshCube.MouseClickable( true );
+MeshCube2.MouseClickable( true );
 var MeshPlane = Engine.Factory().Mesh().Basic( GeometryPlane, MaterialPlane );
 //MeshPlane.MouseClickable( true );
 
@@ -86,6 +88,7 @@ MaterialPlane.Color('#0000FF');
 // Scene
 Engine.Scene().Add( MeshTorus );
 Engine.Scene().Add( MeshCube );
+Engine.Scene().Add( MeshCube2 );
 Engine.Scene().Add( MeshPlane );
 
 Engine.Scene().Fog(
@@ -129,7 +132,19 @@ var Drag = Engine.Factory().Controller().Object().Draggable( Camera, Mouse );
 	});
 	Mouse.Event().Release().Left(function(){
 		Drag.EventMouseReleased();
-		Engine.Camera().LookAt( Engine.Camera().LookAt() );
+
+		if( typeof Mouse.Target().Object() != 'undefined' ) {
+			var DropPosition = Mouse.Target().Object().Position();
+
+			var Interval = 300;
+			var GridPositionX = ( Math.ceil( DropPosition.X / Interval ) - 0.5 ) * Interval;
+			var GridPositionZ = ( Math.ceil( DropPosition.Z / Interval ) - 0.5 ) * Interval;
+
+			Mouse.Target().Object().PositionX( GridPositionX );
+			Mouse.Target().Object().PositionZ( GridPositionZ );
+		}
+
+//		Engine.Camera().LookAt( Engine.Camera().LookAt() );
 	});
 
 /** Camera - Controller ( Orbit ) */
@@ -138,15 +153,24 @@ var Orbit = Engine.Factory().Controller().Camera().Orbit( Engine.Camera() );
 // Right - Drag
 	Mouse.Event().Move().Right(function(){
 		if( Mouse.Direction().Horizontal() < 0 ) {
-			Orbit.Rotate().Left();
-		} else if( Mouse.Direction().Horizontal() > 0 ) {
 			Orbit.Rotate().Right();
+		} else if( Mouse.Direction().Horizontal() > 0 ) {
+			Orbit.Rotate().Left();
 		}
 		if( Mouse.Direction().Vertical() < 0 ) {
-			Orbit.Rotate().Up();
-		} else if( Mouse.Direction().Vertical() > 0 ) {
 			Orbit.Rotate().Down();
+		} else if( Mouse.Direction().Vertical() > 0 ) {
+			Orbit.Rotate().Up();
 		}
+	});
+
+// Right - Move
+	Mouse.Event().Move().All(function(){
+
+
+
+
+
 	});
 
 // Wheel - Zoom
@@ -168,7 +192,7 @@ Engine.Animation.Loop = function() {
 	MeshTorus.RotationX( MeshTorus.RotationX() + 0.01 );
 	MeshCube.RotationY( MeshCube.RotationY() + 0.01 );
 
-//	CameraController.Rotate().Right( 0.005 );
+//	Orbit.Rotate().Right( 0.005 );
 	//CameraController.Zoom().Out( 0.1 );
 };
 

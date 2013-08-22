@@ -214,23 +214,27 @@ var TJSApi = (function(){
 
 		var Math = {
 			Vector: {
-				Subtraction: function( A, B ) {
+				Subtraction: function( APIVectorA, APIVectorB ) {
 					return this.Convert.ToAPI(
-						this.Convert.ToTJS( A ).sub( this.Convert.ToTJS( B ) )
+						this.Convert.ToTJS( APIVectorA ).sub( this.Convert.ToTJS( APIVectorB ) )
 					);
 				},
-				Addition: function( A, B ) {
+				Addition: function( APIVectorA, APIVectorB ) {
 					return this.Convert.ToAPI(
-						this.Convert.ToTJS( A ).add( this.Convert.ToTJS( B ) )
+						this.Convert.ToTJS( APIVectorA ).add( this.Convert.ToTJS( APIVectorB ) )
 					);
 				},
-				Length: function( V ) {
+				Length: function( APIVector ) {
 					//noinspection JSConstructorReturnsPrimitive
-					return window.Math.sqrt( V.X * V.X + V.Y * V.Y + V.Z * V.Z );
+					return window.Math.sqrt(
+						  window.Math.pow( APIVector.X, 2 )
+						+ window.Math.pow( APIVector.Y, 2 )
+						+ window.Math.pow( APIVector.Z, 2 )
+					);
 				},
-				MultiplyScalar: function( Vector, Value ) {
+				MultiplyScalar: function( APIVector, Value ) {
 					return this.Convert.ToAPI(
-						this.Convert.ToTJS( Vector ).multiplyScalar( Value )
+						this.Convert.ToTJS( APIVector ).multiplyScalar( Value )
 					);
 				},
 				Convert: {
@@ -244,9 +248,11 @@ var TJSApi = (function(){
 		return {
 			Engine: Engine,
 			Factory: Factory,
+			Debug: Debug,
+
 			FactoryTJS: FactoryTJS,
 			FactoryAPI: FactoryAPI,
-			Debug: Debug,
+
 			Math: Math
 		}
 })();
