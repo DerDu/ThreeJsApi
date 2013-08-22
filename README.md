@@ -4,7 +4,7 @@
 
 This comes with a downside - It will be *less powerful*
 
-(solved in: Advanced objects [Wiki](https://github.com/DerDu/ThreeJsApi/wiki))
+(solved in: Advanced objects [Wiki](https://github.com/DerDu/ThreeJsApi/wiki/Advanced-Objects))
 
 Feel free to suggest code or ideas under [Issues](https://github.com/DerDu/ThreeJsApi/issues) which i will mainly use as a kind of code coverage tracker
 

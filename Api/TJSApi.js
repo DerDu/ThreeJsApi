@@ -135,65 +135,71 @@ var TJSApi = (function(){
 			}
 		};
 
-		var Debug = {
-			PerformanceMonitor: {
-				Enable: function( Engine ) {
-					if( typeof Stats != 'undefined' ) {
-						DebugSetting.PerformanceMonitor.Enable = true;
-						DebugSetting.PerformanceMonitor.TJSObject = new Stats();
-						DebugSetting.PerformanceMonitor.TJSObject.domElement.style.position = 'absolute';
-						DebugSetting.PerformanceMonitor.TJSObject.domElement.style.right = '0px';
-						DebugSetting.PerformanceMonitor.TJSObject.domElement.style.top = '0px';
-						DebugSetting.PerformanceMonitor.TJSObject.setMode(0);
-						jQuery( Engine.Renderer().Display() ).append( DebugSetting.PerformanceMonitor.TJSObject.domElement );
-						jQuery( Engine.Renderer().Display() ).css('position','relative');
+		var Debug = function() {
+			return {
+				PerformanceMonitor: function() {
+					return {
+						Enable: function( Engine ) {
+							if( typeof Stats != 'undefined' ) {
+								DebugSetting.PerformanceMonitor.Enable = true;
+								DebugSetting.PerformanceMonitor.TJSObject = new Stats();
+								DebugSetting.PerformanceMonitor.TJSObject.domElement.style.position = 'absolute';
+								DebugSetting.PerformanceMonitor.TJSObject.domElement.style.right = '0px';
+								DebugSetting.PerformanceMonitor.TJSObject.domElement.style.top = '0px';
+								DebugSetting.PerformanceMonitor.TJSObject.setMode(0);
+								jQuery( Engine.Renderer().Display() ).append( DebugSetting.PerformanceMonitor.TJSObject.domElement );
+								jQuery( Engine.Renderer().Display() ).css('position','relative');
+							}
+						},
+						LogFps: function() {
+							if( Debug.PerformanceMonitor.Status() ) {
+								DebugSetting.PerformanceMonitor.TJSObject.setMode(0);
+							}
+						},
+						LogMs: function() {
+							if( Debug.PerformanceMonitor.Status() ) {
+								DebugSetting.PerformanceMonitor.TJSObject.setMode(1);
+							}
+						},
+						Begin: function() {
+							if( Debug.PerformanceMonitor.Status() ) {
+								DebugSetting.PerformanceMonitor.TJSObject.begin();
+							}
+						},
+						End: function() {
+							if( Debug.PerformanceMonitor.Status() ) {
+								DebugSetting.PerformanceMonitor.TJSObject.end();
+							}
+						},
+						Status: function() {
+							//noinspection JSConstructorReturnsPrimitive
+							return DebugSetting.PerformanceMonitor.Enable;
+						}
 					}
 				},
-				LogFps: function() {
-					if( Debug.PerformanceMonitor.Status() ) {
-						DebugSetting.PerformanceMonitor.TJSObject.setMode(0);
+				MessageMonitor: function() {
+					return {
+						Enable: function() {
+							if( typeof console != 'undefined' && typeof console.log != 'undefined' ) {
+								DebugSetting.MessageMonitor.Enable = true;
+								DebugSetting.MessageMonitor.TJSObject = console;
+							}
+						},
+						Text: function( Message ) {
+							if( Debug.MessageMonitor.Status() ) {
+								DebugSetting.MessageMonitor.TJSObject.log( Message );
+							}
+						},
+						Object: function( Object ) {
+							if( Debug.MessageMonitor.Status() ) {
+								DebugSetting.MessageMonitor.TJSObject.log( Object, true );
+							}
+						},
+						Status: function() {
+							//noinspection JSConstructorReturnsPrimitive
+							return DebugSetting.MessageMonitor.Enable;
+						}
 					}
-				},
-				LogMs: function() {
-					if( Debug.PerformanceMonitor.Status() ) {
-						DebugSetting.PerformanceMonitor.TJSObject.setMode(1);
-					}
-				},
-				Begin: function() {
-					if( Debug.PerformanceMonitor.Status() ) {
-						DebugSetting.PerformanceMonitor.TJSObject.begin();
-					}
-				},
-				End: function() {
-					if( Debug.PerformanceMonitor.Status() ) {
-						DebugSetting.PerformanceMonitor.TJSObject.end();
-					}
-				},
-				Status: function() {
-					//noinspection JSConstructorReturnsPrimitive
-					return DebugSetting.PerformanceMonitor.Enable;
-				}
-			},
-			MessageMonitor: {
-				Enable: function() {
-					if( typeof console != 'undefined' && typeof console.log != 'undefined' ) {
-						DebugSetting.MessageMonitor.Enable = true;
-						DebugSetting.MessageMonitor.TJSObject = console;
-					}
-				},
-				Text: function( Message ) {
-					if( Debug.MessageMonitor.Status() ) {
-						DebugSetting.MessageMonitor.TJSObject.log( Message );
-					}
-				},
-				Object: function( Object ) {
-					if( Debug.MessageMonitor.Status() ) {
-						DebugSetting.MessageMonitor.TJSObject.log( Object, true );
-					}
-				},
-				Status: function() {
-					//noinspection JSConstructorReturnsPrimitive
-					return DebugSetting.MessageMonitor.Enable;
 				}
 			}
 		};
