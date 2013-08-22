@@ -37,7 +37,7 @@
 
 
 (function(){
-	TJSApi.FactoryAPI.Controller.Keyboard = function( APIRenderer, APIMouse ) {
+	TJSApi.FactoryAPI.Controller.Keyboard = function( APIMouse ) {
 
 		var Event = {
 			Down: {
@@ -118,7 +118,6 @@
 
 		// Init
 		var Handler = jQuery( document );
-		var Display = jQuery( APIRenderer.Display() );
 
 		// Only if Mouse not available or inside Renderer Display?
 		var HandlerIsValid = function() {
@@ -131,14 +130,14 @@
 		};
 
 		Handler.on( 'keydown', function( KeyEvent ) {
-			TJSApi.Debug.MessageMonitor.Text( 'Keyboard (Event): Down [' + Code[KeyEvent.which] + '] Code ' + KeyEvent.which );
+			TJSApi.Debug().MessageMonitor().Text( 'Keyboard (Event): Down [' + Code[KeyEvent.which] + '] Code ' + KeyEvent.which );
 
 			if( !HandlerIsValid() ) {
-				TJSApi.Debug.MessageMonitor.Text( 'Keyboard (Skipped): Down [' + Code[KeyEvent.which] + ']' );
+				TJSApi.Debug().MessageMonitor().Text( 'Keyboard (Skipped): Down [' + Code[KeyEvent.which] + ']' );
 				return true;
 			}
 
-			TJSApi.Debug.MessageMonitor.Text( 'Keyboard (Valid): Down [' + Code[KeyEvent.which] + ']' );
+			TJSApi.Debug().MessageMonitor().Text( 'Keyboard (Valid): Down [' + Code[KeyEvent.which] + ']' );
 
 			KeyEvent.preventDefault();
 
@@ -151,14 +150,14 @@
 		});
 
 		Handler.on( 'keyup', function( KeyEvent ) {
-			TJSApi.Debug.MessageMonitor.Text( 'Keyboard (Event): Up [' + Code[KeyEvent.which] + '] Code ' + KeyEvent.which );
+			TJSApi.Debug().MessageMonitor().Text( 'Keyboard (Event): Up [' + Code[KeyEvent.which] + '] Code ' + KeyEvent.which );
 
 			if( !HandlerIsValid() ) {
-				TJSApi.Debug.MessageMonitor.Text( 'Keyboard (Skipped): Up [' + Code[KeyEvent.which] + ']' );
+				TJSApi.Debug().MessageMonitor().Text( 'Keyboard (Skipped): Up [' + Code[KeyEvent.which] + ']' );
 				return true;
 			}
 
-			TJSApi.Debug.MessageMonitor.Text( 'Keyboard (Valid): Up [' + Code[KeyEvent.which] + ']' );
+			TJSApi.Debug().MessageMonitor().Text( 'Keyboard (Valid): Up [' + Code[KeyEvent.which] + ']' );
 
 			KeyEvent.preventDefault();
 

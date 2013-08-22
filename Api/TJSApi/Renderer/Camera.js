@@ -165,6 +165,10 @@
 			}
 		};
 
+		var LookAtDistance = function() {
+			return TJSApi.Math.Vector.Length( TJSApi.Math.Vector.Subtraction( Position(), LookAt().Position() ) );
+		};
+
 		if( TJSObject instanceof THREE.PerspectiveCamera ) {
 			return {
 				TJSObject: TJSObject,
@@ -179,7 +183,8 @@
 				PositionY: PositionY,
 				PositionZ: PositionZ,
 
-				LookAt: LookAt
+				LookAt: LookAt,
+				LookAtDistance: LookAtDistance
 			}
 		} else if( TJSObject instanceof THREE.OrthographicCamera ) {
 			return {
@@ -198,7 +203,8 @@
 				PositionY: PositionY,
 				PositionZ: PositionZ,
 
-				LookAt: LookAt
+				LookAt: LookAt,
+				LookAtDistance: LookAtDistance
 			}
 		} else {
 			return {
@@ -209,7 +215,8 @@
 				PositionY: PositionY,
 				PositionZ: PositionZ,
 
-				LookAt: LookAt
+				LookAt: LookAt,
+				LookAtDistance: LookAtDistance
 			}
 		}
 	}

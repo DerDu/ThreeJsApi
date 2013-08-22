@@ -59,30 +59,42 @@
 		var PointerObjectList = function() { return ObjectList; };
 		var PointerObject = function() { return ObjectList[0]; };
 
+		/** Top/Left = Negative, Bottom/Right = Positive, NoMovement = 0 */
+		var MouseDirection = { X: 0, Y: 0 };
+		var MouseDirectionPosition = { X: 0, Y: 0 };
+		var MouseDirectionUpdate = function() {
+			var MouseMovePosition = Position2D();
+			if( MouseMovePosition.X < MouseDirectionPosition.X ) { MouseDirection.X = -1; }
+			else if( MouseMovePosition.X > MouseDirectionPosition.X ) { MouseDirection.X = 1; }
+			else { MouseDirection.X = 0; }
+			if( MouseMovePosition.Y < MouseDirectionPosition.Y ) { MouseDirection.Y = -1; }
+			else if( MouseMovePosition.Y > MouseDirectionPosition.Y ) { MouseDirection.Y = 1; }
+			else { MouseDirection.Y = 0; }
+			MouseDirectionPosition = Position2D();
+		};
+		var GetMouseDirectionX = function() {
+			//noinspection JSConstructorReturnsPrimitive
+			return MouseDirection.X;
+		};
+		var GetMouseDirectionY = function() {
+			//noinspection JSConstructorReturnsPrimitive
+			return MouseDirection.Y;
+		};
+
+		/** Event-Stack */
 		var Event = {
 			Press: {
-				All: function(){},
-				Left: function(){},
-				Middle: function(){},
-				Right: function(){}
+				All: [], Left: [], Middle: [], Right: []
 			},
 			Release: {
-				All: function(){},
-				Left: function(){},
-				Middle: function(){},
-				Right: function(){}
+				All: [], Left: [], Middle: [], Right: []
 			},
 			Click: {
-				All: function(){},
-				Left: function(){},
-				Middle: function(){},
-				Right: function(){}
+				All: [], Left: [], Middle: [], Right: []
 			},
 			Move: {
-				All: function(){},
-				Left: function(){},
-				Middle: function(){},
-				Right: function(){}
+				// Auto-Direction-Detection
+				All: [MouseDirectionUpdate], Left: [], Middle: [], Right: []
 			},
 			Wheel: {
 				All: function(){},
@@ -131,25 +143,25 @@
 			});
 		};
 
-		var RegisterEventPressAll = function( Callback ) { Event.Press.All = Callback; };
-		var RegisterEventPressLeft = function( Callback ) { Event.Press.Left = Callback; };
-		var RegisterEventPressMiddle = function( Callback ) { Event.Press.Middle = Callback; };
-		var RegisterEventPressRight = function( Callback ) { Event.Press.Right = Callback; };
+		var RegisterEventPressAll = function( Callback ) { Event.Press.All.push( Callback ); };
+		var RegisterEventPressLeft = function( Callback ) { Event.Press.Left.push( Callback ); };
+		var RegisterEventPressMiddle = function( Callback ) { Event.Press.Middle.push( Callback ); };
+		var RegisterEventPressRight = function( Callback ) { Event.Press.Right.push( Callback ); };
 
-		var RegisterEventReleaseAll = function( Callback ) { Event.Release.All = Callback; };
-		var RegisterEventReleaseLeft = function( Callback ) { Event.Release.Left = Callback; };
-		var RegisterEventReleaseMiddle = function( Callback ) { Event.Release.Middle = Callback; };
-		var RegisterEventReleaseRight = function( Callback ) { Event.Release.Right = Callback; };
+		var RegisterEventReleaseAll = function( Callback ) { Event.Release.All.push(Callback ); };
+		var RegisterEventReleaseLeft = function( Callback ) { Event.Release.Left.push( Callback ); };
+		var RegisterEventReleaseMiddle = function( Callback ) { Event.Release.Middle.push( Callback ); };
+		var RegisterEventReleaseRight = function( Callback ) { Event.Release.Right.push( Callback ); };
 
-		var RegisterEventClickAll = function( Callback ) { Event.Click.All = Callback; };
-		var RegisterEventClickLeft = function( Callback ) { Event.Click.Left = Callback; };
-		var RegisterEventClickMiddle = function( Callback ) { Event.Click.Middle = Callback; };
-		var RegisterEventClickRight = function( Callback ) { Event.Click.Right = Callback; };
+		var RegisterEventClickAll = function( Callback ) { Event.Click.All.push( Callback ); };
+		var RegisterEventClickLeft = function( Callback ) { Event.Click.Left.push( Callback ); };
+		var RegisterEventClickMiddle = function( Callback ) { Event.Click.Middle.push( Callback ); };
+		var RegisterEventClickRight = function( Callback ) { Event.Click.Right.push( Callback ); };
 
-		var RegisterEventMoveAll = function( Callback ) { Event.Move.All = Callback; };
-		var RegisterEventMoveLeft = function( Callback ) { Event.Move.Left = Callback; };
-		var RegisterEventMoveMiddle = function( Callback ) { Event.Move.Middle = Callback; };
-		var RegisterEventMoveRight = function( Callback ) { Event.Move.Right = Callback; };
+		var RegisterEventMoveAll = function( Callback ) { Event.Move.All.push( Callback ); };
+		var RegisterEventMoveLeft = function( Callback ) { Event.Move.Left.push( Callback ); };
+		var RegisterEventMoveMiddle = function( Callback ) { Event.Move.Middle.push( Callback ); };
+		var RegisterEventMoveRight = function( Callback ) { Event.Move.Right.push( Callback ); };
 
 		var RegisterEventWheelAll = function( Callback ) { Event.Wheel.All = Callback; };
 		var RegisterEventWheelUp = function( Callback ) { Event.Wheel.Up = Callback; };
@@ -175,7 +187,7 @@
 
 		Display.on( 'contextmenu', function( MouseEvent ) {
 			// Debug
-			TJSApi.Debug.MessageMonitor.Text( 'Mouse (Event): ContextMenu' );
+			TJSApi.Debug().MessageMonitor().Text( 'Mouse (Event): ContextMenu' );
 			// Pre
 			MouseEvent.preventDefault();
 			MousePressedToggle = true;
@@ -192,7 +204,7 @@
 
 		Display.on( 'mousedown', function( MouseEvent ) {
 			// Debug
-			TJSApi.Debug.MessageMonitor.Text( 'Mouse (Event): Down' );
+			TJSApi.Debug().MessageMonitor().Text( 'Mouse (Event): Down' );
 			// Pre
 			MouseEvent.preventDefault();
 			MousePressedToggle = true;
@@ -205,22 +217,22 @@
 			// Execute
 			switch ( MouseEvent.which ) {
 				case 1:
-					TJSApi.Debug.MessageMonitor.Text( 'Mouse (Button):Left > (Callback):Press-Left / Press-All' );
-					Event.Press.Left();
-					Event.Press.All();
+					TJSApi.Debug().MessageMonitor().Text( 'Mouse (Button):Left > (Callback):Press-Left / Press-All' );
+					jQuery( Event.Press.Left ).each(function( Index, Callback ){ Callback(); });
+					jQuery( Event.Press.All ).each(function( Index, Callback ){ Callback(); });
 					break;
 				case 2:
-					TJSApi.Debug.MessageMonitor.Text( 'Mouse (Button):Middle > (Callback):Press-Middle / Press-All' );
-					Event.Press.Middle();
-					Event.Press.All();
+					TJSApi.Debug().MessageMonitor().Text( 'Mouse (Button):Middle > (Callback):Press-Middle / Press-All' );
+					jQuery( Event.Press.Middle ).each(function( Index, Callback ){ Callback(); });
+					jQuery( Event.Press.All ).each(function( Index, Callback ){ Callback(); });
 					break;
 				case 3:
-					TJSApi.Debug.MessageMonitor.Text( 'Mouse (Button):Right > (Callback):Press-Right / Press-All' );
-					Event.Press.Right();
-					Event.Press.All();
+					TJSApi.Debug().MessageMonitor().Text( 'Mouse (Button):Right > (Callback):Press-Right / Press-All' );
+					jQuery( Event.Press.Right ).each(function( Index, Callback ){ Callback(); });
+					jQuery( Event.Press.All ).each(function( Index, Callback ){ Callback(); });
 					break;
 				default:
-					TJSApi.Debug.MessageMonitor.Text( 'Mouse (Button): Not supported' );
+					TJSApi.Debug().MessageMonitor().Text( 'Mouse (Button): Not supported' );
 					// Ignore unsupported Mouse-Button
 			}
 			// Post
@@ -229,7 +241,7 @@
 
 		Display.on( 'mouseup', function( MouseEvent ) {
 			// Debug
-			TJSApi.Debug.MessageMonitor.Text( 'Mouse (Event): Up' );
+			TJSApi.Debug().MessageMonitor().Text( 'Mouse (Event): Up' );
 			// Pre
 			MouseEvent.preventDefault();
 			// Calculate Mouse
@@ -242,44 +254,44 @@
 				// Execute
 				switch ( MouseEvent.which ) {
 					case 1:
-						TJSApi.Debug.MessageMonitor.Text( 'Mouse (Button):Left > (Callback):Click-Left / Click-All' );
-						Event.Click.Left();
-						Event.Click.All();
+						TJSApi.Debug().MessageMonitor().Text( 'Mouse (Button):Left > (Callback):Click-Left / Click-All' );
+						jQuery( Event.Click.Left ).each(function( Index, Callback ){ Callback(); });
+						jQuery( Event.Click.All ).each(function( Index, Callback ){ Callback(); });
 						break;
 					case 2:
-						TJSApi.Debug.MessageMonitor.Text( 'Mouse (Button):Middle > (Callback):Click-Middle / Click-All' );
-						Event.Click.Middle();
-						Event.Click.All();
+						TJSApi.Debug().MessageMonitor().Text( 'Mouse (Button):Middle > (Callback):Click-Middle / Click-All' );
+						jQuery( Event.Click.Middle ).each(function( Index, Callback ){ Callback(); });
+						jQuery( Event.Click.All ).each(function( Index, Callback ){ Callback(); });
 						break;
 					case 3:
-						TJSApi.Debug.MessageMonitor.Text( 'Mouse (Button):Right > (Callback):Click-Right / Click-All' );
-						Event.Click.Right();
-						Event.Click.All();
+						TJSApi.Debug().MessageMonitor().Text( 'Mouse (Button):Right > (Callback):Click-Right / Click-All' );
+						jQuery( Event.Click.Right ).each(function( Index, Callback ){ Callback(); });
+						jQuery( Event.Click.All ).each(function( Index, Callback ){ Callback(); });
 						break;
 					default:
-						TJSApi.Debug.MessageMonitor.Text( 'Mouse (Button): Not supported' );
+						TJSApi.Debug().MessageMonitor().Text( 'Mouse (Button): Not supported' );
 						// Ignore unsupported Mouse-Button
 				}
 			}
 			// Execute
 			switch ( MouseEvent.which ) {
 				case 1:
-					TJSApi.Debug.MessageMonitor.Text( 'Mouse (Button):Left > (Callback):Release-Left / Release-All' );
-					Event.Release.Left();
-					Event.Release.All();
+					TJSApi.Debug().MessageMonitor().Text( 'Mouse (Button):Left > (Callback):Release-Left / Release-All' );
+					jQuery( Event.Release.Left ).each(function( Index, Callback ){ Callback(); });
+					jQuery( Event.Release.All ).each(function( Index, Callback ){ Callback(); });
 					break;
 				case 2:
-					TJSApi.Debug.MessageMonitor.Text( 'Mouse (Button):Middle > (Callback):Release-Middle / Release-All' );
-					Event.Release.Middle();
-					Event.Release.All();
+					TJSApi.Debug().MessageMonitor().Text( 'Mouse (Button):Middle > (Callback):Release-Middle / Release-All' );
+					jQuery( Event.Release.Middle ).each(function( Index, Callback ){ Callback(); });
+					jQuery( Event.Release.All ).each(function( Index, Callback ){ Callback(); });
 					break;
 				case 3:
-					TJSApi.Debug.MessageMonitor.Text( 'Mouse (Button):Right > (Callback):Release-Right / Release-All' );
-					Event.Release.Right();
-					Event.Release.All();
+					TJSApi.Debug().MessageMonitor().Text( 'Mouse (Button):Right > (Callback):Release-Right / Release-All' );
+					jQuery( Event.Release.Right ).each(function( Index, Callback ){ Callback(); });
+					jQuery( Event.Release.All ).each(function( Index, Callback ){ Callback(); });
 					break;
 				default:
-					TJSApi.Debug.MessageMonitor.Text( 'Mouse (Button): Not supported' );
+					TJSApi.Debug().MessageMonitor().Text( 'Mouse (Button): Not supported' );
 					// Ignore unsupported Mouse-Button
 			}
 			// Post
@@ -290,7 +302,7 @@
 
 		Display.on( 'mousemove', function( MouseEvent ) {
 			// Debug
-			TJSApi.Debug.MessageMonitor.Text( 'Mouse (Event): Move' );
+			TJSApi.Debug().MessageMonitor().Text( 'Mouse (Event): Move' );
 			// Pre
 			MouseEvent.preventDefault();
 			( !MouseMovedToggle ? MouseMovedToggle = 1 : MouseMovedToggle++ );
@@ -301,19 +313,19 @@
 			// Run
 			switch ( MouseEvent.which ) {
 				case 1:
-					TJSApi.Debug.MessageMonitor.Text( 'Mouse (Button):Left > (Callback):Move-Left / Move-All' );
-					Event.Move.Left();
-					Event.Move.All();
+					TJSApi.Debug().MessageMonitor().Text( 'Mouse (Button):Left > (Callback):Move-Left / Move-All' );
+					jQuery( Event.Move.Left ).each(function( Index, Callback ){ Callback(); });
+					jQuery( Event.Move.All ).each(function( Index, Callback ){ Callback(); });
 					break;
 				case 2:
-					TJSApi.Debug.MessageMonitor.Text( 'Mouse (Button):Middle > (Callback):Move-Middle / Move-All' );
-					Event.Move.Middle();
-					Event.Move.All();
+					TJSApi.Debug().MessageMonitor().Text( 'Mouse (Button):Middle > (Callback):Move-Middle / Move-All' );
+					jQuery( Event.Move.Middle ).each(function( Index, Callback ){ Callback(); });
+					jQuery( Event.Move.All ).each(function( Index, Callback ){ Callback(); });
 					break;
 				case 3:
-					TJSApi.Debug.MessageMonitor.Text( 'Mouse (Button):Right > (Callback):Move-Right / Move-All' );
-					Event.Move.Right();
-					Event.Move.All();
+					TJSApi.Debug().MessageMonitor().Text( 'Mouse (Button):Right > (Callback):Move-Right / Move-All' );
+					jQuery( Event.Move.Right ).each(function( Index, Callback ){ Callback(); });
+					jQuery( Event.Move.All ).each(function( Index, Callback ){ Callback(); });
 					break;
 				default:
 					// TJSApi.Debug.MessageMonitor.Text( 'Mouse (Button): Not supported' );
@@ -325,7 +337,7 @@
 
 		Display.on( 'mousewheel', function( MouseEvent ) {
 			// Debug
-			TJSApi.Debug.MessageMonitor.Text( 'Mouse (Event): Wheel' );
+			TJSApi.Debug().MessageMonitor().Text( 'Mouse (Event): Wheel' );
 			// Pre
 			var Delta = MouseEvent.originalEvent;
 			Delta = Delta.wheelDelta > 0 || Delta.detail < 0 ? 1 : -1;
@@ -336,11 +348,11 @@
 			CalculateObjects();
 			// Run
 			if ( Delta > 0 ) {
-				TJSApi.Debug.MessageMonitor.Text( 'Mouse (Wheel):Up > (Callback):Wheel-Up / Wheel-All' );
+				TJSApi.Debug().MessageMonitor().Text( 'Mouse (Wheel):Up > (Callback):Wheel-Up / Wheel-All' );
 				Event.Wheel.Up();
 				Event.Wheel.All();
 			} else {
-				TJSApi.Debug.MessageMonitor.Text( 'Mouse (Wheel):Down > (Callback):Wheel-Down / Wheel-All' );
+				TJSApi.Debug().MessageMonitor().Text( 'Mouse (Wheel):Down > (Callback):Wheel-Down / Wheel-All' );
 				Event.Wheel.Down();
 				Event.Wheel.All();
 			}
@@ -352,8 +364,20 @@
 			MousePosition2D: Position2D,
 			MousePosition3D: Position3D,
 			MousePositionOn: PositionOn,
-			MousePointer: Pointer,
+			MousePointer: function() {
+				return {
+					Origin: function() { return { X: Pointer().ray.origin.x, Y: Pointer().ray.origin.y, Z: Pointer().ray.origin.z } },
+					Direction: function() { return { X: Pointer().ray.direction.x, Y: Pointer().ray.direction.y, Z: Pointer().ray.direction.z } }
+				}
+			},
 			MouseEvent: MouseEvent,
+
+			Direction: function() {
+				return {
+					Horizontal: GetMouseDirectionX,
+					Vertical: GetMouseDirectionY
+				}
+			},
 
 			Event: function() {
 				return {

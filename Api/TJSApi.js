@@ -44,7 +44,8 @@ var TJSApi = (function(){
 		var FactoryAPI = {
 			Camera: {},
 			Controller: {
-				Camera: {}
+				Camera: {},
+				Object: {}
 			},
 			Fog: {},
 			Geometry: {},
@@ -96,12 +97,12 @@ var TJSApi = (function(){
 					//noinspection JSCheckFunctionSignatures
 					requestAnimationFrame( EngineAnimation.Run );
 
-					TJSApi.Debug.PerformanceMonitor.Begin();
+					TJSApi.Debug().PerformanceMonitor().Begin();
 
 					EngineAnimation.Loop();
 					EngineAnimation.Render();
 
-					TJSApi.Debug.PerformanceMonitor.End();
+					TJSApi.Debug().PerformanceMonitor().End();
 
 				}
 			};
@@ -152,22 +153,22 @@ var TJSApi = (function(){
 							}
 						},
 						LogFps: function() {
-							if( Debug.PerformanceMonitor.Status() ) {
+							if( Debug().PerformanceMonitor().Status() ) {
 								DebugSetting.PerformanceMonitor.TJSObject.setMode(0);
 							}
 						},
 						LogMs: function() {
-							if( Debug.PerformanceMonitor.Status() ) {
+							if( Debug().PerformanceMonitor().Status() ) {
 								DebugSetting.PerformanceMonitor.TJSObject.setMode(1);
 							}
 						},
 						Begin: function() {
-							if( Debug.PerformanceMonitor.Status() ) {
+							if( Debug().PerformanceMonitor().Status() ) {
 								DebugSetting.PerformanceMonitor.TJSObject.begin();
 							}
 						},
 						End: function() {
-							if( Debug.PerformanceMonitor.Status() ) {
+							if( Debug().PerformanceMonitor().Status() ) {
 								DebugSetting.PerformanceMonitor.TJSObject.end();
 							}
 						},
@@ -186,12 +187,12 @@ var TJSApi = (function(){
 							}
 						},
 						Text: function( Message ) {
-							if( Debug.MessageMonitor.Status() ) {
+							if( Debug().MessageMonitor().Status() ) {
 								DebugSetting.MessageMonitor.TJSObject.log( Message );
 							}
 						},
 						Object: function( Object ) {
-							if( Debug.MessageMonitor.Status() ) {
+							if( Debug().MessageMonitor().Status() ) {
 								DebugSetting.MessageMonitor.TJSObject.log( Object, true );
 							}
 						},
@@ -226,6 +227,11 @@ var TJSApi = (function(){
 				Length: function( V ) {
 					//noinspection JSConstructorReturnsPrimitive
 					return window.Math.sqrt( V.X * V.X + V.Y * V.Y + V.Z * V.Z );
+				},
+				MultiplyScalar: function( Vector, Value ) {
+					return this.Convert.ToAPI(
+						this.Convert.ToTJS( Vector ).multiplyScalar( Value )
+					);
 				},
 				Convert: {
 					ToTJS: ConvertAPIVectorToTJSVector3,
