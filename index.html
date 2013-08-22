@@ -110,11 +110,11 @@ var KeyboardController = Engine.Factory().Controller().Keyboard( Engine.Renderer
 
 KeyboardController.Event().Down().Key(function(){
 	CameraController.Zoom().In();
-}, '+' );
+}, 'Num:+' );
 
 KeyboardController.Event().Down().Key(function(){
 	CameraController.Zoom().Out();
-}, '-' );
+}, 'Num:-' );
 
 
 

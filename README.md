@@ -4,7 +4,7 @@
 
 This comes with a downside - It will be *less powerful*
 
-(solved in: Advanced objects [Wiki])
+(solved in: Advanced objects [Wiki](https://github.com/DerDu/ThreeJsApi/wiki))
 
 Feel free to suggest code or ideas under [Issues](https://github.com/DerDu/ThreeJsApi/issues) which i will mainly use as a kind of code coverage tracker
 
@@ -17,28 +17,28 @@ Ps: If you like this project, *Star it* ^^
 ##### Basic (Required):
 
 	- jQuery library
-	- ThreeJs library
+	- three.js library
 
 ##### Api (Required):
 
 	- TJSApi.js
 	- TJSApi/FactoryTjs.js
 	- TJSApi/FactoryApi.js
-	- TJSApi/FactoryAPI/Renderer/Renderer.js
-	- TJSApi/FactoryAPI/Renderer/Camera.js
-	- TJSApi/FactoryAPI/Renderer/Scene.js
+	- TJSApi/Renderer/Renderer.js
+	- TJSApi/Renderer/Camera.js
+	- TJSApi/Renderer/Scene.js
 
 ##### Api (Optional):
 
-	- TJSApi/FactoryAPI/Renderer/Fog.js
-	- TJSApi/FactoryAPI/Library/Geometry.js
-	- TJSApi/FactoryAPI/Library/Material.js
-	- TJSApi/FactoryAPI/Library/Texture.js
-	- TJSApi/FactoryAPI/Library/Mesh.js
-	- TJSApi/FactoryAPI/Library/Light/Ambient.js
-	- TJSApi/FactoryAPI/Controller/Camera/Orbit.js
-	- TJSApi/FactoryAPI/Controller/Mouse.js
-	- TJSApi/FactoryAPI/Controller/Keyboard.js
+	- TJSApi/Renderer/Fog.js
+	- TJSApi/Library/Geometry.js
+	- TJSApi/Library/Material.js
+	- TJSApi/Library/Texture.js
+	- TJSApi/Library/Mesh.js
+	- TJSApi/Library/Light/Ambient.js
+	- TJSApi/Controller/Camera/Orbit.js
+	- TJSApi/Controller/Mouse.js
+	- TJSApi/Controller/Keyboard.js
 
 ##### Debug (Optional):
 
