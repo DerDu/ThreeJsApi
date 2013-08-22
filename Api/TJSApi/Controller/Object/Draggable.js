@@ -52,17 +52,16 @@
 				var Position = TJSApi.Math.Vector.MultiplyScalar( Direction, APICamera.LookAtDistance() );
 				Position = TJSApi.Math.Vector.Addition( Position, Origin );
 
-				if( AllowedAxis.X ) Draggable.PositionX( Position.X );
-				if( AllowedAxis.Y )Draggable.PositionY( Position.Y );
-				if( AllowedAxis.Z )Draggable.PositionZ( Position.Z );
+				if( AllowedAxes.X ) Draggable.PositionX( Position.X );
+				if( AllowedAxes.Y ) Draggable.PositionY( Position.Y );
+				if( AllowedAxes.Z ) Draggable.PositionZ( Position.Z );
 			}
 		};
 		var MouseUp = function() {
 			Draggable = null;
 		};
 
-
-		var AllowedAxis = {
+		var AllowedAxes = {
 			X: true,
 			Y: false,
 			Z: true
@@ -75,9 +74,9 @@
 
 			AllowedAxes: function() {
 				return {
-					ToggleX: function( Boolean ) { AllowedAxis.X = Boolean },
-					ToggleY: function( Boolean ) { AllowedAxis.Y = Boolean },
-					ToggleZ: function( Boolean ) { AllowedAxis.Z = Boolean }
+					ToggleX: function( Boolean ) { AllowedAxes.X = Boolean },
+					ToggleY: function( Boolean ) { AllowedAxes.Y = Boolean },
+					ToggleZ: function( Boolean ) { AllowedAxes.Z = Boolean }
 				}
 			}
 		}
