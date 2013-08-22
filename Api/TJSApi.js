@@ -63,8 +63,11 @@ var TJSApi = (function(){
 			['/TJSApi/3rdParty/ThreeJs/three.min.js'],
 			['/TJSApi/3rdParty/ThreeJs/stats.min.js'],
 			// Physics
-			['/TJSApi/3rdParty/PhysiJs/physi.js'],
-			['/TJSApi/3rdParty/AmmoJs/ammo.small.js'],
+			['/TJSApi/3rdParty/PhysiJs/physi.js', function(){
+				Physijs.scripts.worker = RequireBase + '/TJSApi/3rdParty/PhysiJs/physijs_worker.js';
+				Physijs.scripts.ammo = 'ammo.small.js';
+			}],
+			//['/TJSApi/3rdParty/AmmoJs/ammo.small.js'],
 
 			['/TJSApi/FactoryTjs.js'],
 			['/TJSApi/FactoryApi.js'],
@@ -104,11 +107,14 @@ var TJSApi = (function(){
 			RequireDone.push( Source );
 		};
 		var RequireDone = [];
-		var Require = function() {
+		var Require = function( SetupCallback ) {
+			if( typeof SetupCallback == 'function' ) {
+				SetupCallback();
+			}
 			var ListLength = RequireList.length;
 			var DoneLength = RequireDone.length;
 			if( DoneLength < ListLength ) {
-				RequireFile( RequireBase + RequireList[DoneLength], Require );
+				RequireFile( RequireBase + RequireList[DoneLength][0], function() { Require( RequireList[DoneLength][1] ) } );
 			}
 		};
 

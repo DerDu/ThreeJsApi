@@ -67,9 +67,18 @@
 				}
 			},
 			Scene: function() {
-				return TJSApi.FactoryAPI.Scene(
-					TJSApi.FactoryTJS.Scene()
-				);
+				return {
+					Basic: function() {
+						return TJSApi.FactoryAPI.Scene(
+							TJSApi.FactoryTJS.Scene()
+						);
+					},
+					Physics: function() {
+						return TJSApi.FactoryAPI.Scene(
+							new Physijs.Scene()
+						);
+					}
+				}
 			},
 			Geometry: function(){
 				return {

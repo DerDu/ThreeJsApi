@@ -12,10 +12,14 @@
 
 TJSApi.Ready(function(){
 
+
+
+
 	var Engine = TJSApi.Engine();
 	var Renderer = Engine.Factory().Renderer().WebGL();
 	var Camera = Engine.Factory().Camera().Perspective();
-	var Scene = Engine.Factory().Scene();
+	//var Scene = Engine.Factory().Scene().Basic();
+	var Scene = Engine.Factory().Scene().Physics();
 
 	// Init
 	Engine.Renderer( Renderer ).Camera( Camera ).Scene( Scene );
