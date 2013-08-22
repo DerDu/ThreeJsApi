@@ -147,6 +147,15 @@
 						return TJSApi.FactoryAPI.Mesh.Basic(
 							TJSApi.FactoryTJS.Mesh.Use.Basic( Geometry, Material )
 						);
+					},
+					Physics: function(){
+						return {
+							Cube: function( Geometry, Material, Mass ) {
+								return TJSApi.FactoryAPI.Mesh.Basic(
+									new Physijs.BoxMesh( Geometry.TJSObject, Material, Mass )
+								);
+							}
+						}
 					}
 				}
 			},

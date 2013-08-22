@@ -164,6 +164,11 @@ var TJSApi = (function(){
 					EngineAnimation.Loop();
 					EngineAnimation.Render();
 
+					// Run Physics if available
+					if( typeof Scene().TJSObject.simulate == 'function' ) {
+						Scene().TJSObject.simulate();
+					}
+
 					TJSApi.Debug().PerformanceMonitor().End();
 
 				}
