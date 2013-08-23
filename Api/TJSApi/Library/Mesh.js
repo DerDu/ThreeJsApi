@@ -38,6 +38,10 @@
 (function(){
 	TJSApi.FactoryAPI.Mesh.Basic = function( TJSObject ) {
 
+		var TJSId = function() {
+			return TJSObject.id;
+		};
+
 		var Position = function() {
 			return {
 				X: PositionX(),
@@ -50,6 +54,7 @@
 			if( typeof Value == 'undefined' ) {
 				return TJSObject.position.x;
 			} else {
+				TJSObject.__dirtyPosition = true;
 				TJSObject.position.x = Value;
 				return this;
 			}
@@ -58,6 +63,7 @@
 			if( typeof Value == 'undefined' ) {
 				return TJSObject.position.y;
 			} else {
+				TJSObject.__dirtyPosition = true;
 				TJSObject.position.y = Value;
 				return this;
 			}
@@ -66,6 +72,7 @@
 			if( typeof Value == 'undefined' ) {
 				return TJSObject.position.z;
 			} else {
+				TJSObject.__dirtyPosition = true;
 				TJSObject.position.z = Value;
 				return this;
 			}
@@ -96,19 +103,30 @@
 			}
 		};
 
-		var Clickable = false;
-		var MouseClickable = function( Boolean ) {
+		var ToggleEventClick = false;
+		var ToggleClickEvent = function( Boolean ) {
 			if( typeof Boolean == 'undefined' ) {
 				//noinspection JSConstructorReturnsPrimitive
-				return Clickable;
+				return ToggleEventClick;
 			} else {
-				Clickable = Boolean;
+				ToggleEventClick = Boolean;
+				return this;
+			}
+		};
+		var ToggleEventCollide = false;
+		var ToggleCollisionEvent = function( Boolean ) {
+			if( typeof Boolean == 'undefined' ) {
+				//noinspection JSConstructorReturnsPrimitive
+				return ToggleEventCollide;
+			} else {
+				ToggleEventCollide = Boolean;
 				return this;
 			}
 		};
 
 		return {
 			TJSObject: TJSObject,
+			TJSId: TJSId,
 
 			Position: Position,
 			PositionX: PositionX,
@@ -119,7 +137,14 @@
 			RotationY: RotationY,
 			RotationZ: RotationZ,
 
-			MouseClickable: MouseClickable
+			MouseClickable: ToggleClickEvent,
+
+			Event: function() {
+				return {
+					Click: ToggleClickEvent,
+					Collision: ToggleCollisionEvent
+				}
+			}
 		}
 	}
 })();

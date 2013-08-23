@@ -31,57 +31,14 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Scene
- * 15.08.2013 14:01
+ * Helper
+ * 23.08.2013 11:30
  */
 
 (function(){
-	TJSApi.FactoryAPI.Scene = function( TJSObject ) {
-
-		var SceneObjectList = [];
-
-		var AddObject = function( APIObject ) {
-			// Add Object to List
-			SceneObjectList[APIObject.TJSObject.id] = APIObject;
-			// Add Object to Scene
-			TJSObject.add( APIObject.TJSObject );
-		};
-		var GetObject = function( Id ) {
-			return SceneObjectList[Id];
-		};
-		var AddFog = function( APIObject ) {
-			// Add Fog to Scene
-			TJSObject.fog = APIObject.TJSObject;
-		};
-
-		// compatible interface dummy
-		var Position = function() {
-			return { X: 0, Y: 0, Z: 0 }
-		};
-
-		var Gravity = function( X, Y, Z ) {
-			if( typeof TJSObject.setGravity == 'function' ) {
-				TJSObject.setGravity( new THREE.Vector3( X, Y, Z ) );
-			}
-		};
-
+	TJSApi.FactoryAPI.Helper.Axis = function( TJSObject ) {
 		return {
-			TJSObject: TJSObject,
-
-			Add: AddObject,
-			Get: GetObject,
-
-			Fog: AddFog,
-			// Physics
-			Gravity: Gravity,
-
-			// compatible interface dummy
-			Position: Position,
-
-			Clickable: {
-				APIObjects: function() { return MouseClickableAPI; },
-				TJSObjects: function() { return MouseClickableTJS; }
-			}
+			TJSObject: TJSObject
 		}
-	}
+	};
 })();

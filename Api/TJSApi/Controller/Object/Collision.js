@@ -31,57 +31,37 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Scene
- * 15.08.2013 14:01
+ * Collision
+ * 23.08.2013 10:50
  */
 
 (function(){
-	TJSApi.FactoryAPI.Scene = function( TJSObject ) {
+	TJSApi.FactoryAPI.Controller.Object.Collision = function( APICamera, APIMouse ) {
 
-		var SceneObjectList = [];
 
-		var AddObject = function( APIObject ) {
-			// Add Object to List
-			SceneObjectList[APIObject.TJSObject.id] = APIObject;
-			// Add Object to Scene
-			TJSObject.add( APIObject.TJSObject );
-		};
-		var GetObject = function( Id ) {
-			return SceneObjectList[Id];
-		};
-		var AddFog = function( APIObject ) {
-			// Add Fog to Scene
-			TJSObject.fog = APIObject.TJSObject;
-		};
 
-		// compatible interface dummy
-		var Position = function() {
-			return { X: 0, Y: 0, Z: 0 }
-		};
+		var AnimationRun = function() {
 
-		var Gravity = function( X, Y, Z ) {
-			if( typeof TJSObject.setGravity == 'function' ) {
-				TJSObject.setGravity( new THREE.Vector3( X, Y, Z ) );
-			}
 		};
 
 		return {
-			TJSObject: TJSObject,
 
-			Add: AddObject,
-			Get: GetObject,
 
-			Fog: AddFog,
-			// Physics
-			Gravity: Gravity,
 
-			// compatible interface dummy
-			Position: Position,
+			EventAnimationRun: AnimationRun
 
-			Clickable: {
-				APIObjects: function() { return MouseClickableAPI; },
-				TJSObjects: function() { return MouseClickableTJS; }
-			}
 		}
 	}
 })();
+
+for (var vertexIndex = 0; vertexIndex < MovingCube.geometry.vertices.length; vertexIndex++)
+	{
+		var localVertex = MovingCube.geometry.vertices[vertexIndex].clone();
+		var globalVertex = localVertex.applyMatrix4( MovingCube.matrix );
+		var directionVector = globalVertex.sub( MovingCube.position );
+
+		var ray = new THREE.Raycaster( originPoint, directionVector.clone().normalize() );
+		var collisionResults = ray.intersectObjects( collidableMeshList );
+		if ( collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() )
+			appendText(" Hit ");
+	}

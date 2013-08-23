@@ -131,16 +131,16 @@
 		};
 
 		var CalculateObjects = function() {
-			// Find Clicked Objects (API)
-			var TJSObjectList = MousePointer.intersectObjects( APIScene.Clickable.TJSObjects() );
-			var APIObjectList = APIScene.Clickable.APIObjects();
+			var TJSObjectListSearch = MousePointer.intersectObjects( APIScene.TJSObject.children );
+			var TJSObjectListLength = TJSObjectListSearch.length;
+
 			ObjectList = [];
-			jQuery( TJSObjectList ).each( function( IndexTJS, ObjectTJS ) {
-				var ObjectAPI = APIObjectList[ObjectTJS.object.id];
-				if( typeof ObjectAPI != 'undefined' && jQuery.inArray( ObjectAPI, ObjectList ) == -1 ) {
-					ObjectList.push( ObjectAPI );
+			for( var Search = 0; Search < TJSObjectListLength; Search++ ) {
+				var Hit = APIScene.Get( TJSObjectListSearch[Search].object.id );
+				if( typeof Hit.Event == 'function' && Hit.Event().Click() ) {
+					ObjectList.push( Hit );
 				}
-			});
+			}
 		};
 
 		var RegisterEventPressAll = function( Callback ) { Event.Press.All.push( Callback ); };

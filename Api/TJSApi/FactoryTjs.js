@@ -144,4 +144,15 @@
 		}
 	}();
 
+	TJSApi.FactoryTJS.Helper = function() {
+		var Factory = {
+			Axis: function( Size ) {
+				return new THREE.AxisHelper( Size );
+			}
+		};
+		return {
+			Use: Factory
+		}
+	}();
+
 })();

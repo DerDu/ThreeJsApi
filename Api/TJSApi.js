@@ -54,7 +54,8 @@ var TJSApi = (function(){
 			Mesh: {},
 			Renderer: {},
 			Scene: {},
-			Texture: {}
+			Texture: {},
+			Helper: {}
 		};
 
 		var RequireBase = 'Api';
@@ -72,6 +73,7 @@ var TJSApi = (function(){
 			['/TJSApi/FactoryTjs.js'],
 			['/TJSApi/FactoryApi.js'],
 
+			['/TJSApi/Renderer/Helper.js'],
 			['/TJSApi/Renderer/Camera.js'],
 			['/TJSApi/Renderer/Renderer.js'],
 			['/TJSApi/Renderer/Scene.js'],
@@ -180,12 +182,6 @@ var TJSApi = (function(){
 				Scene: Scene,
 
 				Animation: EngineAnimation,
-
-				Helper: function() {
-					return {
-						Axis: function( Size ) { Scene().TJSObject.add( new THREE.AxisHelper( Size ) ); }
-					}
-				},
 
 				Factory: TJSApi.Factory
 			}

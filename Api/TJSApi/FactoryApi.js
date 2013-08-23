@@ -152,7 +152,7 @@
 						return {
 							Cube: function( Geometry, Material, Mass ) {
 								return TJSApi.FactoryAPI.Mesh.Basic(
-									new Physijs.BoxMesh( Geometry.TJSObject, Material, Mass )
+									new Physijs.BoxMesh( Geometry.TJSObject, Material.TJSObject, Mass )
 								);
 							}
 						}
@@ -180,6 +180,15 @@
 								return new TJSApi.FactoryAPI.Controller.Object.Draggable( APICamera, APIMouse )
 							}
 						}
+					}
+				}
+			},
+			Helper: function() {
+				return {
+					Axis: function( Size ){
+						return TJSApi.FactoryAPI.Helper.Axis(
+							TJSApi.FactoryTJS.Helper.Use.Axis( Size )
+						);
 					}
 				}
 			}
