@@ -41,7 +41,8 @@
 		var Draggable = null;
 
 		var MouseDown = function() {
-			Draggable = APIMouse.Target().Object();
+//			Draggable = APIMouse.Target().Object();
+			Draggable = APICamera.LookAt();
 		};
 		var MouseMove = function() {
 			if( Draggable != null ) {

@@ -138,6 +138,11 @@
 						return TJSApi.FactoryAPI.Light.Ambient(
 							TJSApi.FactoryTJS.Light.Use.Ambient()
 						);
+					},
+					Directional: function() {
+						return TJSApi.FactoryAPI.Light.Directional(
+							TJSApi.FactoryTJS.Light.Use.Directional()
+						);
 					}
 				}
 			},
@@ -188,6 +193,21 @@
 					Axis: function( Size ){
 						return TJSApi.FactoryAPI.Helper.Axis(
 							TJSApi.FactoryTJS.Helper.Use.Axis( Size )
+						);
+					},
+					DirectionalLight: function( Size ){
+						return TJSApi.FactoryAPI.Helper.DirectionalLight(
+							TJSApi.FactoryTJS.Helper.Use.DirectionalLight( Size )
+						);
+					},
+					PointLight: function( Size ){
+						return TJSApi.FactoryAPI.Helper.PointLight(
+							TJSApi.FactoryTJS.Helper.Use.PointLight( Size )
+						);
+					},
+					HemisphereLight: function( Size ){
+						return TJSApi.FactoryAPI.Helper.HemisphereLight(
+							TJSApi.FactoryTJS.Helper.Use.HemisphereLight( Size )
 						);
 					}
 				}

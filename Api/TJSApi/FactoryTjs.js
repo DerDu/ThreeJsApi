@@ -126,6 +126,9 @@
 		var Factory = {
 			Ambient: function() {
 				return new THREE.AmbientLight();
+			},
+			Directional: function() {
+				return new THREE.DirectionalLight();
 			}
 		};
 		return {
@@ -148,6 +151,15 @@
 		var Factory = {
 			Axis: function( Size ) {
 				return new THREE.AxisHelper( Size );
+			},
+			PointLight: function( Light ) {
+				return new THREE.PointLightHelper( Light, 100 );
+			},
+			DirectionalLight: function( Light ) {
+				return new THREE.DirectionalLightHelper( Light.TJSObject, 100 );
+			},
+			HemisphereLight: function( Light ) {
+				return new THREE.HemisphereLightHelper( Light, 100 );
 			}
 		};
 		return {

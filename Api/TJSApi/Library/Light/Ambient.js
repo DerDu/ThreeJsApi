@@ -81,42 +81,6 @@
 			}
 		};
 
-		var RotationX = function( Value ) {
-			if( typeof Value == 'undefined' ) {
-				return TJSObject.rotation.x;
-			} else {
-				TJSObject.rotation.x = Value;
-				return this;
-			}
-		};
-		var RotationY = function( Value ) {
-			if( typeof Value == 'undefined' ) {
-				return TJSObject.rotation.y;
-			} else {
-				TJSObject.rotation.y = Value;
-				return this;
-			}
-		};
-		var RotationZ = function( Value ) {
-			if( typeof Value == 'undefined' ) {
-				return TJSObject.rotation.z;
-			} else {
-				TJSObject.rotation.z = Value;
-				return this;
-			}
-		};
-
-		var Clickable = false;
-		var MouseClickable = function( Boolean ) {
-			if( typeof Boolean == 'undefined' ) {
-				//noinspection JSConstructorReturnsPrimitive
-				return Clickable;
-			} else {
-				Clickable = Boolean;
-				return this;
-			}
-		};
-
 		return {
 			TJSObject: TJSObject,
 
@@ -125,13 +89,7 @@
 			Position: Position,
 			PositionX: PositionX,
 			PositionY: PositionY,
-			PositionZ: PositionZ,
-
-			RotationX: RotationX,
-			RotationY: RotationY,
-			RotationZ: RotationZ,
-
-			MouseClickable: MouseClickable
+			PositionZ: PositionZ
 		}
 	}
 })();

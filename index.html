@@ -11,6 +11,7 @@
 <script type="text/javascript">
 
 var Engine;
+var MeshCube;
 var MeshCube2;
 TJSApi.Ready(function(){
 
@@ -27,7 +28,7 @@ TJSApi.Ready(function(){
 	Engine.Scene().Add( AxisHelper );
 
 	// Setup
-	Engine.Renderer().Display( 'div#D1' ); //.Width( 1000 ).Height( 800 );
+	Engine.Renderer().Display( 'div#D1').ClearColor('#000000'); //.Width( 1000 ).Height( 800 );
 	Engine.Camera()
 		.FieldOfView( 40 )
 		.AspectRatio( Engine.Renderer().Width() / Engine.Renderer().Height() )
@@ -44,58 +45,91 @@ TJSApi.Ready(function(){
 	var GeometryCube2 = Engine.Factory().Geometry().Cube( 300, 300, 300 );
 	var GeometryPlane = Engine.Factory().Geometry().Plane( 1000, 1000 );
 
-	var MaterialTorus = Engine.Factory().Material().Mesh().Basic();
+	var MaterialTorus = Engine.Factory().Material().Mesh().Phong();
 	var MaterialCube = Engine.Factory().Material().Mesh().Phong();
 	var MaterialCube2 = Engine.Factory().Material().Mesh().Phong();
-	var MaterialPlane = Engine.Factory().Material().Mesh().Basic();
+	var MaterialPlane = Engine.Factory().Material().Mesh().Phong();
 
 	var MeshTorus = Engine.Factory().Mesh().Basic( GeometryTorus, MaterialTorus );
-	//MeshTorus.MouseClickable( true );
-	var MeshCube = Engine.Factory().Mesh().Basic( GeometryCube, MaterialCube );
-	MeshCube.MouseClickable( true );
-	MeshCube2 = Engine.Factory().Mesh().Physics().Cube(GeometryCube2, MaterialCube2);
-	MeshCube2.MouseClickable( true );
+
+	MeshCube = Engine.Factory().Mesh().Physics().Cube( GeometryCube, MaterialCube );
+	Engine.Scene().Add( MeshCube );
+	MeshCube.Event().Toggle().Click( true );
+	MeshCube.Event().Toggle().Physics( false );
+
+
+	MeshCube2 = Engine.Factory().Mesh().Physics().Cube( GeometryCube2, MaterialCube2 );
+	Engine.Scene().Add( MeshCube2 );
+	MeshCube2.Event().Toggle().Click( true );
+	MeshCube2.Event().Toggle().Physics( false );
+
 	var MeshPlane = Engine.Factory().Mesh().Basic( GeometryPlane, MaterialPlane );
 
 	// Setup - Object
 	MeshPlane.RotationX( - 90 * Math.PI / 180 );
 
 	MaterialTorus.Color('#FF0000');
-	//MaterialTorus.WireFrame(true);
+//	MaterialTorus.WireFrame(true);
 	MaterialCube.Color('#FF0000');
-	//MaterialCube.WireFrame(true);
+//	MaterialCube.WireFrame(true);
 	MaterialCube2.Color('#FF0000');
 //	MaterialCube2.WireFrame(true);
 	MaterialPlane.Color('#0000FF');
-	//MaterialPlane.WireFrame(true);
+	MaterialPlane.WireFrame(true);
 
-	MeshCube2.PositionY(500);
+	//MeshCube2.PositionY(500);
 
 	// Scene
-	Engine.Scene().Add( MeshTorus );
-	Engine.Scene().Add( MeshCube );
-	Engine.Scene().Add( MeshCube2 );
-	Engine.Scene().Add( MeshPlane );
+//	Engine.Scene().Add( MeshTorus );
+//	Engine.Scene().Add( MeshPlane );
 
-	Engine.Scene().Fog(
-		Engine.Factory().Fog( '#0F0F0F', 500, 5000 )
-	);
+//	Engine.Scene().Fog(
+//		Engine.Factory().Fog( '#0F0F0F', 500, 5000 )
+//	);
 
 	// Let there be..
 	var AmbientLight = Engine.Factory().Light().Ambient();
-	AmbientLight.Color('#FFF0F0');
+	AmbientLight.Color('#202020');
 	Engine.Scene().Add( AmbientLight );
+
+	var DirectionalLight = Engine.Factory().Light().Directional();
+	DirectionalLight.Color('#303030');
+	DirectionalLight.PositionY(1000);
+	Engine.Scene().Add( DirectionalLight );
+
+	var DirectionalLightHelper = Engine.Factory().Helper().DirectionalLight( DirectionalLight );
+	Engine.Scene().Add( DirectionalLightHelper );
 
 	// Setup - Camera
 
-	MeshCube.PositionZ( 800 );
+	MeshCube.PositionX( 301 );
+	MeshCube.PositionZ( 301 );
 
-	Engine.Camera().PositionZ(1300).PositionY(1300).PositionX(1300).LookAt(
+	MeshCube2.PositionX( -301 );
+	MeshCube2.PositionZ( -301 );
+
+	Engine.Camera().PositionZ(1200).PositionY(1200).PositionX(1200).LookAt(
 		// Engine.Scene()
 		MeshCube
 	);
 
 	/** Controller Test ***************************************************************************************************/
+
+	var DropGrid = function( Object ) {
+		var DropPosition = Object.Position();
+
+		var Interval = 300;
+		var GridPositionX = ( Math.ceil( DropPosition.X / Interval ) - 0.5 ) * Interval;
+		var GridPositionZ = ( Math.ceil( DropPosition.Z / Interval ) - 0.5 ) * Interval;
+
+		Object.Physics().UseDirtyPosition();
+		Object.PositionX( GridPositionX );
+		Object.PositionZ( GridPositionZ );
+	};
+	// Init Objects
+	DropGrid( MeshCube );
+	DropGrid( MeshCube2 );
+
 
 	/** Mouse - Controller */
 	var Mouse = Engine.Factory().Controller().Mouse( Engine.Renderer(), Engine.Camera(), Engine.Scene() );
@@ -112,12 +146,16 @@ TJSApi.Ready(function(){
 	// Left - Drag
 		Mouse.Event().Press().Left(function(){
 			Drag.EventMousePressed();
+			if( typeof Mouse.Target().Object() != 'undefined' ) {
+				Mouse.Target().Object().Physics().UseDirtyPosition();
+			}
 		});
 		Mouse.Event().Move().Left(function(){
 			Drag.EventMouseMoved();
 		});
 		Mouse.Event().Release().Left(function(){
 			Drag.EventMouseReleased();
+
 
 			if( typeof Mouse.Target().Object() != 'undefined' ) {
 				var DropPosition = Mouse.Target().Object().Position();
@@ -126,6 +164,7 @@ TJSApi.Ready(function(){
 				var GridPositionX = ( Math.ceil( DropPosition.X / Interval ) - 0.5 ) * Interval;
 				var GridPositionZ = ( Math.ceil( DropPosition.Z / Interval ) - 0.5 ) * Interval;
 
+				Mouse.Target().Object().Physics().UseDirtyPosition();
 				Mouse.Target().Object().PositionX( GridPositionX );
 				Mouse.Target().Object().PositionZ( GridPositionZ );
 			}
@@ -171,18 +210,61 @@ TJSApi.Ready(function(){
 	Keyboard.Event().Down().Key( function(){ Orbit.Zoom().In(); }, 'Num:+' );
 	Keyboard.Event().Down().Key(function(){ Orbit.Zoom().Out(); }, 'Num:-' );
 
+	/** Effect-Light */
+	var L1 = new THREE.PointLight( 0x00FF00, 30, 1000 );
+	Engine.Scene().TJSObject.add( L1 );
+	Engine.Scene().Add( Engine.Factory().Helper().PointLight( L1 ) );
+
+	var L2 = new THREE.PointLight( 0x0000FF, 30, 1000 );
+	Engine.Scene().TJSObject.add( L2 );
+	Engine.Scene().Add( Engine.Factory().Helper().PointLight( L2 ) );
+
+	var PI2 = Math.PI * 2;
+	var Program = function ( Context ) {
+		Context.beginPath();
+		Context.arc( 0, 0, 1, 0, PI2, true );
+		Context.fill();
+	};
+	var P1 = new THREE.Particle( new THREE.ParticleCanvasMaterial( { color: 0xFF0000, program: Program } ) );
+	P1.scale.x = P1.scale.y = P1.scale.z = 0.5;
+	Engine.Scene().TJSObject.add( P1 );
+
+	var P2 = new THREE.Particle( new THREE.ParticleCanvasMaterial( { color: 0x0000FF, program: Program } ) );
+	P2.scale.x = P2.scale.y = P2.scale.z = 0.5;
+	Engine.Scene().TJSObject.add( P2 );
+
+
 	/** Animation Test ****************************************************************************************************/
 
 	// Render
 	Engine.Animation.Loop = function() {
 		MeshTorus.RotationX( MeshTorus.RotationX() + 0.01 );
-		MeshCube.RotationY( MeshCube.RotationY() + 0.01 );
+//		MeshCube.RotationY( MeshCube.RotationY() + 0.01 );
 
 	//	Orbit.Rotate().Right( 0.005 );
 		//CameraController.Zoom().Out( 0.1 );
+
+		var Time = Date.now() * 0.0005;
+
+		P1.position.x = Math.sin( Time * 0.7 ) * 600;
+		P1.position.y = Math.cos( Time * 0.5 ) * 800;
+		P1.position.z = Math.cos( Time * 0.3 ) * 600;
+
+		L1.position.x = P1.position.x;
+		L1.position.y = P1.position.y;
+		L1.position.z = P1.position.z;
+
+		P2.position.x = Math.sin( Time * 0.3 ) * 600;
+		P2.position.y = Math.cos( Time * 0.5 ) * 800;
+		P2.position.z = Math.cos( Time * 0.7 ) * 600;
+
+		L2.position.x = P2.position.x;
+		L2.position.y = P2.position.y;
+		L2.position.z = P2.position.z;
+
 	};
 
-	//TJSApi.Debug().PerformanceMonitor().Enable( Engine );
+	TJSApi.Debug().PerformanceMonitor().Enable( Engine );
 	//TJSApi.Debug().MessageMonitor().Enable( Engine );
 
 	Engine.Animation.Run();

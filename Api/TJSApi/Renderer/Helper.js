@@ -41,4 +41,19 @@
 			TJSObject: TJSObject
 		}
 	};
+	TJSApi.FactoryAPI.Helper.PointLight = function( TJSObject ) {
+		return {
+			TJSObject: TJSObject
+		}
+	};
+	TJSApi.FactoryAPI.Helper.DirectionalLight = function( TJSObject ) {
+		return {
+			TJSObject: TJSObject
+		}
+	};
+	TJSApi.FactoryAPI.Helper.HemisphereLight = function( TJSObject ) {
+		return {
+			TJSObject: TJSObject
+		}
+	};
 })();

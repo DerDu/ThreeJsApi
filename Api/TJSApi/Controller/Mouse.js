@@ -137,7 +137,7 @@
 			ObjectList = [];
 			for( var Search = 0; Search < TJSObjectListLength; Search++ ) {
 				var Hit = APIScene.Get( TJSObjectListSearch[Search].object.id );
-				if( typeof Hit.Event == 'function' && Hit.Event().Click() ) {
+				if( typeof Hit.Event == 'function' && Hit.Event().Toggle().Click() ) {
 					ObjectList.push( Hit );
 				}
 			}

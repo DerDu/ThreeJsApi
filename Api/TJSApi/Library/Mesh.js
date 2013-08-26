@@ -50,12 +50,28 @@
 			}
 		};
 
+		var fixPhysicsUseDirtyPosition = true;
+		var fixPhysicsPositionEnabled = function() {
+			if( fixPhysicsUseDirtyPosition ) {
+				TJSObject.__dirtyPosition = true;
+				return true;
+			}
+			return false;
+		};
+
+		var fixPhysicsCollisionHandler = function() {
+			TJSObject.addEventListener( 'collision', function( other_object, linear_velocity, angular_velocity ) {
+				//fixPhysicsUseDirtyPosition = false;
+			});
+		};
+
 		var PositionX = function( Value ) {
 			if( typeof Value == 'undefined' ) {
 				return TJSObject.position.x;
 			} else {
-				TJSObject.__dirtyPosition = true;
-				TJSObject.position.x = Value;
+				if( fixPhysicsPositionEnabled() ) {
+					TJSObject.position.x = Value;
+				}
 				return this;
 			}
 		};
@@ -63,8 +79,9 @@
 			if( typeof Value == 'undefined' ) {
 				return TJSObject.position.y;
 			} else {
-				TJSObject.__dirtyPosition = true;
-				TJSObject.position.y = Value;
+				if( fixPhysicsPositionEnabled() ) {
+					TJSObject.position.y = Value;
+				}
 				return this;
 			}
 		};
@@ -72,8 +89,9 @@
 			if( typeof Value == 'undefined' ) {
 				return TJSObject.position.z;
 			} else {
-				TJSObject.__dirtyPosition = true;
-				TJSObject.position.z = Value;
+				if( fixPhysicsPositionEnabled() ) {
+					TJSObject.position.z = Value;
+				}
 				return this;
 			}
 		};
@@ -103,26 +121,47 @@
 			}
 		};
 
-		var ToggleEventClick = false;
+		var toggleClickEvent = false;
 		var ToggleClickEvent = function( Boolean ) {
 			if( typeof Boolean == 'undefined' ) {
 				//noinspection JSConstructorReturnsPrimitive
-				return ToggleEventClick;
+				return toggleClickEvent;
 			} else {
-				ToggleEventClick = Boolean;
+				toggleClickEvent = Boolean;
 				return this;
 			}
 		};
-		var ToggleEventCollide = false;
+		var toggleCollisionEvent = true;
 		var ToggleCollisionEvent = function( Boolean ) {
 			if( typeof Boolean == 'undefined' ) {
 				//noinspection JSConstructorReturnsPrimitive
-				return ToggleEventCollide;
+				return toggleCollisionEvent;
 			} else {
-				ToggleEventCollide = Boolean;
+				toggleCollisionEvent = Boolean;
 				return this;
 			}
 		};
+
+		var togglePhysicsEvent = false;
+		var TogglePhysicsEvent = function( Boolean ) {
+			if( typeof Boolean == 'undefined' ) {
+				//noinspection JSConstructorReturnsPrimitive
+				return togglePhysicsEvent;
+			} else {
+				togglePhysicsEvent = Boolean;
+				if( togglePhysicsEvent ) {
+					TJSObject.setAngularFactor( new THREE.Vector3(1,1,1) );
+					TJSObject.setLinearFactor( new THREE.Vector3(1,1,1) );
+				} else {
+					TJSObject.setAngularFactor( new THREE.Vector3(0,0,0) );
+					TJSObject.setLinearFactor( new THREE.Vector3(0,0,0) );
+				}
+				return this;
+			}
+		};
+
+		// Init
+		fixPhysicsCollisionHandler();
 
 		return {
 			TJSObject: TJSObject,
@@ -137,12 +176,26 @@
 			RotationY: RotationY,
 			RotationZ: RotationZ,
 
-			MouseClickable: ToggleClickEvent,
+			Physics: function () {
+				return {
+					UseDirtyPosition: function() { fixPhysicsUseDirtyPosition = true; }
+				}
+			},
 
 			Event: function() {
 				return {
-					Click: ToggleClickEvent,
-					Collision: ToggleCollisionEvent
+					Toggle: function() {
+						return {
+							Click: ToggleClickEvent,
+							Collision: ToggleCollisionEvent,
+							Physics: TogglePhysicsEvent
+						}
+					},
+					Register: function() {
+						return {
+							Collision: RegisterCollisionEvent
+						}
+					}
 				}
 			}
 		}

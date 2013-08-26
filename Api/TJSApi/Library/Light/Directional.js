@@ -31,77 +31,94 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Renderer
- * 15.08.2013 14:00
+ * Directional
+ * 26.08.2013 15:01
  */
 
+
 (function(){
-	TJSApi.FactoryAPI.Renderer = function( TJSObject ) {
+	TJSApi.FactoryAPI.Light.Directional = function( TJSObject ) {
 
-		var RendererWidth = 640;
-		var Width = function( Value ) {
+		var Color = function( Value ) {
 			if( typeof Value == 'undefined' ) {
-				//noinspection JSConstructorReturnsPrimitive
-				return RendererWidth;
+				return TJSObject.color;
 			} else {
-				RendererWidth = Value;
-				TJSObject.setSize( RendererWidth, RendererHeight );
+				TJSObject.color.set( Value );
 				return this;
 			}
 		};
 
-		var RendererHeight = 480;
-		var Height = function( Value ) {
+		var Position = function() {
+			return {
+				X: PositionX(),
+				Y: PositionY(),
+				Z: PositionZ()
+			}
+		};
+
+		var PositionX = function( Value ) {
 			if( typeof Value == 'undefined' ) {
-				//noinspection JSConstructorReturnsPrimitive
-				return RendererHeight;
+				return TJSObject.position.x;
 			} else {
-				RendererHeight = Value;
-				TJSObject.setSize( RendererWidth, RendererHeight );
+				TJSObject.position.x = Value;
 				return this;
 			}
 		};
-
-		var RendererClearColor = 480;
-		var ClearColor = function( Value ) {
+		var PositionY = function( Value ) {
 			if( typeof Value == 'undefined' ) {
-				//noinspection JSConstructorReturnsPrimitive
-				return RendererClearColor;
+				return TJSObject.position.y;
 			} else {
-				RendererClearColor = Value;
-				TJSObject.setClearColor( RendererClearColor );
+				TJSObject.position.y = Value;
+				return this;
+			}
+		};
+		var PositionZ = function( Value ) {
+			if( typeof Value == 'undefined' ) {
+				return TJSObject.position.z;
+			} else {
+				TJSObject.position.z = Value;
 				return this;
 			}
 		};
 
-		var RenderDisplay = 'body';
-		var Display = function( Selector ) {
-			if( typeof Selector == 'undefined' ) {
-				//noinspection JSConstructorReturnsPrimitive
-				return RenderDisplay;
+		var RotationX = function( Value ) {
+			if( typeof Value == 'undefined' ) {
+				return TJSObject.rotation.x;
 			} else {
-				RenderDisplay = Selector;
-				var Screen = jQuery( RenderDisplay );
-				Screen.append( TJSObject.domElement );
-				Width( Screen.width() );
-				Height( Screen.height() );
+				TJSObject.rotation.x = Value;
 				return this;
 			}
 		};
-
-		// Init
-//		Width( RendererWidth );
-//		Height( RendererHeight );
-//		Display( RenderDisplay );
+		var RotationY = function( Value ) {
+			if( typeof Value == 'undefined' ) {
+				return TJSObject.rotation.y;
+			} else {
+				TJSObject.rotation.y = Value;
+				return this;
+			}
+		};
+		var RotationZ = function( Value ) {
+			if( typeof Value == 'undefined' ) {
+				return TJSObject.rotation.z;
+			} else {
+				TJSObject.rotation.z = Value;
+				return this;
+			}
+		};
 
 		return {
 			TJSObject: TJSObject,
 
-			ClearColor: ClearColor,
+			Color: Color,
 
-			Width: Width,
-			Height: Height,
-			Display: Display
+			Position: Position,
+			PositionX: PositionX,
+			PositionY: PositionY,
+			PositionZ: PositionZ,
+
+			RotationX: RotationX,
+			RotationY: RotationY,
+			RotationZ: RotationZ
 		}
-	};
+	}
 })();

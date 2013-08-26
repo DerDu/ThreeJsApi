@@ -84,6 +84,7 @@ var TJSApi = (function(){
 			['/TJSApi/Library/Material.js'],
 			['/TJSApi/Library/Mesh.js'],
 			['/TJSApi/Library/Light/Ambient.js'],
+			['/TJSApi/Library/Light/Directional.js'],
 
 			['/TJSApi/Controller/Mouse.js'],
 			['/TJSApi/Controller/Keyboard.js'],
@@ -164,12 +165,13 @@ var TJSApi = (function(){
 					TJSApi.Debug().PerformanceMonitor().Begin();
 
 					EngineAnimation.Loop();
-					EngineAnimation.Render();
 
 					// Run Physics if available
 					if( typeof Scene().TJSObject.simulate == 'function' ) {
 						Scene().TJSObject.simulate();
 					}
+
+					EngineAnimation.Render();
 
 					TJSApi.Debug().PerformanceMonitor().End();
 
